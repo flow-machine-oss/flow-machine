@@ -1,0 +1,41 @@
+{
+  "name": "@flow-machine/service",
+  "type": "module",
+  "scripts": {
+    "build": "bun build src/api.ts --outdir ./dist --target bun",
+    "check-types": "tsc --noEmit --skipLibCheck",
+    "dev": "bun --watch src/api.ts",
+    "dev:worker": "bun --watch src/worker.ts",
+    "lint": "eslint",
+    "start": "NODE_ENV=production bun dist/api.js",
+    "start:worker": "NODE_ENV=production bun src/worker.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@date-fns/utc": "catalog:",
+    "@elysiajs/openapi": "catalog:",
+    "@openrouter/sdk": "catalog:",
+    "ajv": "catalog:",
+    "ajv-formats": "catalog:",
+    "drizzle-kit": "catalog:",
+    "drizzle-orm": "catalog:",
+    "drizzle-zod": "catalog:",
+    "elysia": "catalog:",
+    "es-toolkit": "catalog:",
+    "jsonpath-plus": "catalog:",
+    "jose": "catalog:",
+    "neverthrow": "catalog:",
+    "pino": "catalog:",
+    "ulid": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@total-typescript/ts-reset": "catalog:",
+    "@flow-machine/eslint-config": "workspace:*",
+    "@flow-machine/typescript-config": "workspace:*",
+    "@types/bun": "catalog:",
+    "@types/node": "catalog:",
+    "type-fest": "catalog:",
+    "eslint": "catalog:"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "shadcn:add": {
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "cache": false,
+      "persistent": true
+    }
+  },
+  "globalEnv": [
+    "APP_ENV",
+    "APP_VERSION",
+    "DATABASE_URL",
+    "CLERK_ISSUER",
+    "CLERK_JWKS_URL"
+  ]
+}
