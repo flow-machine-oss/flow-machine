@@ -2,6 +2,7 @@ import openapi, { fromTypes } from "@elysiajs/openapi";
 import Elysia from "elysia";
 import { z } from "zod/v4";
 import { config } from "@/lib/config";
+import { documentRouterV1 } from "@/router/document/document.router.v1";
 
 const app = new Elysia();
 
@@ -14,4 +15,5 @@ app
       ),
     }),
   )
+  .use(documentRouterV1())
   .listen(8000);

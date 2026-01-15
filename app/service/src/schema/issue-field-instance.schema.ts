@@ -23,8 +23,8 @@ export const issueFieldInstanceTable = pgTable(
   },
   (table) => [
     ...makeDefaultOrganizationAwareIndexes(table, "issue_field_instance"),
-    index("issue_field_instance_issueId_idx").on(table.issueId),
-    index("issue_field_instance_issueFieldDefinitionId_idx").on(
+    index("issue_field_instance_issue_id_idx").on(table.issueId),
+    index("issue_field_instance_issue_field_definition_id_idx").on(
       table.issueFieldDefinitionId,
     ),
   ],

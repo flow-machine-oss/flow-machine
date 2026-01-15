@@ -17,6 +17,6 @@ export const issueTable = pgTable(
   },
   (table) => [
     ...makeDefaultOrganizationAwareIndexes(table, "issue"),
-    index("issue_projectId_idx").on(table.projectId),
+    index("issue_project_id_idx").on(table.projectId),
   ],
 );
