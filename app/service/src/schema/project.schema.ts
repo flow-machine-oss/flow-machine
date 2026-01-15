@@ -11,5 +11,5 @@ export const projectTable = pgTable(
 
     name: varchar({ length: 256 }).notNull(),
   },
-  (table) => [...makeDefaultOrganizationAwareIndexes(table)],
+  (table) => [...makeDefaultOrganizationAwareIndexes(table, "project")],
 );

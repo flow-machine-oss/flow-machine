@@ -18,14 +18,18 @@ export const gitRepositoryIntegrationTable = pgTable(
 
     credentialId: makeIdColumnType()
       .notNull()
-      .references(() => integrationBasicCredentialTable.id),
+      .references(() => integrationBasicCredentialTable.id, {
+        onDelete: "restrict",
+      }),
     gitRepositoryId: makeIdColumnType()
       .notNull()
-      .references(() => gitRepositoryTable.id),
+      .references(() => gitRepositoryTable.id, { onDelete: "cascade" }),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table),
-    index("credentialId_idx").on(table.credentialId),
-    index("gitRepositoryId_idx").on(table.gitRepositoryId),
+    ...makeDefaultOrganizationAwareIndexes(table, "gitRepositoryIntegration"),
+    index("gitRepositoryIntegration_credentialId_idx").on(table.credentialId),
+    index("gitRepositoryIntegration_gitRepositoryId_idx").on(
+      table.gitRepositoryId,
+    ),
   ],
 );

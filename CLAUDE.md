@@ -25,7 +25,7 @@ bun run format
 # Testing
 bun run test
 
-# Start MongoDB (required for local development)
+# Start PostgreSQL (required for local development)
 docker compose up -d
 
 # Run command on a specific app (use --filter from project root)
@@ -53,7 +53,7 @@ All environment variables have to be defined in `turbo.json` globalEnv:
 
 - `APP_ENV`, `APP_VERSION`
 - `CLERK_ISSUER`, `CLERK_JWKS_URL`
-- `MONGO_URI`, `MONGO_TRANSACTION_TIMEOUT_MS`
+- `DATABASE_URL`
 
 ## Code Style
 

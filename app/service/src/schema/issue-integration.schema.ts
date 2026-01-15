@@ -18,11 +18,14 @@ export const issueIntegrationTable = pgTable(
 
     issueId: makeIdColumnType()
       .notNull()
-      .references(() => issueTable.id),
+      .references(() => issueTable.id, { onDelete: "cascade" }),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table),
-    index("issueId_idx").on(table.issueId),
-    index("providerId_externalId_idx").on(table.providerId, table.externalId),
+    ...makeDefaultOrganizationAwareIndexes(table, "issueIntegration"),
+    index("issueIntegration_issueId_idx").on(table.issueId),
+    index("issueIntegration_providerId_externalId_idx").on(
+      table.providerId,
+      table.externalId,
+    ),
   ],
 );

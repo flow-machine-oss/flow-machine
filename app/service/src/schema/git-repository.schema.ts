@@ -14,5 +14,5 @@ export const gitRepositoryTable = pgTable(
     name: varchar({ length: 256 }).notNull(),
     url: varchar({ length: 256 }).notNull(),
   },
-  (table) => [...makeDefaultOrganizationAwareIndexes(table)],
+  (table) => [...makeDefaultOrganizationAwareIndexes(table, "gitRepository")],
 );

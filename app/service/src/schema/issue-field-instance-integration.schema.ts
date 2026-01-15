@@ -17,11 +17,19 @@ export const issueFieldInstanceIntegrationTable = pgTable(
 
     issueFieldInstanceId: makeIdColumnType()
       .notNull()
-      .references(() => issueFieldInstanceTable.id),
+      .references(() => issueFieldInstanceTable.id, { onDelete: "cascade" }),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table),
-    index("issueFieldInstanceId_idx").on(table.issueFieldInstanceId),
-    index("providerId_externalId_idx").on([table.providerId, table.externalId]),
+    ...makeDefaultOrganizationAwareIndexes(
+      table,
+      "issueFieldInstanceIntegration",
+    ),
+    index("issueFieldInstanceIntegration_issueFieldInstanceId_idx").on(
+      table.issueFieldInstanceId,
+    ),
+    index("issueFieldInstanceIntegration_providerId_externalId_idx").on(
+      table.providerId,
+      table.externalId,
+    ),
   ],
 );

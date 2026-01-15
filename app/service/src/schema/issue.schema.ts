@@ -11,12 +11,12 @@ export const issueTable = pgTable(
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
-    projectId: makeIdColumnType()
-      .notNull()
-      .references(() => projectTable.id),
+    projectId: makeIdColumnType().references(() => projectTable.id, {
+      onDelete: "restrict",
+    }),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table),
-    index("projectId_idx").on(table.projectId),
+    ...makeDefaultOrganizationAwareIndexes(table, "issue"),
+    index("issue_projectId_idx").on(table.projectId),
   ],
 );

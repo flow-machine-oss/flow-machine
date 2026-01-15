@@ -16,14 +16,16 @@ export const issueFieldInstanceTable = pgTable(
 
     issueId: makeIdColumnType()
       .notNull()
-      .references(() => issueTable.id),
+      .references(() => issueTable.id, { onDelete: "cascade" }),
     issueFieldDefinitionId: makeIdColumnType()
       .notNull()
-      .references(() => issueFieldDefinitionTable.id),
+      .references(() => issueFieldDefinitionTable.id, { onDelete: "restrict" }),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table),
-    index("issueId_idx").on(table.issueId),
-    index("issueFieldDefinitionId_idx").on(table.issueFieldDefinitionId),
+    ...makeDefaultOrganizationAwareIndexes(table, "issueFieldInstance"),
+    index("issueFieldInstance_issueId_idx").on(table.issueId),
+    index("issueFieldInstance_issueFieldDefinitionId_idx").on(
+      table.issueFieldDefinitionId,
+    ),
   ],
 );

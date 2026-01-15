@@ -21,5 +21,5 @@ export const aiAgentTable = pgTable(
     model: text({ enum: aiAgentModels }).notNull(),
     name: varchar({ length: 256 }).notNull(),
   },
-  (table) => [...makeDefaultOrganizationAwareIndexes(table)],
+  (table) => [...makeDefaultOrganizationAwareIndexes(table, "aiAgent")],
 );

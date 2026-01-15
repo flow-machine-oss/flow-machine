@@ -1,8 +1,8 @@
 import { pgTable, varchar } from "drizzle-orm/pg-core";
 import {
-  makeDateColumnType,
   makeDefaultOrganizationAwareIndexes,
   makeOrganizationAwareBaseSchemaTableColumns,
+  makeTimestampColumnType,
 } from "@/schema/shared.schema";
 
 export const integrationBasicCredentialTable = pgTable(
@@ -12,7 +12,9 @@ export const integrationBasicCredentialTable = pgTable(
 
     username: varchar({ length: 256 }).notNull(),
     password: varchar({ length: 256 }).notNull(),
-    expiredAt: makeDateColumnType().notNull(),
+    expiredAt: makeTimestampColumnType().notNull(),
   },
-  (table) => [...makeDefaultOrganizationAwareIndexes(table)],
+  (table) => [
+    ...makeDefaultOrganizationAwareIndexes(table, "integrationBasicCredential"),
+  ],
 );
