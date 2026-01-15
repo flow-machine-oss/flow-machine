@@ -5,7 +5,7 @@ import {
 } from "@/schema/shared.schema";
 
 export const gitRepositoryTable = pgTable(
-  "gitRepository",
+  "git_repository",
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
@@ -14,5 +14,5 @@ export const gitRepositoryTable = pgTable(
     name: varchar({ length: 256 }).notNull(),
     url: varchar({ length: 256 }).notNull(),
   },
-  (table) => [...makeDefaultOrganizationAwareIndexes(table)],
+  (table) => [...makeDefaultOrganizationAwareIndexes(table, "git_repository")],
 );

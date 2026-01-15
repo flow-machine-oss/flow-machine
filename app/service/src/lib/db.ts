@@ -13,6 +13,7 @@ import { issueFieldInstanceIntegrationTable } from "@/schema/issue-field-instanc
 import { issueFieldInstanceTable } from "@/schema/issue-field-instance.schema";
 import { issueIntegrationTable } from "@/schema/issue-integration.schema";
 import { issueTable } from "@/schema/issue.schema";
+import { organizationMemberTable } from "@/schema/organization-member.schema";
 import { organizationTable } from "@/schema/organization.schema";
 import { projectIntegrationTable } from "@/schema/project-integration.schema";
 import { projectTable } from "@/schema/project.schema";
@@ -36,10 +37,12 @@ export const db = drizzle({
     issueIntegration: issueIntegrationTable,
     issue: issueTable,
     organization: organizationTable,
+    organizationMember: organizationMemberTable,
     projectIntegration: projectIntegrationTable,
     project: projectTable,
     user: userTable,
   },
   relations: relation,
+  casing: "snake_case",
 });
 export type Db = typeof db;

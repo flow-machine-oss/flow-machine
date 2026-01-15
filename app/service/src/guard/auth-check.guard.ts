@@ -6,6 +6,11 @@ import { config } from "@/lib/config";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
 import { newId } from "@/lib/id";
+import {
+  organizationMemberSelectSchema,
+  organizationMemberTable,
+} from "@/schema/organization-member.schema";
+import { organizationTable } from "@/schema/organization.schema";
 import { userTable } from "@/schema/user.schema";
 
 const extendedJwtPayloadSchema = z.object({
@@ -16,6 +21,9 @@ const extendedJwtPayloadSchema = z.object({
   email: z.email(),
   firstName: z.string(),
   lastName: z.string(),
+
+  organizationId: z.string(),
+  organizationRole: organizationMemberSelectSchema.shape.role,
 });
 
 const getBearerToken = (headers: Record<string, unknown>) => {
@@ -23,7 +31,7 @@ const getBearerToken = (headers: Record<string, unknown>) => {
   if (
     isNil(authorization) ||
     !isString(authorization) ||
-    authorization.startsWith("Bearer ")
+    !authorization.startsWith("Bearer ")
   ) {
     return err(Err.code("unauthorized"));
   }
@@ -67,28 +75,55 @@ export const authCheck = async (
   if (decodeResult.isErr()) {
     return decodeResult;
   }
+
+  const payload = decodeResult.value;
+
   const existingUser = await ctx.db.query.user.findFirst({
-    where: { externalId: decodeResult.value.id },
+    where: { id: payload.id },
   });
 
   if (!isNil(existingUser)) {
     return ok(existingUser);
   }
-  await ctx.db.insert(userTable).values({
-    id: newId(),
-    createdAt: decodeResult.value.createdAt,
-    updatedAt: decodeResult.value.updatedAt,
 
-    email: decodeResult.value.email,
-    firstName: decodeResult.value.firstName,
-    lastName: decodeResult.value.lastName,
+  const newUser = await ctx.db.transaction(async (tx) => {
+    const now = new Date();
 
-    externalId: decodeResult.value.id,
+    await tx.insert(userTable).values({
+      id: payload.id,
+      createdAt: payload.createdAt,
+      updatedAt: payload.updatedAt,
+      email: payload.email,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+    });
+
+    const existingOrg = await tx.query.organization.findFirst({
+      where: { id: payload.organizationId },
+    });
+
+    if (isNil(existingOrg)) {
+      await tx.insert(organizationTable).values({
+        id: payload.organizationId,
+        createdAt: now,
+        updatedAt: now,
+      });
+    }
+
+    await tx.insert(organizationMemberTable).values({
+      id: newId(),
+      createdAt: now,
+      updatedAt: now,
+      organizationId: payload.organizationId,
+      userId: payload.id,
+      role: payload.organizationRole,
+    });
+
+    return tx.query.user.findFirst({
+      where: { id: payload.id },
+    });
   });
 
-  const newUser = await ctx.db.query.user.findFirst({
-    where: { externalId: decodeResult.value.id },
-  });
   if (isNil(newUser)) {
     return err(Err.code("unknown"));
   }

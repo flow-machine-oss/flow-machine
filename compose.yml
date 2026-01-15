@@ -1,27 +1,23 @@
 name: flow-machine
 
 services:
-  mongo:
-    image: mongo:8.2.3-noble
-    container_name: flow-machine-mongo
+  postgres:
+    image: postgres:18.1
+    container_name: flow-machine-postgres
     ports:
-      - "27017:27017"
-    command: ["--replSet", "rs0", "--bind_ip_all"]
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: flow_machine
     volumes:
-      - mongo-data:/data/db
+      - postgres-data:/var/lib/postgresql
     healthcheck:
-      test: |
-        mongosh --eval "
-          try {
-            rs.status().ok
-          } catch(e) {
-            rs.initiate({_id: 'rs0', members: [{_id: 0, host: 'localhost:27017'}]})
-          }
-        " --quiet
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
-      timeout: 30s
-      retries: 10
+      timeout: 5s
+      retries: 5
       start_period: 10s
 
 volumes:
-  mongo-data:
+  postgres-data:

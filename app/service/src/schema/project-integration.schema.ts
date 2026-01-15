@@ -10,7 +10,7 @@ import {
 export const projectIntegrationProviderIds = ["jira", "linear"] as const;
 
 export const projectIntegrationTable = pgTable(
-  "projectIntegration",
+  "project_integration",
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
@@ -21,15 +21,20 @@ export const projectIntegrationTable = pgTable(
 
     credentialId: makeIdColumnType()
       .notNull()
-      .references(() => integrationApiKeyCredentialTable.id),
+      .references(() => integrationApiKeyCredentialTable.id, {
+        onDelete: "restrict",
+      }),
     projectId: makeIdColumnType()
       .notNull()
-      .references(() => projectTable.id),
+      .references(() => projectTable.id, { onDelete: "cascade" }),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table),
-    index("credentialId_idx").on(table.credentialId),
-    index("projectId_idx").on(table.projectId),
-    index("providerId_externalId_idx").on([table.providerId, table.externalId]),
+    ...makeDefaultOrganizationAwareIndexes(table, "project_integration"),
+    index("project_integration_credentialId_idx").on(table.credentialId),
+    index("project_integration_projectId_idx").on(table.projectId),
+    index("project_integration_providerId_externalId_idx").on(
+      table.providerId,
+      table.externalId,
+    ),
   ],
 );

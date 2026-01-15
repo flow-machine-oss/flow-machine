@@ -10,6 +10,7 @@ import { issueFieldInstanceIntegrationTable } from "@/schema/issue-field-instanc
 import { issueFieldInstanceTable } from "@/schema/issue-field-instance.schema";
 import { issueIntegrationTable } from "@/schema/issue-integration.schema";
 import { issueTable } from "@/schema/issue.schema";
+import { organizationMemberTable } from "@/schema/organization-member.schema";
 import { organizationTable } from "@/schema/organization.schema";
 import { projectIntegrationTable } from "@/schema/project-integration.schema";
 import { projectTable } from "@/schema/project.schema";
@@ -29,6 +30,7 @@ export const relation = defineRelations(
     issueIntegration: issueIntegrationTable,
     issue: issueTable,
     organization: organizationTable,
+    organizationMember: organizationMemberTable,
     projectIntegration: projectIntegrationTable,
     project: projectTable,
     user: userTable,
@@ -36,19 +38,30 @@ export const relation = defineRelations(
   (r) => ({
     // Organization relations (one-to-many)
     organization: {
-      users: r.many.user(),
       projects: r.many.project(),
+      issues: r.many.issue(),
+      issueFieldDefinitions: r.many.issueFieldDefinition(),
       aiAgents: r.many.aiAgent(),
       gitRepositories: r.many.gitRepository(),
       integrationBasicCredentials: r.many.integrationBasicCredential(),
       integrationApiKeyCredentials: r.many.integrationApiKeyCredential(),
+      members: r.many.organizationMember(),
     },
 
     // User relations
     user: {
+      organizationMemberships: r.many.organizationMember(),
+    },
+
+    // Organization Member relations (junction table)
+    organizationMember: {
       organization: r.one.organization({
-        from: r.user.organizationId,
+        from: r.organizationMember.organizationId,
         to: r.organization.id,
+      }),
+      user: r.one.user({
+        from: r.organizationMember.userId,
+        to: r.user.id,
       }),
     },
 
@@ -59,7 +72,6 @@ export const relation = defineRelations(
         to: r.organization.id,
       }),
       issues: r.many.issue(),
-      issueFieldDefinitions: r.many.issueFieldDefinition(),
       projectIntegrations: r.many.projectIntegration(),
     },
 
@@ -117,10 +129,6 @@ export const relation = defineRelations(
       organization: r.one.organization({
         from: r.issueFieldDefinition.organizationId,
         to: r.organization.id,
-      }),
-      project: r.one.project({
-        from: r.issueFieldDefinition.projectId,
-        to: r.project.id,
       }),
       issueFieldInstances: r.many.issueFieldInstance(),
       issueFieldDefinitionIntegrations:

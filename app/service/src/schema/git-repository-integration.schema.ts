@@ -10,7 +10,7 @@ import {
 const gitRepositoryProviderIds = ["gitHub", "gitLab"] as const;
 
 export const gitRepositoryIntegrationTable = pgTable(
-  "gitRepositoryIntegration",
+  "git_repository_integration",
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
@@ -18,14 +18,18 @@ export const gitRepositoryIntegrationTable = pgTable(
 
     credentialId: makeIdColumnType()
       .notNull()
-      .references(() => integrationBasicCredentialTable.id),
+      .references(() => integrationBasicCredentialTable.id, {
+        onDelete: "restrict",
+      }),
     gitRepositoryId: makeIdColumnType()
       .notNull()
-      .references(() => gitRepositoryTable.id),
+      .references(() => gitRepositoryTable.id, { onDelete: "cascade" }),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table),
-    index("credentialId_idx").on(table.credentialId),
-    index("gitRepositoryId_idx").on(table.gitRepositoryId),
+    ...makeDefaultOrganizationAwareIndexes(table, "git_repository_integration"),
+    index("git_repository_integration_credentialId_idx").on(table.credentialId),
+    index("git_repository_integration_gitRepositoryId_idx").on(
+      table.gitRepositoryId,
+    ),
   ],
 );

@@ -8,7 +8,7 @@ import {
 } from "@/schema/shared.schema";
 
 export const issueFieldInstanceIntegrationTable = pgTable(
-  "issueFieldInstanceIntegration",
+  "issue_field_instance_integration",
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
@@ -17,11 +17,19 @@ export const issueFieldInstanceIntegrationTable = pgTable(
 
     issueFieldInstanceId: makeIdColumnType()
       .notNull()
-      .references(() => issueFieldInstanceTable.id),
+      .references(() => issueFieldInstanceTable.id, { onDelete: "cascade" }),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table),
-    index("issueFieldInstanceId_idx").on(table.issueFieldInstanceId),
-    index("providerId_externalId_idx").on([table.providerId, table.externalId]),
+    ...makeDefaultOrganizationAwareIndexes(
+      table,
+      "issue_field_instance_integration",
+    ),
+    index("issue_field_instance_integration_issueFieldInstanceId_idx").on(
+      table.issueFieldInstanceId,
+    ),
+    index("issue_field_instance_integration_providerId_externalId_idx").on(
+      table.providerId,
+      table.externalId,
+    ),
   ],
 );

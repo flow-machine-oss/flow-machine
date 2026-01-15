@@ -14,12 +14,12 @@ export const aiAgentModels = [
 ] as const;
 
 export const aiAgentTable = pgTable(
-  "aiAgent",
+  "ai_agent",
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
     model: text({ enum: aiAgentModels }).notNull(),
     name: varchar({ length: 256 }).notNull(),
   },
-  (table) => [...makeDefaultOrganizationAwareIndexes(table)],
+  (table) => [...makeDefaultOrganizationAwareIndexes(table, "ai_agent")],
 );
