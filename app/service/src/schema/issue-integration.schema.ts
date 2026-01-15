@@ -8,7 +8,7 @@ import {
 } from "@/schema/shared.schema";
 
 export const issueIntegrationTable = pgTable(
-  "issueIntegration",
+  "issue_integration",
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
@@ -21,9 +21,9 @@ export const issueIntegrationTable = pgTable(
       .references(() => issueTable.id, { onDelete: "cascade" }),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table, "issueIntegration"),
-    index("issueIntegration_issueId_idx").on(table.issueId),
-    index("issueIntegration_providerId_externalId_idx").on(
+    ...makeDefaultOrganizationAwareIndexes(table, "issue_integration"),
+    index("issue_integration_issueId_idx").on(table.issueId),
+    index("issue_integration_providerId_externalId_idx").on(
       table.providerId,
       table.externalId,
     ),

@@ -6,7 +6,7 @@ import {
 } from "@/schema/shared.schema";
 
 export const integrationBasicCredentialTable = pgTable(
-  "integrationBasicCredential",
+  "integration_basic_credential",
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
@@ -15,6 +15,6 @@ export const integrationBasicCredentialTable = pgTable(
     expiredAt: makeTimestampColumnType().notNull(),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table, "integrationBasicCredential"),
+    ...makeDefaultOrganizationAwareIndexes(table, "integration_basic_credential"),
   ],
 );

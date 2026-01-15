@@ -8,7 +8,7 @@ import {
 } from "@/schema/shared.schema";
 
 export const issueFieldDefinitionIntegrationTable = pgTable(
-  "issueFieldDefinitionIntegration",
+  "issue_field_definition_integration",
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
@@ -22,12 +22,12 @@ export const issueFieldDefinitionIntegrationTable = pgTable(
   (table) => [
     ...makeDefaultOrganizationAwareIndexes(
       table,
-      "issueFieldDefinitionIntegration",
+      "issue_field_definition_integration",
     ),
-    index("issueFieldDefinitionIntegration_issueFieldDefinitionId_idx").on(
+    index("issue_field_definition_integration_issueFieldDefinitionId_idx").on(
       table.issueFieldDefinitionId,
     ),
-    index("issueFieldDefinitionIntegration_providerId_externalId_idx").on(
+    index("issue_field_definition_integration_providerId_externalId_idx").on(
       table.providerId,
       table.externalId,
     ),

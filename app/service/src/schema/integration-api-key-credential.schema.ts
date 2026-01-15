@@ -6,7 +6,7 @@ import {
 } from "@/schema/shared.schema";
 
 export const integrationApiKeyCredentialTable = pgTable(
-  "integrationApiKeyCredential",
+  "integration_api_key_credential",
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
@@ -14,6 +14,6 @@ export const integrationApiKeyCredentialTable = pgTable(
     expiredAt: makeTimestampColumnType().notNull(),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table, "integrationApiKeyCredential"),
+    ...makeDefaultOrganizationAwareIndexes(table, "integration_api_key_credential"),
   ],
 );

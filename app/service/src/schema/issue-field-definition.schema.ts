@@ -6,7 +6,7 @@ import {
 } from "@/schema/shared.schema";
 
 export const issueFieldDefinitionTable = pgTable(
-  "issueFieldDefinition",
+  "issue_field_definition",
   {
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
@@ -15,6 +15,6 @@ export const issueFieldDefinitionTable = pgTable(
     fieldType: text({ enum: issueFieldTypes }).notNull(),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table, "issueFieldDefinition"),
+    ...makeDefaultOrganizationAwareIndexes(table, "issue_field_definition"),
   ],
 );
