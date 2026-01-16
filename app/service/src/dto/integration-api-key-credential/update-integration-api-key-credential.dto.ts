@@ -1,10 +1,7 @@
 import z from "zod";
-import {
-  apiKeySchema,
-  futureDateSchema,
-} from "@/dto/integration-api-key-credential/create-integration-api-key-credential.dto";
+import { futureExpiredAtSchema } from "@/dto/shared.dto";
 
 export const updateIntegrationApiKeyCredentialRequestBodySchema = z.object({
-  apiKey: apiKeySchema.optional(),
-  expiredAt: futureDateSchema.optional(),
+  apiKey: z.string().min(1).max(256).optional(),
+  expiredAt: futureExpiredAtSchema,
 });

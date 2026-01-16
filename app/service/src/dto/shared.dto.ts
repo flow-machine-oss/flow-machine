@@ -15,3 +15,9 @@ export const organizationAwareBaseResponseDtoSchema = z.object({
 export const idRequestParamsDtoSchema = z.object({
   id: idSchema,
 });
+
+export const futureExpiredAtSchema = z.coerce
+  .date()
+  .refine((date) => date > new Date(), {
+    message: "expiredAt must be a future date",
+  });
