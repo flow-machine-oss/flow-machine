@@ -1,6 +1,7 @@
 import { UTCDate } from "@date-fns/utc";
 import { ResultAsync } from "neverthrow";
 import type z from "zod";
+import type { createIntegrationBasicCredentialRequestBodySchema } from "@/dto/integration-basic-credential/create-integration-basic-credential.dto";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
@@ -8,11 +9,7 @@ import { newId } from "@/lib/id";
 import { integrationBasicCredentialTable } from "@/schema/integration-basic-credential.schema";
 
 type Payload = {
-  body: {
-    username: string;
-    password: string;
-    expiredAt: Date;
-  };
+  body: z.infer<typeof createIntegrationBasicCredentialRequestBodySchema>;
   user: z.infer<typeof currentUserSchema>;
 };
 

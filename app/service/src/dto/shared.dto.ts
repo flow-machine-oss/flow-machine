@@ -1,3 +1,4 @@
+import { UTCDate } from "@date-fns/utc";
 import z from "zod";
 import { idSchema } from "@/lib/id";
 
@@ -15,3 +16,9 @@ export const organizationAwareBaseResponseDtoSchema = z.object({
 export const idRequestParamsDtoSchema = z.object({
   id: idSchema,
 });
+
+export const futureExpiredAtSchema = z.coerce
+  .date()
+  .refine((date) => date > new UTCDate(), {
+    message: "expiredAt must be a future date",
+  });

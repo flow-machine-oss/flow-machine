@@ -3,6 +3,7 @@ import Elysia from "elysia";
 import { z } from "zod/v4";
 import { config } from "@/lib/config";
 import { documentRouterV1 } from "@/router/document/document.router.v1";
+import { integrationBasicCredentialRouterV1 } from "@/router/integration-basic-credential/integration-basic-credential.router.v1";
 
 const app = new Elysia();
 
@@ -16,4 +17,5 @@ app
     }),
   )
   .use(documentRouterV1())
+  .use(integrationBasicCredentialRouterV1())
   .listen(8000);

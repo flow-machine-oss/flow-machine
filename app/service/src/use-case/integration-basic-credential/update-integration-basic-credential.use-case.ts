@@ -3,6 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { isNil } from "es-toolkit";
 import { ResultAsync, err } from "neverthrow";
 import type z from "zod";
+import type { updateIntegrationBasicCredentialRequestBodySchema } from "@/dto/integration-basic-credential/update-integration-basic-credential.dto";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
@@ -10,11 +11,7 @@ import { integrationBasicCredentialTable } from "@/schema/integration-basic-cred
 
 type Payload = {
   id: string;
-  body: {
-    username?: string;
-    password?: string;
-    expiredAt?: Date;
-  };
+  body: z.infer<typeof updateIntegrationBasicCredentialRequestBodySchema>;
   user: z.infer<typeof currentUserSchema>;
 };
 
