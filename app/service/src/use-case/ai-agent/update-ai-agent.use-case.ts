@@ -3,17 +3,15 @@ import { and, eq } from "drizzle-orm";
 import { isNil } from "es-toolkit";
 import { ResultAsync, err } from "neverthrow";
 import type z from "zod";
+import { updateAiAgentRequestBodySchema } from "@/dto/ai-agent/update-ai-agent.dto";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
-import { aiAgentTable, type aiAgentModels } from "@/schema/ai-agent.schema";
+import { aiAgentTable } from "@/schema/ai-agent.schema";
 
 type Payload = {
   id: string;
-  body: {
-    model?: (typeof aiAgentModels)[number];
-    name?: string;
-  };
+  body: z.infer<typeof updateAiAgentRequestBodySchema>;
   user: z.infer<typeof currentUserSchema>;
 };
 
