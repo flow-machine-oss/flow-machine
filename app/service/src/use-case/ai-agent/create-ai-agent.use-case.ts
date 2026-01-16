@@ -1,21 +1,15 @@
 import { UTCDate } from "@date-fns/utc";
 import { ResultAsync } from "neverthrow";
-import type z from "zod";
-import type { currentUserSchema } from "@/guard/auth-check.guard";
+import z from "zod";
+import { createAiAgentRequestBodySchema } from "@/dto/ai-agent/create-ai-agent.dto";
+import { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
 import { newId } from "@/lib/id";
-import {
-  type AiAgentSelect,
-  type aiAgentModels,
-  aiAgentTable,
-} from "@/schema/ai-agent.schema";
+import { type AiAgentSelect, aiAgentTable } from "@/schema/ai-agent.schema";
 
 type Payload = {
-  body: {
-    model: (typeof aiAgentModels)[number];
-    name: string;
-  };
+  body: z.infer<typeof createAiAgentRequestBodySchema>;
   user: z.infer<typeof currentUserSchema>;
 };
 

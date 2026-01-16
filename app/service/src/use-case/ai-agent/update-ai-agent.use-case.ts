@@ -6,7 +6,7 @@ import type z from "zod";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
-import { type aiAgentModels, aiAgentTable } from "@/schema/ai-agent.schema";
+import { aiAgentTable, type aiAgentModels } from "@/schema/ai-agent.schema";
 
 type Payload = {
   id: string;
