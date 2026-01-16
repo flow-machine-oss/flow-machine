@@ -1,5 +1,6 @@
 import { defineRelations } from "drizzle-orm";
 import { aiAgentTable } from "@/schema/ai-agent.schema";
+import { documentTable } from "@/schema/document.schema";
 import { gitRepositoryIntegrationTable } from "@/schema/git-repository-integration.schema";
 import { gitRepositoryTable } from "@/schema/git-repository.schema";
 import { integrationApiKeyCredentialTable } from "@/schema/integration-api-key-credential.schema";
@@ -16,6 +17,7 @@ import { projectTable } from "@/schema/project.schema";
 export const relation = defineRelations(
   {
     aiAgent: aiAgentTable,
+    document: documentTable,
     gitRepositoryIntegration: gitRepositoryIntegrationTable,
     gitRepository: gitRepositoryTable,
     integrationApiKeyCredential: integrationApiKeyCredentialTable,
@@ -30,9 +32,18 @@ export const relation = defineRelations(
     project: projectTable,
   },
   (r) => ({
+    // Document relations
+    document: {
+      project: r.one.project({
+        from: r.document.projectId,
+        to: r.project.id,
+      }),
+    },
+
     // Project relations
     project: {
       issues: r.many.issue(),
+      documents: r.many.document(),
       projectIntegrations: r.many.projectIntegration(),
     },
 

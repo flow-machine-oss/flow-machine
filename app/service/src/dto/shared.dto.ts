@@ -1,7 +1,8 @@
 import z from "zod";
+import { idSchema } from "@/lib/id";
 
 export const baseResponseDtoSchema = z.object({
-  id: z.string(),
+  id: idSchema,
   createdAt: z.date(),
   updatedAt: z.date(),
 });
@@ -9,4 +10,8 @@ export const baseResponseDtoSchema = z.object({
 export const organizationAwareBaseResponseDtoSchema = z.object({
   ...baseResponseDtoSchema.shape,
   organizationId: z.string(),
+});
+
+export const idRequestParamsDtoSchema = z.object({
+  id: idSchema,
 });

@@ -1,4 +1,5 @@
 import { and, eq } from "drizzle-orm";
+import { isNil } from "es-toolkit";
 import { ResultAsync, err } from "neverthrow";
 import type z from "zod";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
@@ -16,16 +17,9 @@ export const deleteDocumentUseCase = async (
   { id, user }: Payload,
 ) => {
   const existsResult = await ResultAsync.fromPromise(
-    ctx.db
-      .select({ id: documentTable.id })
-      .from(documentTable)
-      .where(
-        and(
-          eq(documentTable.id, id),
-          eq(documentTable.organizationId, user.organizationId),
-        ),
-      )
-      .limit(1),
+    ctx.db.query.document.findFirst({
+      where: { id, organizationId: user.organizationId },
+    }),
     (e) => Err.from(e),
   );
 
@@ -33,7 +27,7 @@ export const deleteDocumentUseCase = async (
     return existsResult;
   }
 
-  if (existsResult.value.length === 0) {
+  if (isNil(existsResult.value)) {
     return err(Err.code("notFound"));
   }
 

@@ -1,8 +1,9 @@
-import Elysia, { t } from "elysia";
+import Elysia from "elysia";
 import z from "zod";
 import { createDocumentRequestBodySchema } from "@/dto/document/create-document.dto";
 import { documentResponseDtoSchema } from "@/dto/document/document.dto";
 import { updateDocumentRequestBodySchema } from "@/dto/document/update-document.dto";
+import { idRequestParamsDtoSchema } from "@/dto/shared.dto";
 import { errEnvelope, okEnvelope, withHttpEnvelopeSchema } from "@/lib/http";
 import { defaultRouterSetup } from "@/middleware/default-router-setup.middleware";
 import { createDocumentUseCase } from "@/use-case/document/create-document.use-case";
@@ -81,9 +82,7 @@ export const documentRouterV1 = () =>
           return okEnvelope({ data: getDocumentResult.value });
         },
         {
-          params: t.Object({
-            id: t.String(),
-          }),
+          params: idRequestParamsDtoSchema,
           response: withHttpEnvelopeSchema(documentResponseDtoSchema),
         },
       )
@@ -110,9 +109,7 @@ export const documentRouterV1 = () =>
         },
         {
           body: updateDocumentRequestBodySchema,
-          params: t.Object({
-            id: t.String(),
-          }),
+          params: idRequestParamsDtoSchema,
           response: withHttpEnvelopeSchema(z.undefined()),
         },
       )
@@ -137,9 +134,7 @@ export const documentRouterV1 = () =>
           return okEnvelope();
         },
         {
-          params: t.Object({
-            id: t.String(),
-          }),
+          params: idRequestParamsDtoSchema,
           response: withHttpEnvelopeSchema(z.undefined()),
         },
       ),

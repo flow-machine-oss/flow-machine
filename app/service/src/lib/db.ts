@@ -3,6 +3,7 @@ import "dotenv/config";
 import { drizzle } from "drizzle-orm/bun-sql";
 import { config } from "@/lib/config";
 import { aiAgentTable } from "@/schema/ai-agent.schema";
+import { documentTable } from "@/schema/document.schema";
 import { gitRepositoryIntegrationTable } from "@/schema/git-repository-integration.schema";
 import { gitRepositoryTable } from "@/schema/git-repository.schema";
 import { integrationApiKeyCredentialTable } from "@/schema/integration-api-key-credential.schema";
@@ -23,6 +24,7 @@ export const db = drizzle({
   client,
   schema: {
     aiAgent: aiAgentTable,
+    document: documentTable,
     gitRepositoryIntegration: gitRepositoryIntegrationTable,
     gitRepository: gitRepositoryTable,
     integrationApiKeyCredential: integrationApiKeyCredentialTable,

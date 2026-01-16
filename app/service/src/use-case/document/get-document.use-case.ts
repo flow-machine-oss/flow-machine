@@ -1,10 +1,9 @@
-import { and, eq } from "drizzle-orm";
+import { isNil } from "es-toolkit";
 import { ResultAsync, err, ok } from "neverthrow";
 import type z from "zod";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
-import { documentTable } from "@/schema/document.schema";
 
 type Payload = {
   id: string;
@@ -13,21 +12,14 @@ type Payload = {
 
 export const getDocumentUseCase = async (ctx: Ctx, { id, user }: Payload) => {
   return ResultAsync.fromPromise(
-    ctx.db
-      .select()
-      .from(documentTable)
-      .where(
-        and(
-          eq(documentTable.id, id),
-          eq(documentTable.organizationId, user.organizationId),
-        ),
-      )
-      .limit(1),
+    ctx.db.query.document.findFirst({
+      where: { id, organizationId: user.organizationId },
+    }),
     (e) => Err.from(e),
-  ).andThen((results) => {
-    if (results.length === 0) {
+  ).andThen((result) => {
+    if (isNil(result)) {
       return err(Err.code("notFound"));
     }
-    return ok(results[0]);
+    return ok(result);
   });
 };
