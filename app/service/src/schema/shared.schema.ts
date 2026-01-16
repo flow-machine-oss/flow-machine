@@ -35,4 +35,4 @@ export const makeDefaultOrganizationAwareIndexes = <
 >(
   table: T,
   tableName: string,
-) => [index(`${tableName}_organizationId_idx`).on(table.organizationId)];
+) => [index(`${tableName}_organization_id_idx`).on(table.organizationId)];

@@ -5,15 +5,8 @@ import z from "zod";
 import { config } from "@/lib/config";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
-import { newId } from "@/lib/id";
-import {
-  organizationMemberSelectSchema,
-  organizationMemberTable,
-} from "@/schema/organization-member.schema";
-import { organizationTable } from "@/schema/organization.schema";
-import { userTable } from "@/schema/user.schema";
 
-const extendedJwtPayloadSchema = z.object({
+export const currentUserSchema = z.object({
   id: z.string(),
   createdAt: z.number().transform((timestamp) => new Date(timestamp * 1000)),
   updatedAt: z.number().transform((timestamp) => new Date(timestamp * 1000)),
@@ -23,11 +16,11 @@ const extendedJwtPayloadSchema = z.object({
   lastName: z.string(),
 
   organizationId: z.string(),
-  organizationRole: organizationMemberSelectSchema.shape.role,
+  organizationRole: z.enum(["org:admin", "org:member"] as const),
 });
 
 const getBearerToken = (headers: Record<string, unknown>) => {
-  const authorization = headers["authorization"];
+  const authorization = headers.authorization;
   if (
     isNil(authorization) ||
     !isString(authorization) ||
@@ -52,7 +45,7 @@ const decodeToken = async (token: string, getKey: JWTVerifyGetKey) => {
   if (result.isErr()) {
     return err(Err.code("unauthorized", { cause: result.error }));
   }
-  const parseResult = extendedJwtPayloadSchema.safeParse(result.value.payload);
+  const parseResult = currentUserSchema.safeParse(result.value.payload);
 
   if (!parseResult.success) {
     return err(Err.code("unauthorized", { cause: parseResult.error }));
@@ -73,61 +66,10 @@ export const authCheck = async (
   const decodeResult = await decodeToken(tokenResult.value, getDecodingKey);
 
   if (decodeResult.isErr()) {
+    console.error(decodeResult.error);
     return decodeResult;
   }
-
-  const payload = decodeResult.value;
-
-  const existingUser = await ctx.db.query.user.findFirst({
-    where: { id: payload.id },
-  });
-
-  if (!isNil(existingUser)) {
-    return ok(existingUser);
-  }
-
-  const newUser = await ctx.db.transaction(async (tx) => {
-    const now = new Date();
-
-    await tx.insert(userTable).values({
-      id: payload.id,
-      createdAt: payload.createdAt,
-      updatedAt: payload.updatedAt,
-      email: payload.email,
-      firstName: payload.firstName,
-      lastName: payload.lastName,
-    });
-
-    const existingOrg = await tx.query.organization.findFirst({
-      where: { id: payload.organizationId },
-    });
-
-    if (isNil(existingOrg)) {
-      await tx.insert(organizationTable).values({
-        id: payload.organizationId,
-        createdAt: now,
-        updatedAt: now,
-      });
-    }
-
-    await tx.insert(organizationMemberTable).values({
-      id: newId(),
-      createdAt: now,
-      updatedAt: now,
-      organizationId: payload.organizationId,
-      userId: payload.id,
-      role: payload.organizationRole,
-    });
-
-    return tx.query.user.findFirst({
-      where: { id: payload.id },
-    });
-  });
-
-  if (isNil(newUser)) {
-    return err(Err.code("unknown"));
-  }
-
-  return ok(newUser);
+  return decodeResult;
 };
+
 export type AuthCheck = typeof authCheck;

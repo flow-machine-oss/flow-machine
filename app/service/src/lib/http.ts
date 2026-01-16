@@ -1,4 +1,5 @@
 import { isNil, omitBy } from "es-toolkit";
+import z from "zod";
 import type { Err } from "@/lib/err";
 
 type HttpEnvelope<T> = {
@@ -8,22 +9,27 @@ type HttpEnvelope<T> = {
   data?: T | undefined;
 };
 
-export const okEnvelope = <T>({
+export const okEnvelope = <T = undefined>({
   status = 200,
   code = "ok",
   message = "ok",
   data = undefined,
 }: Partial<HttpEnvelope<T>> = {}) => {
-  return omitBy({ status, code, message, data }, isNil);
+  return omitBy({ status, code, message, data }, isNil) as HttpEnvelope<T>;
 };
 
 export const errEnvelope = (err: Err) => {
-  return omitBy(
-    {
-      status: err.status,
-      code: err.code,
-      message: err.message,
-    },
-    isNil,
-  );
+  return {
+    status: err.status,
+    code: err.code,
+    message: err.message,
+  } as const;
 };
+
+export const withHttpEnvelopeSchema = <T extends z.ZodType>(schema: T) =>
+  z.object({
+    status: z.number(),
+    code: z.string(),
+    message: z.string(),
+    data: schema.optional(),
+  });

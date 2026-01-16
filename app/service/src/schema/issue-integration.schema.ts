@@ -22,8 +22,8 @@ export const issueIntegrationTable = pgTable(
   },
   (table) => [
     ...makeDefaultOrganizationAwareIndexes(table, "issue_integration"),
-    index("issue_integration_issueId_idx").on(table.issueId),
-    index("issue_integration_providerId_externalId_idx").on(
+    index("issue_integration_issue_id_idx").on(table.issueId),
+    index("issue_integration_provider_id_external_id_idx").on(
       table.providerId,
       table.externalId,
     ),

@@ -24,10 +24,10 @@ export const issueFieldDefinitionIntegrationTable = pgTable(
       table,
       "issue_field_definition_integration",
     ),
-    index("issue_field_definition_integration_issueFieldDefinitionId_idx").on(
-      table.issueFieldDefinitionId,
-    ),
-    index("issue_field_definition_integration_providerId_externalId_idx").on(
+    index(
+      "issue_field_definition_integration_issue_field_definition_id_idx",
+    ).on(table.issueFieldDefinitionId),
+    index("issue_field_definition_integration_provider_id_external_id_idx").on(
       table.providerId,
       table.externalId,
     ),

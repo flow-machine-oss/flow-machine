@@ -3,6 +3,7 @@ import "dotenv/config";
 import { drizzle } from "drizzle-orm/bun-sql";
 import { config } from "@/lib/config";
 import { aiAgentTable } from "@/schema/ai-agent.schema";
+import { documentTable } from "@/schema/document.schema";
 import { gitRepositoryIntegrationTable } from "@/schema/git-repository-integration.schema";
 import { gitRepositoryTable } from "@/schema/git-repository.schema";
 import { integrationApiKeyCredentialTable } from "@/schema/integration-api-key-credential.schema";
@@ -13,12 +14,9 @@ import { issueFieldInstanceIntegrationTable } from "@/schema/issue-field-instanc
 import { issueFieldInstanceTable } from "@/schema/issue-field-instance.schema";
 import { issueIntegrationTable } from "@/schema/issue-integration.schema";
 import { issueTable } from "@/schema/issue.schema";
-import { organizationMemberTable } from "@/schema/organization-member.schema";
-import { organizationTable } from "@/schema/organization.schema";
 import { projectIntegrationTable } from "@/schema/project-integration.schema";
 import { projectTable } from "@/schema/project.schema";
 import { relation } from "@/schema/relation";
-import { userTable } from "@/schema/user.schema";
 
 const client = new SQL(config.database.url);
 
@@ -26,6 +24,7 @@ export const db = drizzle({
   client,
   schema: {
     aiAgent: aiAgentTable,
+    document: documentTable,
     gitRepositoryIntegration: gitRepositoryIntegrationTable,
     gitRepository: gitRepositoryTable,
     integrationApiKeyCredential: integrationApiKeyCredentialTable,
@@ -36,11 +35,8 @@ export const db = drizzle({
     issueFieldInstance: issueFieldInstanceTable,
     issueIntegration: issueIntegrationTable,
     issue: issueTable,
-    organization: organizationTable,
-    organizationMember: organizationMemberTable,
     projectIntegration: projectIntegrationTable,
     project: projectTable,
-    user: userTable,
   },
   relations: relation,
   casing: "snake_case",

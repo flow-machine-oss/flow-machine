@@ -27,8 +27,10 @@ export const gitRepositoryIntegrationTable = pgTable(
   },
   (table) => [
     ...makeDefaultOrganizationAwareIndexes(table, "git_repository_integration"),
-    index("git_repository_integration_credentialId_idx").on(table.credentialId),
-    index("git_repository_integration_gitRepositoryId_idx").on(
+    index("git_repository_integration_credential_id_idx").on(
+      table.credentialId,
+    ),
+    index("git_repository_integration_git_repository_id_idx").on(
       table.gitRepositoryId,
     ),
   ],

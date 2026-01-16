@@ -30,9 +30,9 @@ export const projectIntegrationTable = pgTable(
   },
   (table) => [
     ...makeDefaultOrganizationAwareIndexes(table, "project_integration"),
-    index("project_integration_credentialId_idx").on(table.credentialId),
-    index("project_integration_projectId_idx").on(table.projectId),
-    index("project_integration_providerId_externalId_idx").on(
+    index("project_integration_credential_id_idx").on(table.credentialId),
+    index("project_integration_project_id_idx").on(table.projectId),
+    index("project_integration_provider_id_external_id_idx").on(
       table.providerId,
       table.externalId,
     ),

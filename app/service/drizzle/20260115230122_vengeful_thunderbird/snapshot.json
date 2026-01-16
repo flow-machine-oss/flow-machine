@@ -1,24 +1,20 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "e64ef3fd-9e41-4ce4-9cca-d1a9edf1e279",
+  "id": "f885b66f-e8aa-4b1f-a028-6dcd3fed35b2",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
   "ddl": [
     {
-      "values": [
-        "owner",
-        "admin",
-        "member"
-      ],
-      "name": "organization_member_role",
-      "entityType": "enums",
+      "isRlsEnabled": false,
+      "name": "ai_agent",
+      "entityType": "tables",
       "schema": "public"
     },
     {
       "isRlsEnabled": false,
-      "name": "ai_agent",
+      "name": "document",
       "entityType": "tables",
       "schema": "public"
     },
@@ -84,18 +80,6 @@
     },
     {
       "isRlsEnabled": false,
-      "name": "organization_member",
-      "entityType": "tables",
-      "schema": "public"
-    },
-    {
-      "isRlsEnabled": false,
-      "name": "organization",
-      "entityType": "tables",
-      "schema": "public"
-    },
-    {
-      "isRlsEnabled": false,
       "name": "project_integration",
       "entityType": "tables",
       "schema": "public"
@@ -103,12 +87,6 @@
     {
       "isRlsEnabled": false,
       "name": "project",
-      "entityType": "tables",
-      "schema": "public"
-    },
-    {
-      "isRlsEnabled": false,
-      "name": "user",
       "entityType": "tables",
       "schema": "public"
     },
@@ -189,6 +167,97 @@
       "entityType": "columns",
       "schema": "public",
       "table": "ai_agent"
+    },
+    {
+      "type": "varchar(32)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "document"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "document"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "document"
+    },
+    {
+      "type": "varchar(32)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "organization_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "document"
+    },
+    {
+      "type": "varchar(256)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "title",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "document"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "content",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "document"
+    },
+    {
+      "type": "varchar(32)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "project_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "document"
     },
     {
       "type": "varchar(32)",
@@ -1098,123 +1167,6 @@
       "name": "id",
       "entityType": "columns",
       "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "created_at",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "updated_at",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "type": "varchar(32)",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "organization_id",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "type": "varchar(32)",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "user_id",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "type": "organization_member_role",
-      "typeSchema": "public",
-      "notNull": true,
-      "dimensions": 0,
-      "default": "'member'",
-      "generated": null,
-      "identity": null,
-      "name": "role",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "type": "varchar(32)",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "id",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "organization"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "created_at",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "organization"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "updated_at",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "organization"
-    },
-    {
-      "type": "varchar(32)",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "id",
-      "entityType": "columns",
-      "schema": "public",
       "table": "project_integration"
     },
     {
@@ -1400,84 +1352,6 @@
       "table": "project"
     },
     {
-      "type": "varchar(32)",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "id",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "user"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "created_at",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "user"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "updated_at",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "user"
-    },
-    {
-      "type": "varchar(256)",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "email",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "user"
-    },
-    {
-      "type": "varchar(256)",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "first_name",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "user"
-    },
-    {
-      "type": "varchar(256)",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "last_name",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "user"
-    },
-    {
       "nameExplicit": true,
       "columns": [
         {
@@ -1493,7 +1367,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "ai_agent_organizationId_idx",
+      "name": "ai_agent_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "ai_agent"
@@ -1514,7 +1388,49 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "git_repository_integration_organizationId_idx",
+      "name": "document_organization_id_idx",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "document"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "project_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "document_project_id_idx",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "document"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "organization_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "git_repository_integration_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "git_repository_integration"
@@ -1535,7 +1451,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "git_repository_integration_credentialId_idx",
+      "name": "git_repository_integration_credential_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "git_repository_integration"
@@ -1556,7 +1472,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "git_repository_integration_gitRepositoryId_idx",
+      "name": "git_repository_integration_gitRepository_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "git_repository_integration"
@@ -1577,7 +1493,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "git_repository_organizationId_idx",
+      "name": "git_repository_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "git_repository"
@@ -1598,7 +1514,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "integration_api_key_credential_organizationId_idx",
+      "name": "integration_api_key_credential_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "integration_api_key_credential"
@@ -1619,7 +1535,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "integration_basic_credential_organizationId_idx",
+      "name": "integration_basic_credential_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "integration_basic_credential"
@@ -1640,7 +1556,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_field_definition_integration_organizationId_idx",
+      "name": "issue_field_definition_integration_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_field_definition_integration"
@@ -1661,7 +1577,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_field_definition_integration_issueFieldDefinitionId_idx",
+      "name": "issue_field_definition_integration_issue_field_definition_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_field_definition_integration"
@@ -1689,7 +1605,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_field_definition_integration_providerId_externalId_idx",
+      "name": "issue_field_definition_integration_provider_id_external_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_field_definition_integration"
@@ -1710,7 +1626,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_field_definition_organizationId_idx",
+      "name": "issue_field_definition_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_field_definition"
@@ -1731,7 +1647,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_field_instance_integration_organizationId_idx",
+      "name": "issue_field_instance_integration_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_field_instance_integration"
@@ -1752,7 +1668,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_field_instance_integration_issueFieldInstanceId_idx",
+      "name": "issue_field_instance_integration_issue_field_instance_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_field_instance_integration"
@@ -1780,7 +1696,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_field_instance_integration_providerId_externalId_idx",
+      "name": "issue_field_instance_integration_provider_id_external_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_field_instance_integration"
@@ -1801,7 +1717,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_field_instance_organizationId_idx",
+      "name": "issue_field_instance_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_field_instance"
@@ -1822,7 +1738,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_field_instance_issueId_idx",
+      "name": "issue_field_instance_issue_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_field_instance"
@@ -1843,7 +1759,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_field_instance_issueFieldDefinitionId_idx",
+      "name": "issue_field_instance_issue_field_definition_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_field_instance"
@@ -1864,7 +1780,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_integration_organizationId_idx",
+      "name": "issue_integration_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_integration"
@@ -1885,7 +1801,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_integration_issueId_idx",
+      "name": "issue_integration_issue_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_integration"
@@ -1913,7 +1829,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_integration_providerId_externalId_idx",
+      "name": "issue_integration_provider_id_external_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue_integration"
@@ -1934,7 +1850,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_organizationId_idx",
+      "name": "issue_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue"
@@ -1955,7 +1871,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "issue_projectId_idx",
+      "name": "issue_project_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "issue"
@@ -1976,49 +1892,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "organizationMember_organizationId_idx",
-      "entityType": "indexes",
-      "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "nameExplicit": true,
-      "columns": [
-        {
-          "value": "user_id",
-          "isExpression": false,
-          "asc": true,
-          "nullsFirst": false,
-          "opclass": null
-        }
-      ],
-      "isUnique": false,
-      "where": null,
-      "with": "",
-      "method": "btree",
-      "concurrently": false,
-      "name": "organizationMember_userId_idx",
-      "entityType": "indexes",
-      "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "nameExplicit": true,
-      "columns": [
-        {
-          "value": "organization_id",
-          "isExpression": false,
-          "asc": true,
-          "nullsFirst": false,
-          "opclass": null
-        }
-      ],
-      "isUnique": false,
-      "where": null,
-      "with": "",
-      "method": "btree",
-      "concurrently": false,
-      "name": "project_integration_organizationId_idx",
+      "name": "project_integration_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "project_integration"
@@ -2039,7 +1913,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "project_integration_credentialId_idx",
+      "name": "project_integration_credential_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "project_integration"
@@ -2060,7 +1934,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "project_integration_projectId_idx",
+      "name": "project_integration_project_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "project_integration"
@@ -2088,7 +1962,7 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "project_integration_providerId_externalId_idx",
+      "name": "project_integration_provider_id_external_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "project_integration"
@@ -2109,31 +1983,27 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "project_organizationId_idx",
+      "name": "project_organization_id_idx",
       "entityType": "indexes",
       "schema": "public",
       "table": "project"
     },
     {
-      "nameExplicit": true,
+      "nameExplicit": false,
       "columns": [
-        {
-          "value": "email",
-          "isExpression": false,
-          "asc": true,
-          "nullsFirst": false,
-          "opclass": null
-        }
+        "project_id"
       ],
-      "isUnique": false,
-      "where": null,
-      "with": "",
-      "method": "btree",
-      "concurrently": false,
-      "name": "user_email_idx",
-      "entityType": "indexes",
+      "schemaTo": "public",
+      "tableTo": "project",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "document_project_id_project_id_fkey",
+      "entityType": "fks",
       "schema": "public",
-      "table": "user"
+      "table": "document"
     },
     {
       "nameExplicit": false,
@@ -2274,40 +2144,6 @@
     {
       "nameExplicit": false,
       "columns": [
-        "organization_id"
-      ],
-      "schemaTo": "public",
-      "tableTo": "organization",
-      "columnsTo": [
-        "id"
-      ],
-      "onUpdate": "NO ACTION",
-      "onDelete": "CASCADE",
-      "name": "organization_member_organization_id_organization_id_fkey",
-      "entityType": "fks",
-      "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
-        "user_id"
-      ],
-      "schemaTo": "public",
-      "tableTo": "user",
-      "columnsTo": [
-        "id"
-      ],
-      "onUpdate": "NO ACTION",
-      "onDelete": "CASCADE",
-      "name": "organization_member_user_id_user_id_fkey",
-      "entityType": "fks",
-      "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
         "credential_id"
       ],
       "schemaTo": "public",
@@ -2347,6 +2183,16 @@
       "name": "ai_agent_pkey",
       "schema": "public",
       "table": "ai_agent",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "document_pkey",
+      "schema": "public",
+      "table": "document",
       "entityType": "pks"
     },
     {
@@ -2454,26 +2300,6 @@
         "id"
       ],
       "nameExplicit": false,
-      "name": "organization_member_pkey",
-      "schema": "public",
-      "table": "organization_member",
-      "entityType": "pks"
-    },
-    {
-      "columns": [
-        "id"
-      ],
-      "nameExplicit": false,
-      "name": "organization_pkey",
-      "schema": "public",
-      "table": "organization",
-      "entityType": "pks"
-    },
-    {
-      "columns": [
-        "id"
-      ],
-      "nameExplicit": false,
       "name": "project_integration_pkey",
       "schema": "public",
       "table": "project_integration",
@@ -2488,39 +2314,6 @@
       "schema": "public",
       "table": "project",
       "entityType": "pks"
-    },
-    {
-      "columns": [
-        "id"
-      ],
-      "nameExplicit": false,
-      "name": "user_pkey",
-      "schema": "public",
-      "table": "user",
-      "entityType": "pks"
-    },
-    {
-      "nameExplicit": true,
-      "columns": [
-        "organization_id",
-        "user_id"
-      ],
-      "nullsNotDistinct": false,
-      "name": "organizationMember_organizationId_userId_unique",
-      "entityType": "uniques",
-      "schema": "public",
-      "table": "organization_member"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
-        "email"
-      ],
-      "nullsNotDistinct": false,
-      "name": "user_email_key",
-      "schema": "public",
-      "table": "user",
-      "entityType": "uniques"
     }
   ],
   "renames": []

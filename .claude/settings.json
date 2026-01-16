@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "mcp__plugin_context7_context7__*",
-      "mcp__plugin_serena_serena__*"
+      "mcp__plugin_serena_serena__*",
+
+      "Bash(bun test:*)",
+      "Bash(bun run check-types:*)",
+      "Bash(bun run test:*)",
+      "Bash(bun run lint:*)",
+
+      "Skill(doc-coauthoring)"
     ]
   },
   "enabledPlugins": {}
