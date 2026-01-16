@@ -1,4 +1,6 @@
 import { pgTable, varchar } from "drizzle-orm/pg-core";
+import { createSelectSchema } from "drizzle-zod";
+import type z from "zod";
 import {
   makeDefaultOrganizationAwareIndexes,
   makeOrganizationAwareBaseSchemaTableColumns,
@@ -17,3 +19,6 @@ export const integrationApiKeyCredentialTable = pgTable(
     ...makeDefaultOrganizationAwareIndexes(table, "integration_api_key_credential"),
   ],
 );
+
+export const integrationApiKeyCredentialSelectSchema = createSelectSchema(integrationApiKeyCredentialTable);
+export type IntegrationApiKeyCredentialSelect = z.infer<typeof integrationApiKeyCredentialSelectSchema>;
