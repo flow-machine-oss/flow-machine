@@ -1,4 +1,6 @@
 import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { createSelectSchema } from "drizzle-zod";
+import type z from "zod";
 import {
   makeDefaultOrganizationAwareIndexes,
   makeOrganizationAwareBaseSchemaTableColumns,
@@ -23,3 +25,6 @@ export const aiAgentTable = pgTable(
   },
   (table) => [...makeDefaultOrganizationAwareIndexes(table, "ai_agent")],
 );
+
+export const aiAgentSelectSchema = createSelectSchema(aiAgentTable);
+export type AiAgentSelect = z.infer<typeof aiAgentSelectSchema>;
