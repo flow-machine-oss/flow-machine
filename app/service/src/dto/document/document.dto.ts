@@ -3,6 +3,7 @@ import { organizationAwareBaseResponseDtoSchema } from "@/dto/shared.dto";
 
 export const documentResponseDtoSchema = z.object({
   ...organizationAwareBaseResponseDtoSchema.shape,
-  title: z.string(),
   content: z.string(),
+  projectId: z.string().nullable(),
+  title: z.string(),
 });
