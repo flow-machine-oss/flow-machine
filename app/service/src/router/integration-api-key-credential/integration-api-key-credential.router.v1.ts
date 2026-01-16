@@ -1,13 +1,11 @@
 import Elysia from "elysia";
 import z from "zod";
 import { createIntegrationApiKeyCredentialRequestBodySchema } from "@/dto/integration-api-key-credential/create-integration-api-key-credential.dto";
-import {
-  integrationApiKeyCredentialResponseDtoSchema,
-  maskApiKey,
-} from "@/dto/integration-api-key-credential/integration-api-key-credential.dto";
+import { integrationApiKeyCredentialResponseDtoSchema } from "@/dto/integration-api-key-credential/integration-api-key-credential.dto";
 import { updateIntegrationApiKeyCredentialRequestBodySchema } from "@/dto/integration-api-key-credential/update-integration-api-key-credential.dto";
 import { idRequestParamsDtoSchema } from "@/dto/shared.dto";
 import { errEnvelope, okEnvelope, withHttpEnvelopeSchema } from "@/lib/http";
+import { maskApiKey } from "@/lib/util";
 import { defaultRouterSetup } from "@/middleware/default-router-setup.middleware";
 import { createIntegrationApiKeyCredentialUseCase } from "@/use-case/integration-api-key-credential/create-integration-api-key-credential.use-case";
 import { deleteIntegrationApiKeyCredentialUseCase } from "@/use-case/integration-api-key-credential/delete-integration-api-key-credential.use-case";
@@ -63,10 +61,12 @@ export const integrationApiKeyCredentialRouterV1 = () =>
             }
 
             return okEnvelope({
-              data: listIntegrationApiKeyCredentialsResult.value.map((credential) => ({
-                ...credential,
-                apiKey: maskApiKey(credential.apiKey),
-              })),
+              data: listIntegrationApiKeyCredentialsResult.value.map(
+                (credential) => ({
+                  ...credential,
+                  apiKey: maskApiKey(credential.apiKey),
+                }),
+              ),
             });
           },
           {
@@ -97,7 +97,9 @@ export const integrationApiKeyCredentialRouterV1 = () =>
             return okEnvelope({
               data: {
                 ...getIntegrationApiKeyCredentialResult.value,
-                apiKey: maskApiKey(getIntegrationApiKeyCredentialResult.value.apiKey),
+                apiKey: maskApiKey(
+                  getIntegrationApiKeyCredentialResult.value.apiKey,
+                ),
               },
             });
           },

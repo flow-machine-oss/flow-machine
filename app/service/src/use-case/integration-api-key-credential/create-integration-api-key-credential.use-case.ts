@@ -1,6 +1,7 @@
 import { UTCDate } from "@date-fns/utc";
 import { ResultAsync } from "neverthrow";
 import type z from "zod";
+import type { createIntegrationApiKeyCredentialRequestBodySchema } from "@/dto/integration-api-key-credential/create-integration-api-key-credential.dto";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
@@ -11,10 +12,7 @@ import {
 } from "@/schema/integration-api-key-credential.schema";
 
 type Payload = {
-  body: {
-    apiKey: string;
-    expiredAt: Date;
-  };
+  body: z.infer<typeof createIntegrationApiKeyCredentialRequestBodySchema>;
   user: z.infer<typeof currentUserSchema>;
 };
 

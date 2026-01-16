@@ -3,6 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { isNil } from "es-toolkit";
 import { ResultAsync, err } from "neverthrow";
 import type z from "zod";
+import type { updateIntegrationApiKeyCredentialRequestBodySchema } from "@/dto/integration-api-key-credential/update-integration-api-key-credential.dto";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
@@ -10,10 +11,7 @@ import { integrationApiKeyCredentialTable } from "@/schema/integration-api-key-c
 
 type Payload = {
   id: string;
-  body: {
-    apiKey?: string;
-    expiredAt?: Date;
-  };
+  body: z.infer<typeof updateIntegrationApiKeyCredentialRequestBodySchema>;
   user: z.infer<typeof currentUserSchema>;
 };
 
@@ -46,7 +44,10 @@ export const updateIntegrationApiKeyCredentialUseCase = async (
       .where(
         and(
           eq(integrationApiKeyCredentialTable.id, id),
-          eq(integrationApiKeyCredentialTable.organizationId, user.organizationId),
+          eq(
+            integrationApiKeyCredentialTable.organizationId,
+            user.organizationId,
+          ),
         ),
       ),
     (e) => Err.from(e),
