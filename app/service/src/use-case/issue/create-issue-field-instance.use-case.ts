@@ -22,7 +22,7 @@ export const createIssueFieldInstanceUseCase = async (
   const issueCheck = await ResultAsync.fromPromise(
     ctx.db.query.issue.findFirst({
       where: { id: issueId, organizationId: user.organizationId },
-      with: { issueFieldInstances: true },
+      with: { fieldInstances: true },
     }),
     (e) => Err.from(e, { cause: e }),
   );
@@ -35,7 +35,7 @@ export const createIssueFieldInstanceUseCase = async (
     return err(Err.code("notFound", { message: "Issue not found" }));
   }
 
-  const existingFieldInstance = issueCheck.value.issueFieldInstances.find(
+  const existingFieldInstance = issueCheck.value.fieldInstances.find(
     (instance) =>
       instance.issueFieldDefinitionId === body.issueFieldDefinitionId,
   );

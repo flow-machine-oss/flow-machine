@@ -14,7 +14,7 @@ export const listIssuesUseCase = async (ctx: Ctx, { user }: Payload) => {
       where: { organizationId: user.organizationId },
       orderBy: { createdAt: "desc" },
       with: {
-        issueFieldInstances: {
+        fieldInstances: {
           with: { integration: true },
         },
       },

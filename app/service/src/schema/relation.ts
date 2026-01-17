@@ -61,7 +61,7 @@ export const relation = defineRelations(
         from: r.issue.projectId,
         to: r.project.id,
       }),
-      issueFieldInstances: r.many.issueFieldInstance(),
+      fieldInstances: r.many.issueFieldInstance(),
       integration: r.one.issueIntegration(),
     },
     issueIntegration: {

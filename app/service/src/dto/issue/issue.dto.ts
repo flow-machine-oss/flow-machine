@@ -6,5 +6,5 @@ import { idSchema } from "@/lib/id";
 export const issueResponseDtoSchema = z.object({
   ...organizationAwareBaseResponseDtoSchema.shape,
   projectId: idSchema.nullable(),
-  issueFieldInstances: z.array(issueFieldInstanceResponseDtoSchema),
+  fieldInstances: z.array(issueFieldInstanceResponseDtoSchema),
 });

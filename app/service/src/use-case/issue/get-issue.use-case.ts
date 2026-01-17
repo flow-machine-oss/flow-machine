@@ -15,7 +15,7 @@ export const getIssueUseCase = async (ctx: Ctx, { id, user }: Payload) => {
     ctx.db.query.issue.findFirst({
       where: { id, organizationId: user.organizationId },
       with: {
-        issueFieldInstances: {
+        fieldInstances: {
           with: { integration: true },
         },
       },
