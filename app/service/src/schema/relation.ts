@@ -40,7 +40,7 @@ export const relation = defineRelations(
     },
 
     gitRepository: {
-      gitRepositoryIntegration: r.one.gitRepositoryIntegration({
+      integration: r.one.gitRepositoryIntegration({
         from: r.gitRepository.id,
         to: r.gitRepositoryIntegration.gitRepositoryId,
       }),
