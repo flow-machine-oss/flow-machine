@@ -15,7 +15,6 @@ type Payload = {
 };
 
 export const createIssueUseCase = async (ctx: Ctx, { body, user }: Payload) => {
-  // Verify project exists if projectId is provided
   if (body.projectId) {
     const projectCheck = await ResultAsync.fromPromise(
       ctx.db.query.project.findFirst({

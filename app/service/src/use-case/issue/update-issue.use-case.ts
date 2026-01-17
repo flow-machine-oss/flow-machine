@@ -34,7 +34,6 @@ export const updateIssueUseCase = async (
     return err(Err.code("notFound"));
   }
 
-  // Verify project exists if projectId is being updated
   if (body.projectId) {
     const projectCheck = await ResultAsync.fromPromise(
       ctx.db.query.project.findFirst({

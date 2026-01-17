@@ -27,7 +27,6 @@ import { updateIssueUseCase } from "@/use-case/issue/update-issue.use-case";
 export const issueRouterV1 = () =>
   new Elysia().use(defaultRouterSetup()).group("/api/v1/issue", (r) =>
     r
-      // Issue CRUD
       .post(
         "",
         async ({ body, ctx, headers }) => {
@@ -148,7 +147,7 @@ export const issueRouterV1 = () =>
           response: withHttpEnvelopeSchema(z.undefined()),
         },
       )
-      // Issue Field Instance CRUD (nested under issue)
+
       .post(
         "/:id/field-instance",
         async ({ body, ctx, headers, params }) => {
@@ -227,7 +226,7 @@ export const issueRouterV1 = () =>
           response: withHttpEnvelopeSchema(z.undefined()),
         },
       )
-      // Issue Field Instance Integration CRUD (nested under field instance)
+
       .post(
         "/:id/field-instance/:fieldInstanceId/integration",
         async ({ body, ctx, headers, params }) => {
@@ -267,14 +266,16 @@ export const issueRouterV1 = () =>
             return errEnvelope(authCheckResult.error);
           }
 
-          const updateResult =
-            await updateIssueFieldInstanceIntegrationUseCase(ctx, {
+          const updateResult = await updateIssueFieldInstanceIntegrationUseCase(
+            ctx,
+            {
               issueId: params.id,
               fieldInstanceId: params.fieldInstanceId,
               integrationId: params.integrationId,
               body,
               user: authCheckResult.value,
-            });
+            },
+          );
 
           if (updateResult.isErr()) {
             return errEnvelope(updateResult.error);
@@ -296,13 +297,15 @@ export const issueRouterV1 = () =>
             return errEnvelope(authCheckResult.error);
           }
 
-          const deleteResult =
-            await deleteIssueFieldInstanceIntegrationUseCase(ctx, {
+          const deleteResult = await deleteIssueFieldInstanceIntegrationUseCase(
+            ctx,
+            {
               issueId: params.id,
               fieldInstanceId: params.fieldInstanceId,
               integrationId: params.integrationId,
               user: authCheckResult.value,
-            });
+            },
+          );
 
           if (deleteResult.isErr()) {
             return errEnvelope(deleteResult.error);

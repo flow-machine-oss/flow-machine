@@ -20,7 +20,6 @@ export const createIssueFieldInstanceIntegrationUseCase = async (
   ctx: Ctx,
   { issueId, fieldInstanceId, body, user }: Payload,
 ) => {
-  // Verify field instance exists and belongs to user's organization
   const fieldInstanceCheck = await ResultAsync.fromPromise(
     ctx.db.query.issueFieldInstance.findFirst({
       where: {
@@ -56,6 +55,7 @@ export const createIssueFieldInstanceIntegrationUseCase = async (
     createdAt: new UTCDate(),
     updatedAt: new UTCDate(),
     organizationId: user.organizationId,
+
     issueFieldInstanceId: fieldInstanceId,
     externalId: body.externalId,
     providerId: body.providerId,

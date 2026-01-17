@@ -18,7 +18,6 @@ export const deleteIssueFieldInstanceIntegrationUseCase = async (
   ctx: Ctx,
   { issueId, fieldInstanceId, integrationId, user }: Payload,
 ) => {
-  // First verify the field instance exists and belongs to the issue
   const fieldInstanceCheck = await ResultAsync.fromPromise(
     ctx.db.query.issueFieldInstance.findFirst({
       where: {
@@ -40,7 +39,6 @@ export const deleteIssueFieldInstanceIntegrationUseCase = async (
     );
   }
 
-  // Verify integration exists
   const existsResult = await ResultAsync.fromPromise(
     ctx.db.query.issueFieldInstanceIntegration.findFirst({
       where: {

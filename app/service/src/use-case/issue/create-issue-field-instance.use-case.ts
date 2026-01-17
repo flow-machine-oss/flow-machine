@@ -19,7 +19,6 @@ export const createIssueFieldInstanceUseCase = async (
   ctx: Ctx,
   { issueId, body, user }: Payload,
 ) => {
-  // Verify issue exists and belongs to user's organization
   const issueCheck = await ResultAsync.fromPromise(
     ctx.db.query.issue.findFirst({
       where: { id: issueId, organizationId: user.organizationId },
@@ -36,21 +35,19 @@ export const createIssueFieldInstanceUseCase = async (
     return err(Err.code("notFound", { message: "Issue not found" }));
   }
 
-  // Check if field instance with same definition already exists (unique constraint)
   const existingFieldInstance = issueCheck.value.issueFieldInstances.find(
-    (instance) => instance.issueFieldDefinitionId === body.issueFieldDefinitionId,
+    (instance) =>
+      instance.issueFieldDefinitionId === body.issueFieldDefinitionId,
   );
 
   if (existingFieldInstance) {
     return err(
       Err.code("conflict", {
-        message:
-          "Issue already has a field instance for this field definition",
+        message: "Issue already has a field instance for this field definition",
       }),
     );
   }
 
-  // Verify field definition exists and belongs to user's organization
   const fieldDefinitionCheck = await ResultAsync.fromPromise(
     ctx.db.query.issueFieldDefinition.findFirst({
       where: {
