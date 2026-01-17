@@ -16,7 +16,7 @@ export const listGitRepositoriesUseCase = async (
     ctx.db.query.gitRepository.findMany({
       where: { organizationId: user.organizationId },
       orderBy: { createdAt: "desc" },
-      with: { gitRepositoryIntegration: true },
+      with: { integration: true },
     }),
     (e) => Err.from(e, { cause: e }),
   );

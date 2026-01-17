@@ -23,7 +23,7 @@ export const createGitRepositoryIntegrationUseCase = async (
   const gitRepoCheck = await ResultAsync.fromPromise(
     ctx.db.query.gitRepository.findFirst({
       where: { id: gitRepositoryId, organizationId: user.organizationId },
-      with: { gitRepositoryIntegration: true },
+      with: { integration: true },
     }),
     (e) => Err.from(e, { cause: e }),
   );
@@ -37,7 +37,7 @@ export const createGitRepositoryIntegrationUseCase = async (
   }
 
   // Check if integration already exists (one-to-one relationship)
-  if (!isNil(gitRepoCheck.value.gitRepositoryIntegration)) {
+  if (!isNil(gitRepoCheck.value.integration)) {
     return err(
       Err.code("conflict", {
         message: "Git repository already has an integration",

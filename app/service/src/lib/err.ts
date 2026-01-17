@@ -1,5 +1,6 @@
 import { SQL } from "bun";
-import { isString } from "es-toolkit";
+import { DrizzleQueryError } from "drizzle-orm";
+import { isNil, isString } from "es-toolkit";
 
 const errDetails = {
   unknown: {
@@ -101,20 +102,25 @@ export class Err extends Error {
     error: unknown,
     options: { cause?: unknown; message?: string } = {},
   ) {
+    if (error instanceof Err) {
+      return error;
+    }
+
     if (isString(error) && Object.hasOwn(errDetails, error)) {
       const code = error as ErrCode;
       const details = errDetails[code];
       return new Err(code, options.message ?? details.message, options.cause);
     }
 
-    if (error instanceof SQL.PostgresError) {
-      const code = pgCodeToErrCode[error.code] ?? "pgUnknown";
+    if (
+      error instanceof DrizzleQueryError &&
+      error.cause instanceof SQL.PostgresError
+    ) {
+      const code = isNil(error.cause.errno)
+        ? "pgUnknown"
+        : (pgCodeToErrCode[error.cause.errno] ?? "pgUnknown");
       const details = errDetails[code];
       return new Err(code, options.message ?? details.message, options.cause);
-    }
-
-    if (error instanceof Err) {
-      return error;
     }
 
     const fallbackCode = "unknown" as const;
