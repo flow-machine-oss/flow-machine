@@ -62,7 +62,7 @@ export const relation = defineRelations(
         to: r.project.id,
       }),
       issueFieldInstances: r.many.issueFieldInstance(),
-      issueIntegrations: r.many.issueIntegration(),
+      integrations: r.many.issueIntegration(),
     },
     issueIntegration: {
       issue: r.one.issue({
@@ -73,8 +73,7 @@ export const relation = defineRelations(
 
     issueFieldDefinition: {
       issueFieldInstances: r.many.issueFieldInstance(),
-      issueFieldDefinitionIntegrations:
-        r.many.issueFieldDefinitionIntegration(),
+      integrations: r.many.issueFieldDefinitionIntegration(),
     },
     issueFieldDefinitionIntegration: {
       issueFieldDefinition: r.one.issueFieldDefinition({
@@ -92,7 +91,7 @@ export const relation = defineRelations(
         from: r.issueFieldInstance.issueFieldDefinitionId,
         to: r.issueFieldDefinition.id,
       }),
-      issueFieldInstanceIntegrations: r.many.issueFieldInstanceIntegration(),
+      integrations: r.many.issueFieldInstanceIntegration(),
     },
     issueFieldInstanceIntegration: {
       issueFieldInstance: r.one.issueFieldInstance({
@@ -102,7 +101,10 @@ export const relation = defineRelations(
     },
 
     integrationApiKeyCredential: {
-      projectIntegrations: r.many.projectIntegration(),
+      projectIntegrations: r.many.projectIntegration({
+        from: r.integrationApiKeyCredential.id,
+        to: r.projectIntegration.credentialId,
+      }),
     },
     integrationBasicCredential: {
       gitRepositoryIntegration: r.one.gitRepositoryIntegration({
@@ -114,7 +116,7 @@ export const relation = defineRelations(
     project: {
       issues: r.many.issue(),
       documents: r.many.document(),
-      projectIntegrations: r.many.projectIntegration(),
+      integrations: r.many.projectIntegration(),
     },
     projectIntegration: {
       credential: r.one.integrationApiKeyCredential({
