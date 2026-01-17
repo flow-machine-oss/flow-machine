@@ -25,7 +25,7 @@ export const createGitRepositoryIntegrationUseCase = async (
       where: { id: gitRepositoryId, organizationId: user.organizationId },
       with: { gitRepositoryIntegration: true },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 
   if (gitRepoCheck.isErr()) {
@@ -50,7 +50,7 @@ export const createGitRepositoryIntegrationUseCase = async (
     ctx.db.query.integrationBasicCredential.findFirst({
       where: { id: body.credentialId, organizationId: user.organizationId },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 
   if (credentialCheck.isErr()) {
@@ -74,6 +74,6 @@ export const createGitRepositoryIntegrationUseCase = async (
 
   return ResultAsync.fromPromise(
     ctx.db.insert(gitRepositoryIntegrationTable).values(newIntegration),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

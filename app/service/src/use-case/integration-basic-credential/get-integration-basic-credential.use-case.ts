@@ -18,7 +18,7 @@ export const getIntegrationBasicCredentialUseCase = async (
     ctx.db.query.integrationBasicCredential.findFirst({
       where: { id, organizationId: user.organizationId },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   ).andThen((result) => {
     if (isNil(result)) {
       return err(Err.code("notFound"));

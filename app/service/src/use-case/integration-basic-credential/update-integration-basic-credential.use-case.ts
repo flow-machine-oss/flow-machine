@@ -23,7 +23,7 @@ export const updateIntegrationBasicCredentialUseCase = async (
     ctx.db.query.integrationBasicCredential.findFirst({
       where: { id, organizationId: user.organizationId },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 
   if (existsResult.isErr()) {
@@ -50,6 +50,6 @@ export const updateIntegrationBasicCredentialUseCase = async (
           ),
         ),
       ),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

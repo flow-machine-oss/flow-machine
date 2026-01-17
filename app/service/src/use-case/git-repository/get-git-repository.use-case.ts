@@ -19,7 +19,7 @@ export const getGitRepositoryUseCase = async (
       where: { id, organizationId: user.organizationId },
       with: { gitRepositoryIntegration: true },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   ).andThen((result) => {
     if (isNil(result)) {
       return err(Err.code("notFound"));

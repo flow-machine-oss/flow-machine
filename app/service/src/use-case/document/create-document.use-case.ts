@@ -30,6 +30,6 @@ export const createDocumentUseCase = async (
 
   return ResultAsync.fromPromise(
     ctx.db.insert(documentTable).values(newDocument),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

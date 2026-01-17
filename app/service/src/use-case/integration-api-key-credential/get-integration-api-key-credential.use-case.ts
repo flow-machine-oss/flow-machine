@@ -18,7 +18,7 @@ export const getIntegrationApiKeyCredentialUseCase = async (
     ctx.db.query.integrationApiKeyCredential.findFirst({
       where: { id, organizationId: user.organizationId },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   ).andThen((result) => {
     if (isNil(result)) {
       return err(Err.code("notFound"));

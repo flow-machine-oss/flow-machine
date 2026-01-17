@@ -14,6 +14,6 @@ export const listAiAgentsUseCase = async (ctx: Ctx, { user }: Payload) => {
       where: { organizationId: user.organizationId },
       orderBy: { createdAt: "desc" },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

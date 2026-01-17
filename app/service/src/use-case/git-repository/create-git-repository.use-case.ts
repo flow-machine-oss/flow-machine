@@ -34,6 +34,6 @@ export const createGitRepositoryUseCase = async (
 
   return ResultAsync.fromPromise(
     ctx.db.insert(gitRepositoryTable).values(newGitRepository),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

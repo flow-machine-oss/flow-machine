@@ -20,7 +20,7 @@ export const deleteIntegrationBasicCredentialUseCase = async (
     ctx.db.query.integrationBasicCredential.findFirst({
       where: { id, organizationId: user.organizationId },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 
   if (existsResult.isErr()) {
@@ -43,6 +43,6 @@ export const deleteIntegrationBasicCredentialUseCase = async (
           ),
         ),
       ),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

@@ -20,7 +20,7 @@ export const deleteIntegrationApiKeyCredentialUseCase = async (
     ctx.db.query.integrationApiKeyCredential.findFirst({
       where: { id, organizationId: user.organizationId },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 
   if (existsResult.isErr()) {
@@ -40,6 +40,6 @@ export const deleteIntegrationApiKeyCredentialUseCase = async (
           eq(integrationApiKeyCredentialTable.organizationId, user.organizationId),
         ),
       ),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

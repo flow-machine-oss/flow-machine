@@ -32,6 +32,6 @@ export const createIntegrationApiKeyCredentialUseCase = async (
 
   return ResultAsync.fromPromise(
     ctx.db.insert(integrationApiKeyCredentialTable).values(newCredential),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

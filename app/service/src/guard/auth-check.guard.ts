@@ -66,7 +66,6 @@ export const authCheck = async (
   const decodeResult = await decodeToken(tokenResult.value, getDecodingKey);
 
   if (decodeResult.isErr()) {
-    console.error(decodeResult.error);
     return decodeResult;
   }
   return decodeResult;
