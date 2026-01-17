@@ -1,4 +1,6 @@
 import { pgTable, varchar } from "drizzle-orm/pg-core";
+import { createSelectSchema } from "drizzle-zod";
+import type z from "zod";
 import {
   makeDefaultOrganizationAwareIndexes,
   makeOrganizationAwareBaseSchemaTableColumns,
@@ -16,3 +18,6 @@ export const gitRepositoryTable = pgTable(
   },
   (table) => [...makeDefaultOrganizationAwareIndexes(table, "git_repository")],
 );
+
+export const gitRepositorySelectSchema = createSelectSchema(gitRepositoryTable);
+export type GitRepositorySelect = z.infer<typeof gitRepositorySelectSchema>;
