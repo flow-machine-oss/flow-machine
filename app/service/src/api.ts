@@ -7,6 +7,7 @@ import { documentRouterV1 } from "@/router/document/document.router.v1";
 import { gitRepositoryRouterV1 } from "@/router/git-repository/git-repository.router.v1";
 import { integrationApiKeyCredentialRouterV1 } from "@/router/integration-api-key-credential/integration-api-key-credential.router.v1";
 import { integrationBasicCredentialRouterV1 } from "@/router/integration-basic-credential/integration-basic-credential.router.v1";
+import { projectRouterV1 } from "@/router/project/project.router.v1";
 
 const app = new Elysia();
 
@@ -24,4 +25,5 @@ app
   .use(gitRepositoryRouterV1())
   .use(integrationApiKeyCredentialRouterV1())
   .use(integrationBasicCredentialRouterV1())
+  .use(projectRouterV1())
   .listen(8000);

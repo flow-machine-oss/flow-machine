@@ -1,4 +1,6 @@
+import { createSelectSchema } from "drizzle-zod";
 import { pgTable, varchar } from "drizzle-orm/pg-core";
+import type z from "zod";
 import {
   makeDefaultOrganizationAwareIndexes,
   makeOrganizationAwareBaseSchemaTableColumns,
@@ -13,3 +15,6 @@ export const projectTable = pgTable(
   },
   (table) => [...makeDefaultOrganizationAwareIndexes(table, "project")],
 );
+
+export const projectSelectSchema = createSelectSchema(projectTable);
+export type ProjectSelect = z.infer<typeof projectSelectSchema>;
