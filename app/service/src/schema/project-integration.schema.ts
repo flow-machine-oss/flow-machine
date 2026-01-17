@@ -15,9 +15,9 @@ export const projectIntegrationTable = pgTable(
     ...makeOrganizationAwareBaseSchemaTableColumns(),
 
     externalId: makeIdColumnType().notNull(),
-    externalKey: varchar({ length: 32 }).notNull(),
+    externalKey: varchar({ length: 64 }).notNull(),
     providerId: text({ enum: projectIntegrationProviderIds }).notNull(),
-    webhookSecret: varchar({ length: 32 }).notNull(),
+    webhookSecret: varchar({ length: 64 }).notNull(),
 
     credentialId: makeIdColumnType()
       .notNull()

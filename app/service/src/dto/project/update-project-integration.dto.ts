@@ -4,7 +4,7 @@ import { projectIntegrationProviderIds } from "@/schema/project-integration.sche
 
 export const updateProjectIntegrationRequestBodySchema = z.object({
   credentialId: idSchema.optional(),
-  externalId: z.string().min(1).max(32).optional(),
-  externalKey: z.string().min(1).max(32).optional(),
+  externalId: z.string().min(1).max(64).optional(),
+  externalKey: z.string().min(1).max(64).optional(),
   providerId: z.enum(projectIntegrationProviderIds).optional(),
 });
