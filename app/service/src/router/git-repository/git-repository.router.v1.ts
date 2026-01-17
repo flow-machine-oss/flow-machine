@@ -3,7 +3,6 @@ import z from "zod";
 import { createGitRepositoryIntegrationRequestBodySchema } from "@/dto/git-repository/create-git-repository-integration.dto";
 import { createGitRepositoryRequestBodySchema } from "@/dto/git-repository/create-git-repository.dto";
 import { gitRepositoryIntegrationParamsSchema } from "@/dto/git-repository/git-repository-integration-params.dto";
-import { gitRepositoryIntegrationResponseDtoSchema } from "@/dto/git-repository/git-repository-integration.dto";
 import { gitRepositoryResponseDtoSchema } from "@/dto/git-repository/git-repository.dto";
 import { updateGitRepositoryIntegrationRequestBodySchema } from "@/dto/git-repository/update-git-repository-integration.dto";
 import { updateGitRepositoryRequestBodySchema } from "@/dto/git-repository/update-git-repository.dto";
@@ -14,7 +13,6 @@ import { createGitRepositoryIntegrationUseCase } from "@/use-case/git-repository
 import { createGitRepositoryUseCase } from "@/use-case/git-repository/create-git-repository.use-case";
 import { deleteGitRepositoryIntegrationUseCase } from "@/use-case/git-repository/delete-git-repository-integration.use-case";
 import { deleteGitRepositoryUseCase } from "@/use-case/git-repository/delete-git-repository.use-case";
-import { getGitRepositoryIntegrationUseCase } from "@/use-case/git-repository/get-git-repository-integration.use-case";
 import { getGitRepositoryUseCase } from "@/use-case/git-repository/get-git-repository.use-case";
 import { listGitRepositoriesUseCase } from "@/use-case/git-repository/list-git-repositories.use-case";
 import { updateGitRepositoryIntegrationUseCase } from "@/use-case/git-repository/update-git-repository-integration.use-case";
@@ -23,7 +21,6 @@ import { updateGitRepositoryUseCase } from "@/use-case/git-repository/update-git
 export const gitRepositoryRouterV1 = () =>
   new Elysia().use(defaultRouterSetup()).group("/api/v1/git-repository", (r) =>
     r
-      // Git Repository CRUD
       .post(
         "",
         async ({ body, ctx, headers }) => {
@@ -146,7 +143,6 @@ export const gitRepositoryRouterV1 = () =>
           response: withHttpEnvelopeSchema(z.undefined()),
         },
       )
-      // Git Repository Integration CRUD (nested)
       .post(
         "/:id/integration",
         async ({ body, ctx, headers, params }) => {
@@ -176,33 +172,6 @@ export const gitRepositoryRouterV1 = () =>
           response: withHttpEnvelopeSchema(z.undefined()),
         },
       )
-      .get(
-        "/:id/integration/:integrationId",
-        async ({ ctx, headers, params }) => {
-          const authCheckResult = await ctx.guard.authCheck(ctx, headers);
-
-          if (authCheckResult.isErr()) {
-            return errEnvelope(authCheckResult.error);
-          }
-
-          const getResult = await getGitRepositoryIntegrationUseCase(ctx, {
-            gitRepositoryId: params.id,
-            integrationId: params.integrationId,
-            user: authCheckResult.value,
-          });
-
-          if (getResult.isErr()) {
-            return errEnvelope(getResult.error);
-          }
-          return okEnvelope({ data: getResult.value });
-        },
-        {
-          params: gitRepositoryIntegrationParamsSchema,
-          response: withHttpEnvelopeSchema(
-            gitRepositoryIntegrationResponseDtoSchema,
-          ),
-        },
-      )
       .patch(
         "/:id/integration/:integrationId",
         async ({ body, ctx, headers, params }) => {
@@ -216,7 +185,7 @@ export const gitRepositoryRouterV1 = () =>
             ctx,
             {
               gitRepositoryId: params.id,
-              integrationId: params.integrationId,
+              gitRepositoryIntegrationId: params.integrationId,
               body,
               user: authCheckResult.value,
             },
@@ -246,7 +215,7 @@ export const gitRepositoryRouterV1 = () =>
             ctx,
             {
               gitRepositoryId: params.id,
-              integrationId: params.integrationId,
+              gitRepositoryIntegrationId: params.integrationId,
               user: authCheckResult.value,
             },
           );

@@ -23,6 +23,7 @@ export const createGitRepositoryIntegrationUseCase = async (
   const gitRepoCheck = await ResultAsync.fromPromise(
     ctx.db.query.gitRepository.findFirst({
       where: { id: gitRepositoryId, organizationId: user.organizationId },
+      with: { gitRepositoryIntegration: true },
     }),
     (e) => Err.from(e),
   );
@@ -33,6 +34,15 @@ export const createGitRepositoryIntegrationUseCase = async (
 
   if (isNil(gitRepoCheck.value)) {
     return err(Err.code("notFound", { message: "Git repository not found" }));
+  }
+
+  // Check if integration already exists (one-to-one relationship)
+  if (!isNil(gitRepoCheck.value.gitRepositoryIntegration)) {
+    return err(
+      Err.code("conflict", {
+        message: "Git repository already has an integration",
+      }),
+    );
   }
 
   // Verify credential exists and belongs to user's organization

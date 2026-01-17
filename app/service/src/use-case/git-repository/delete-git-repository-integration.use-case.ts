@@ -9,19 +9,18 @@ import { gitRepositoryIntegrationTable } from "@/schema/git-repository-integrati
 
 type Payload = {
   gitRepositoryId: string;
-  integrationId: string;
+  gitRepositoryIntegrationId: string;
   user: z.infer<typeof currentUserSchema>;
 };
 
 export const deleteGitRepositoryIntegrationUseCase = async (
   ctx: Ctx,
-  { gitRepositoryId, integrationId, user }: Payload,
+  { gitRepositoryId, gitRepositoryIntegrationId, user }: Payload,
 ) => {
-  // Verify integration exists
   const existsResult = await ResultAsync.fromPromise(
     ctx.db.query.gitRepositoryIntegration.findFirst({
       where: {
-        id: integrationId,
+        id: gitRepositoryIntegrationId,
         gitRepositoryId,
         organizationId: user.organizationId,
       },
@@ -42,7 +41,6 @@ export const deleteGitRepositoryIntegrationUseCase = async (
       .delete(gitRepositoryIntegrationTable)
       .where(
         and(
-          eq(gitRepositoryIntegrationTable.id, integrationId),
           eq(gitRepositoryIntegrationTable.gitRepositoryId, gitRepositoryId),
           eq(gitRepositoryIntegrationTable.organizationId, user.organizationId),
         ),

@@ -17,7 +17,7 @@ export const getGitRepositoryUseCase = async (
   return ResultAsync.fromPromise(
     ctx.db.query.gitRepository.findFirst({
       where: { id, organizationId: user.organizationId },
-      with: { gitRepositoryIntegrations: true },
+      with: { gitRepositoryIntegration: true },
     }),
     (e) => Err.from(e),
   ).andThen((result) => {
