@@ -18,6 +18,6 @@ export const listGitRepositoriesUseCase = async (
       orderBy: { createdAt: "desc" },
       with: { gitRepositoryIntegration: true },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

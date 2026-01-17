@@ -29,6 +29,6 @@ export const createAiAgentUseCase = async (
 
   return ResultAsync.fromPromise(
     ctx.db.insert(aiAgentTable).values(newAiAgent),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

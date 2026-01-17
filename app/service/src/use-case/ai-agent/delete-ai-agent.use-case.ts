@@ -20,7 +20,7 @@ export const deleteAiAgentUseCase = async (
     ctx.db.query.aiAgent.findFirst({
       where: { id, organizationId: user.organizationId },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 
   if (existsResult.isErr()) {
@@ -40,6 +40,6 @@ export const deleteAiAgentUseCase = async (
           eq(aiAgentTable.organizationId, user.organizationId),
         ),
       ),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

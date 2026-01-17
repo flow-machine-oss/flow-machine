@@ -26,7 +26,7 @@ export const updateDocumentUseCase = async (
     ctx.db.query.document.findFirst({
       where: { id, organizationId: user.organizationId },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 
   if (existsResult.isErr()) {
@@ -50,6 +50,6 @@ export const updateDocumentUseCase = async (
           eq(documentTable.organizationId, user.organizationId),
         ),
       ),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

@@ -23,7 +23,7 @@ export const updateGitRepositoryUseCase = async (
     ctx.db.query.gitRepository.findFirst({
       where: { id, organizationId: user.organizationId },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 
   if (existsResult.isErr()) {
@@ -47,6 +47,6 @@ export const updateGitRepositoryUseCase = async (
           eq(gitRepositoryTable.organizationId, user.organizationId),
         ),
       ),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

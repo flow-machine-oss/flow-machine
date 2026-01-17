@@ -1,3 +1,4 @@
+import { SQL } from "bun";
 import { isString } from "es-toolkit";
 
 const errDetails = {
@@ -33,10 +34,53 @@ const errDetails = {
     message: "Action not allowed on archived prompt",
     status: 400,
   },
+
+  pgIntegrityConstraintViolation: {
+    message: "Database integrity constraint violation",
+    status: 409,
+  },
+  pgRestrictViolation: {
+    message: "Database restrict violation",
+    status: 409,
+  },
+  pgNotNullViolation: {
+    message: "Required field cannot be null",
+    status: 400,
+  },
+  pgForeignKeyViolation: {
+    message: "Referenced record does not exist",
+    status: 409,
+  },
+  pgUniqueViolation: {
+    message: "Record with this value already exists",
+    status: 409,
+  },
+  pgCheckViolation: {
+    message: "Value does not meet validation requirements",
+    status: 400,
+  },
+  pgExclusionViolation: {
+    message: "Exclusion constraint violation",
+    status: 409,
+  },
+  pgUnknown: {
+    message: "Unknown database error",
+    status: 500,
+  },
 } as const satisfies Record<string, { status: number; message: string }>;
 
 type ErrDetails = typeof errDetails;
 type ErrCode = keyof ErrDetails;
+
+const pgCodeToErrCode: Record<string, ErrCode> = {
+  "23000": "pgIntegrityConstraintViolation",
+  "23001": "pgRestrictViolation",
+  "23502": "pgNotNullViolation",
+  "23503": "pgForeignKeyViolation",
+  "23505": "pgUniqueViolation",
+  "23514": "pgCheckViolation",
+  "23P01": "pgExclusionViolation",
+} as const;
 
 export class Err extends Error {
   code: ErrCode;
@@ -60,7 +104,12 @@ export class Err extends Error {
     if (isString(error) && Object.hasOwn(errDetails, error)) {
       const code = error as ErrCode;
       const details = errDetails[code];
+      return new Err(code, options.message ?? details.message, options.cause);
+    }
 
+    if (error instanceof SQL.PostgresError) {
+      const code = pgCodeToErrCode[error.code] ?? "pgUnknown";
+      const details = errDetails[code];
       return new Err(code, options.message ?? details.message, options.cause);
     }
 

@@ -28,7 +28,7 @@ export const updateGitRepositoryIntegrationUseCase = async (
         organizationId: user.organizationId,
       },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 
   if (existsResult.isErr()) {
@@ -44,7 +44,7 @@ export const updateGitRepositoryIntegrationUseCase = async (
       ctx.db.query.integrationBasicCredential.findFirst({
         where: { id: body.credentialId, organizationId: user.organizationId },
       }),
-      (e) => Err.from(e),
+      (e) => Err.from(e, { cause: e }),
     );
 
     if (credentialCheck.isErr()) {
@@ -69,6 +69,6 @@ export const updateGitRepositoryIntegrationUseCase = async (
           eq(gitRepositoryIntegrationTable.organizationId, user.organizationId),
         ),
       ),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

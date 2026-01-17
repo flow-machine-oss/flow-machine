@@ -25,7 +25,7 @@ export const deleteGitRepositoryIntegrationUseCase = async (
         organizationId: user.organizationId,
       },
     }),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 
   if (existsResult.isErr()) {
@@ -45,6 +45,6 @@ export const deleteGitRepositoryIntegrationUseCase = async (
           eq(gitRepositoryIntegrationTable.organizationId, user.organizationId),
         ),
       ),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

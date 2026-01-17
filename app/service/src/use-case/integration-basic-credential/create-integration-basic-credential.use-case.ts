@@ -30,6 +30,6 @@ export const createIntegrationBasicCredentialUseCase = async (
 
   return ResultAsync.fromPromise(
     ctx.db.insert(integrationBasicCredentialTable).values(newCredential),
-    (e) => Err.from(e),
+    (e) => Err.from(e, { cause: e }),
   );
 };

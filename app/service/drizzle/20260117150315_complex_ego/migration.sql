@@ -1,0 +1,2 @@
+DROP INDEX "git_repository_integration_git_repository_id_idx";--> statement-breakpoint
+ALTER TABLE "git_repository_integration" ADD CONSTRAINT "git_repository_integration_git_repository_id_unique" UNIQUE("git_repository_id");
