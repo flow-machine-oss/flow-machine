@@ -1,4 +1,4 @@
-import { index, pgTable, text } from "drizzle-orm/pg-core";
+import { index, pgTable, text, unique } from "drizzle-orm/pg-core";
 import { issueFieldDefinitionTable } from "@/schema/issue-field-definition.schema";
 import { issueTable } from "@/schema/issue.schema";
 import {
@@ -25,6 +25,10 @@ export const issueFieldInstanceTable = pgTable(
     ...makeDefaultOrganizationAwareIndexes(table, "issue_field_instance"),
     index("issue_field_instance_issue_id_idx").on(table.issueId),
     index("issue_field_instance_issue_field_definition_id_idx").on(
+      table.issueFieldDefinitionId,
+    ),
+    unique("issue_field_instance_issue_id_issue_field_definition_id_unique").on(
+      table.issueId,
       table.issueFieldDefinitionId,
     ),
   ],

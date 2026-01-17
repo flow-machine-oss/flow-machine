@@ -62,7 +62,7 @@ export const relation = defineRelations(
         to: r.project.id,
       }),
       issueFieldInstances: r.many.issueFieldInstance(),
-      integrations: r.many.issueIntegration(),
+      integration: r.one.issueIntegration(),
     },
     issueIntegration: {
       issue: r.one.issue({
@@ -73,7 +73,7 @@ export const relation = defineRelations(
 
     issueFieldDefinition: {
       issueFieldInstances: r.many.issueFieldInstance(),
-      integrations: r.many.issueFieldDefinitionIntegration(),
+      integration: r.one.issueFieldDefinitionIntegration(),
     },
     issueFieldDefinitionIntegration: {
       issueFieldDefinition: r.one.issueFieldDefinition({
@@ -91,7 +91,7 @@ export const relation = defineRelations(
         from: r.issueFieldInstance.issueFieldDefinitionId,
         to: r.issueFieldDefinition.id,
       }),
-      integrations: r.many.issueFieldInstanceIntegration(),
+      integration: r.one.issueFieldInstanceIntegration(),
     },
     issueFieldInstanceIntegration: {
       issueFieldInstance: r.one.issueFieldInstance({
