@@ -11,20 +11,19 @@ import { gitRepositoryIntegrationTable } from "@/schema/git-repository-integrati
 
 type Payload = {
   gitRepositoryId: string;
-  integrationId: string;
+  gitRepositoryIntegrationId: string;
   body: z.infer<typeof updateGitRepositoryIntegrationRequestBodySchema>;
   user: z.infer<typeof currentUserSchema>;
 };
 
 export const updateGitRepositoryIntegrationUseCase = async (
   ctx: Ctx,
-  { gitRepositoryId, integrationId, body, user }: Payload,
+  { gitRepositoryId, gitRepositoryIntegrationId, body, user }: Payload,
 ) => {
-  // Verify integration exists
   const existsResult = await ResultAsync.fromPromise(
     ctx.db.query.gitRepositoryIntegration.findFirst({
       where: {
-        id: integrationId,
+        id: gitRepositoryIntegrationId,
         gitRepositoryId,
         organizationId: user.organizationId,
       },
@@ -40,7 +39,6 @@ export const updateGitRepositoryIntegrationUseCase = async (
     return err(Err.code("notFound"));
   }
 
-  // If credentialId is being updated, verify it exists
   if (body.credentialId) {
     const credentialCheck = await ResultAsync.fromPromise(
       ctx.db.query.integrationBasicCredential.findFirst({
@@ -67,7 +65,6 @@ export const updateGitRepositoryIntegrationUseCase = async (
       })
       .where(
         and(
-          eq(gitRepositoryIntegrationTable.id, integrationId),
           eq(gitRepositoryIntegrationTable.gitRepositoryId, gitRepositoryId),
           eq(gitRepositoryIntegrationTable.organizationId, user.organizationId),
         ),

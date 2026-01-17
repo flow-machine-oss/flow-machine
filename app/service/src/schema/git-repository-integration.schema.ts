@@ -1,4 +1,4 @@
-import { index, pgTable, text } from "drizzle-orm/pg-core";
+import { index, pgTable, text, unique } from "drizzle-orm/pg-core";
 import { gitRepositoryTable } from "@/schema/git-repository.schema";
 import { integrationBasicCredentialTable } from "@/schema/integration-basic-credential.schema";
 import {
@@ -30,7 +30,7 @@ export const gitRepositoryIntegrationTable = pgTable(
     index("git_repository_integration_credential_id_idx").on(
       table.credentialId,
     ),
-    index("git_repository_integration_git_repository_id_idx").on(
+    unique("git_repository_integration_git_repository_id_unique").on(
       table.gitRepositoryId,
     ),
   ],

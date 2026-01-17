@@ -32,7 +32,6 @@ export const relation = defineRelations(
     project: projectTable,
   },
   (r) => ({
-    // Document relations
     document: {
       project: r.one.project({
         from: r.document.projectId,
@@ -40,59 +39,12 @@ export const relation = defineRelations(
       }),
     },
 
-    // Project relations
-    project: {
-      issues: r.many.issue(),
-      documents: r.many.document(),
-      projectIntegrations: r.many.projectIntegration(),
-    },
-
-    // Git Repository relations
     gitRepository: {
-      gitRepositoryIntegrations: r.many.gitRepositoryIntegration(),
-    },
-
-    // Integration Basic Credential relations
-    integrationBasicCredential: {
-      gitRepositoryIntegrations: r.many.gitRepositoryIntegration(),
-    },
-
-    // Integration API Key Credential relations
-    integrationApiKeyCredential: {
-      projectIntegrations: r.many.projectIntegration(),
-    },
-
-    // Issue relations
-    issue: {
-      project: r.one.project({
-        from: r.issue.projectId,
-        to: r.project.id,
+      gitRepositoryIntegration: r.one.gitRepositoryIntegration({
+        from: r.gitRepository.id,
+        to: r.gitRepositoryIntegration.gitRepositoryId,
       }),
-      issueFieldInstances: r.many.issueFieldInstance(),
-      issueIntegrations: r.many.issueIntegration(),
     },
-
-    // Issue Field Definition relations
-    issueFieldDefinition: {
-      issueFieldInstances: r.many.issueFieldInstance(),
-      issueFieldDefinitionIntegrations:
-        r.many.issueFieldDefinitionIntegration(),
-    },
-
-    // Issue Field Instance relations
-    issueFieldInstance: {
-      issue: r.one.issue({
-        from: r.issueFieldInstance.issueId,
-        to: r.issue.id,
-      }),
-      issueFieldDefinition: r.one.issueFieldDefinition({
-        from: r.issueFieldInstance.issueFieldDefinitionId,
-        to: r.issueFieldDefinition.id,
-      }),
-      issueFieldInstanceIntegrations: r.many.issueFieldInstanceIntegration(),
-    },
-
-    // Git Repository Integration relations
     gitRepositoryIntegration: {
       credential: r.one.integrationBasicCredential({
         from: r.gitRepositoryIntegration.credentialId,
@@ -104,7 +56,66 @@ export const relation = defineRelations(
       }),
     },
 
-    // Project Integration relations
+    issue: {
+      project: r.one.project({
+        from: r.issue.projectId,
+        to: r.project.id,
+      }),
+      issueFieldInstances: r.many.issueFieldInstance(),
+      issueIntegrations: r.many.issueIntegration(),
+    },
+    issueIntegration: {
+      issue: r.one.issue({
+        from: r.issueIntegration.issueId,
+        to: r.issue.id,
+      }),
+    },
+
+    issueFieldDefinition: {
+      issueFieldInstances: r.many.issueFieldInstance(),
+      issueFieldDefinitionIntegrations:
+        r.many.issueFieldDefinitionIntegration(),
+    },
+    issueFieldDefinitionIntegration: {
+      issueFieldDefinition: r.one.issueFieldDefinition({
+        from: r.issueFieldDefinitionIntegration.issueFieldDefinitionId,
+        to: r.issueFieldDefinition.id,
+      }),
+    },
+
+    issueFieldInstance: {
+      issue: r.one.issue({
+        from: r.issueFieldInstance.issueId,
+        to: r.issue.id,
+      }),
+      issueFieldDefinition: r.one.issueFieldDefinition({
+        from: r.issueFieldInstance.issueFieldDefinitionId,
+        to: r.issueFieldDefinition.id,
+      }),
+      issueFieldInstanceIntegrations: r.many.issueFieldInstanceIntegration(),
+    },
+    issueFieldInstanceIntegration: {
+      issueFieldInstance: r.one.issueFieldInstance({
+        from: r.issueFieldInstanceIntegration.issueFieldInstanceId,
+        to: r.issueFieldInstance.id,
+      }),
+    },
+
+    integrationApiKeyCredential: {
+      projectIntegrations: r.many.projectIntegration(),
+    },
+    integrationBasicCredential: {
+      gitRepositoryIntegration: r.one.gitRepositoryIntegration({
+        from: r.integrationBasicCredential.id,
+        to: r.gitRepositoryIntegration.credentialId,
+      }),
+    },
+
+    project: {
+      issues: r.many.issue(),
+      documents: r.many.document(),
+      projectIntegrations: r.many.projectIntegration(),
+    },
     projectIntegration: {
       credential: r.one.integrationApiKeyCredential({
         from: r.projectIntegration.credentialId,
@@ -113,30 +124,6 @@ export const relation = defineRelations(
       project: r.one.project({
         from: r.projectIntegration.projectId,
         to: r.project.id,
-      }),
-    },
-
-    // Issue Integration relations
-    issueIntegration: {
-      issue: r.one.issue({
-        from: r.issueIntegration.issueId,
-        to: r.issue.id,
-      }),
-    },
-
-    // Issue Field Definition Integration relations
-    issueFieldDefinitionIntegration: {
-      issueFieldDefinition: r.one.issueFieldDefinition({
-        from: r.issueFieldDefinitionIntegration.issueFieldDefinitionId,
-        to: r.issueFieldDefinition.id,
-      }),
-    },
-
-    // Issue Field Instance Integration relations
-    issueFieldInstanceIntegration: {
-      issueFieldInstance: r.one.issueFieldInstance({
-        from: r.issueFieldInstanceIntegration.issueFieldInstanceId,
-        to: r.issueFieldInstance.id,
       }),
     },
   }),

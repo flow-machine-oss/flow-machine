@@ -6,9 +6,8 @@ export const gitRepositoryResponseDtoSchema = z.object({
   ...organizationAwareBaseResponseDtoSchema.shape,
   contributorEmail: z.string(),
   contributorName: z.string(),
-  gitRepositoryIntegrations: z
-    .array(gitRepositoryIntegrationResponseDtoSchema)
-    .optional(),
+  gitRepositoryIntegration:
+    gitRepositoryIntegrationResponseDtoSchema.nullable(),
   name: z.string(),
   url: z.string(),
 });
