@@ -116,7 +116,7 @@ export const relation = defineRelations(
     project: {
       issues: r.many.issue(),
       documents: r.many.document(),
-      integrations: r.many.projectIntegration(),
+      integration: r.one.projectIntegration(),
     },
     projectIntegration: {
       credential: r.one.integrationApiKeyCredential({
