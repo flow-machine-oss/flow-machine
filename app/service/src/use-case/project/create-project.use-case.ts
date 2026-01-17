@@ -21,6 +21,7 @@ export const createProjectUseCase = async (ctx: Ctx, { body, user }: Payload) =>
     organizationId: user.organizationId,
 
     name: body.name,
+    key: body.key,
   } as const satisfies ProjectSelect;
 
   return ResultAsync.fromPromise(

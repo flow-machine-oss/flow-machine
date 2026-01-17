@@ -66,7 +66,6 @@ export const createProjectIntegrationUseCase = async (
 
     credentialId: body.credentialId,
     externalId: body.externalId,
-    externalKey: body.externalKey,
     projectId,
     providerId: body.providerId,
     webhookSecret: body.webhookSecret,

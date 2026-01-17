@@ -6,7 +6,6 @@ import { projectIntegrationProviderIds } from "@/schema/project-integration.sche
 export const projectIntegrationResponseDtoSchema = z.object({
   ...organizationAwareBaseResponseDtoSchema.shape,
   externalId: z.string(),
-  externalKey: z.string(),
   providerId: z.enum(projectIntegrationProviderIds),
   credentialId: idSchema,
   projectId: idSchema,
