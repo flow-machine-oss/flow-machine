@@ -19,7 +19,6 @@ export const createProjectIntegrationUseCase = async (
   ctx: Ctx,
   { projectId, body, user }: Payload,
 ) => {
-  // Verify project exists and belongs to user's organization
   const projectCheck = await ResultAsync.fromPromise(
     ctx.db.query.project.findFirst({
       where: { id: projectId, organizationId: user.organizationId },
@@ -36,7 +35,6 @@ export const createProjectIntegrationUseCase = async (
     return err(Err.code("notFound", { message: "Project not found" }));
   }
 
-  // Check if integration already exists (one-to-one relationship)
   if (!isNil(projectCheck.value.integration)) {
     return err(
       Err.code("conflict", {
@@ -45,7 +43,6 @@ export const createProjectIntegrationUseCase = async (
     );
   }
 
-  // Verify credential exists and belongs to user's organization
   const credentialCheck = await ResultAsync.fromPromise(
     ctx.db.query.integrationApiKeyCredential.findFirst({
       where: { id: body.credentialId, organizationId: user.organizationId },
