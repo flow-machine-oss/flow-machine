@@ -2,6 +2,7 @@ import { UTCDate } from "@date-fns/utc";
 import { isNil } from "es-toolkit";
 import { ResultAsync, err } from "neverthrow";
 import type z from "zod";
+import type { createGitRepositoryIntegrationRequestBodySchema } from "@/dto/git-repository/create-git-repository-integration.dto";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
@@ -10,10 +11,7 @@ import { gitRepositoryIntegrationTable } from "@/schema/git-repository-integrati
 
 type Payload = {
   gitRepositoryId: string;
-  body: {
-    credentialId: string;
-    providerId: "gitHub" | "gitLab";
-  };
+  body: z.infer<typeof createGitRepositoryIntegrationRequestBodySchema>;
   user: z.infer<typeof currentUserSchema>;
 };
 

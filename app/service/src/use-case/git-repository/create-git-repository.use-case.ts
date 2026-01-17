@@ -1,6 +1,7 @@
 import { UTCDate } from "@date-fns/utc";
 import { ResultAsync } from "neverthrow";
 import type z from "zod";
+import type { createGitRepositoryRequestBodySchema } from "@/dto/git-repository/create-git-repository.dto";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
@@ -11,12 +12,7 @@ import {
 } from "@/schema/git-repository.schema";
 
 type Payload = {
-  body: {
-    contributorEmail: string;
-    contributorName: string;
-    name: string;
-    url: string;
-  };
+  body: z.infer<typeof createGitRepositoryRequestBodySchema>;
   user: z.infer<typeof currentUserSchema>;
 };
 

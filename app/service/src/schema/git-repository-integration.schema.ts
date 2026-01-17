@@ -7,7 +7,7 @@ import {
   makeOrganizationAwareBaseSchemaTableColumns,
 } from "@/schema/shared.schema";
 
-const gitRepositoryProviderIds = ["gitHub", "gitLab"] as const;
+export const gitRepositoryProviderIds = ["gitHub", "gitLab"] as const;
 
 export const gitRepositoryIntegrationTable = pgTable(
   "git_repository_integration",

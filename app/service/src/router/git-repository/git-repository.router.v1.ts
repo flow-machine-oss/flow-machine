@@ -10,14 +10,14 @@ import { updateGitRepositoryRequestBodySchema } from "@/dto/git-repository/updat
 import { idRequestParamsDtoSchema } from "@/dto/shared.dto";
 import { errEnvelope, okEnvelope, withHttpEnvelopeSchema } from "@/lib/http";
 import { defaultRouterSetup } from "@/middleware/default-router-setup.middleware";
-import { createGitRepositoryIntegrationUseCase } from "@/use-case/git-repository-integration/create-git-repository-integration.use-case";
-import { deleteGitRepositoryIntegrationUseCase } from "@/use-case/git-repository-integration/delete-git-repository-integration.use-case";
-import { getGitRepositoryIntegrationUseCase } from "@/use-case/git-repository-integration/get-git-repository-integration.use-case";
-import { updateGitRepositoryIntegrationUseCase } from "@/use-case/git-repository-integration/update-git-repository-integration.use-case";
+import { createGitRepositoryIntegrationUseCase } from "@/use-case/git-repository/create-git-repository-integration.use-case";
 import { createGitRepositoryUseCase } from "@/use-case/git-repository/create-git-repository.use-case";
+import { deleteGitRepositoryIntegrationUseCase } from "@/use-case/git-repository/delete-git-repository-integration.use-case";
 import { deleteGitRepositoryUseCase } from "@/use-case/git-repository/delete-git-repository.use-case";
+import { getGitRepositoryIntegrationUseCase } from "@/use-case/git-repository/get-git-repository-integration.use-case";
 import { getGitRepositoryUseCase } from "@/use-case/git-repository/get-git-repository.use-case";
 import { listGitRepositoriesUseCase } from "@/use-case/git-repository/list-git-repositories.use-case";
+import { updateGitRepositoryIntegrationUseCase } from "@/use-case/git-repository/update-git-repository-integration.use-case";
 import { updateGitRepositoryUseCase } from "@/use-case/git-repository/update-git-repository.use-case";
 
 export const gitRepositoryRouterV1 = () =>

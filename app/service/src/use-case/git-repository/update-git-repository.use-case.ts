@@ -3,6 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { isNil } from "es-toolkit";
 import { ResultAsync, err } from "neverthrow";
 import type z from "zod";
+import type { updateGitRepositoryRequestBodySchema } from "@/dto/git-repository/update-git-repository.dto";
 import type { currentUserSchema } from "@/guard/auth-check.guard";
 import type { Ctx } from "@/lib/ctx";
 import { Err } from "@/lib/err";
@@ -10,12 +11,7 @@ import { gitRepositoryTable } from "@/schema/git-repository.schema";
 
 type Payload = {
   id: string;
-  body: {
-    contributorEmail?: string;
-    contributorName?: string;
-    name?: string;
-    url?: string;
-  };
+  body: z.infer<typeof updateGitRepositoryRequestBodySchema>;
   user: z.infer<typeof currentUserSchema>;
 };
 
