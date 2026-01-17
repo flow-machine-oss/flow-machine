@@ -2,26 +2,32 @@ import Elysia from "elysia";
 import z from "zod";
 import { createIssueFieldInstanceIntegrationRequestBodySchema } from "@/dto/issue/create-issue-field-instance-integration.dto";
 import { createIssueFieldInstanceRequestBodySchema } from "@/dto/issue/create-issue-field-instance.dto";
+import { createIssueIntegrationRequestBodySchema } from "@/dto/issue/create-issue-integration.dto";
 import { createIssueRequestBodySchema } from "@/dto/issue/create-issue.dto";
 import { issueFieldInstanceIntegrationParamsSchema } from "@/dto/issue/issue-field-instance-integration-params.dto";
 import { issueFieldInstanceParamsSchema } from "@/dto/issue/issue-field-instance-params.dto";
+import { issueIntegrationParamsSchema } from "@/dto/issue/issue-integration-params.dto";
 import { issueResponseDtoSchema } from "@/dto/issue/issue.dto";
 import { updateIssueFieldInstanceIntegrationRequestBodySchema } from "@/dto/issue/update-issue-field-instance-integration.dto";
 import { updateIssueFieldInstanceRequestBodySchema } from "@/dto/issue/update-issue-field-instance.dto";
+import { updateIssueIntegrationRequestBodySchema } from "@/dto/issue/update-issue-integration.dto";
 import { updateIssueRequestBodySchema } from "@/dto/issue/update-issue.dto";
 import { idRequestParamsDtoSchema } from "@/dto/shared.dto";
 import { errEnvelope, okEnvelope, withHttpEnvelopeSchema } from "@/lib/http";
 import { defaultRouterSetup } from "@/middleware/default-router-setup.middleware";
 import { createIssueFieldInstanceIntegrationUseCase } from "@/use-case/issue/create-issue-field-instance-integration.use-case";
 import { createIssueFieldInstanceUseCase } from "@/use-case/issue/create-issue-field-instance.use-case";
+import { createIssueIntegrationUseCase } from "@/use-case/issue/create-issue-integration.use-case";
 import { createIssueUseCase } from "@/use-case/issue/create-issue.use-case";
 import { deleteIssueFieldInstanceIntegrationUseCase } from "@/use-case/issue/delete-issue-field-instance-integration.use-case";
 import { deleteIssueFieldInstanceUseCase } from "@/use-case/issue/delete-issue-field-instance.use-case";
+import { deleteIssueIntegrationUseCase } from "@/use-case/issue/delete-issue-integration.use-case";
 import { deleteIssueUseCase } from "@/use-case/issue/delete-issue.use-case";
 import { getIssueUseCase } from "@/use-case/issue/get-issue.use-case";
 import { listIssuesUseCase } from "@/use-case/issue/list-issues.use-case";
 import { updateIssueFieldInstanceIntegrationUseCase } from "@/use-case/issue/update-issue-field-instance-integration.use-case";
 import { updateIssueFieldInstanceUseCase } from "@/use-case/issue/update-issue-field-instance.use-case";
+import { updateIssueIntegrationUseCase } from "@/use-case/issue/update-issue-integration.use-case";
 import { updateIssueUseCase } from "@/use-case/issue/update-issue.use-case";
 
 export const issueRouterV1 = () =>
@@ -144,6 +150,85 @@ export const issueRouterV1 = () =>
         },
         {
           params: idRequestParamsDtoSchema,
+          response: withHttpEnvelopeSchema(z.undefined()),
+        },
+      )
+
+      .post(
+        "/:id/integration",
+        async ({ body, ctx, headers, params }) => {
+          const authCheckResult = await ctx.guard.authCheck(ctx, headers);
+
+          if (authCheckResult.isErr()) {
+            return errEnvelope(authCheckResult.error);
+          }
+
+          const createResult = await createIssueIntegrationUseCase(ctx, {
+            issueId: params.id,
+            body,
+            user: authCheckResult.value,
+          });
+
+          if (createResult.isErr()) {
+            return errEnvelope(createResult.error);
+          }
+          return okEnvelope();
+        },
+        {
+          body: createIssueIntegrationRequestBodySchema,
+          params: idRequestParamsDtoSchema,
+          response: withHttpEnvelopeSchema(z.undefined()),
+        },
+      )
+      .patch(
+        "/:id/integration/:integrationId",
+        async ({ body, ctx, headers, params }) => {
+          const authCheckResult = await ctx.guard.authCheck(ctx, headers);
+
+          if (authCheckResult.isErr()) {
+            return errEnvelope(authCheckResult.error);
+          }
+
+          const updateResult = await updateIssueIntegrationUseCase(ctx, {
+            issueId: params.id,
+            issueIntegrationId: params.integrationId,
+            body,
+            user: authCheckResult.value,
+          });
+
+          if (updateResult.isErr()) {
+            return errEnvelope(updateResult.error);
+          }
+          return okEnvelope();
+        },
+        {
+          body: updateIssueIntegrationRequestBodySchema,
+          params: issueIntegrationParamsSchema,
+          response: withHttpEnvelopeSchema(z.undefined()),
+        },
+      )
+      .delete(
+        "/:id/integration/:integrationId",
+        async ({ ctx, headers, params }) => {
+          const authCheckResult = await ctx.guard.authCheck(ctx, headers);
+
+          if (authCheckResult.isErr()) {
+            return errEnvelope(authCheckResult.error);
+          }
+
+          const deleteResult = await deleteIssueIntegrationUseCase(ctx, {
+            issueId: params.id,
+            issueIntegrationId: params.integrationId,
+            user: authCheckResult.value,
+          });
+
+          if (deleteResult.isErr()) {
+            return errEnvelope(deleteResult.error);
+          }
+          return okEnvelope();
+        },
+        {
+          params: issueIntegrationParamsSchema,
           response: withHttpEnvelopeSchema(z.undefined()),
         },
       )

@@ -18,6 +18,7 @@ export const getIssueUseCase = async (ctx: Ctx, { id, user }: Payload) => {
         fieldInstances: {
           with: { integration: true },
         },
+        integration: true,
       },
     }),
     (e) => Err.from(e, { cause: e }),
