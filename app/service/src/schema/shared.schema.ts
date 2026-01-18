@@ -7,7 +7,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-export const makeIdColumnType = () => varchar({ length: 32 });
+export const makeIdColumnType = () => varchar({ length: 64 });
 
 export const makeTimestampColumnType = () =>
   timestamp({ mode: "date", withTimezone: true });

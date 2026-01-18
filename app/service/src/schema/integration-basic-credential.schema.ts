@@ -15,6 +15,9 @@ export const integrationBasicCredentialTable = pgTable(
     expiredAt: makeTimestampColumnType().notNull(),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table, "integration_basic_credential"),
+    ...makeDefaultOrganizationAwareIndexes(
+      table,
+      "integration_basic_credential",
+    ),
   ],
 );
