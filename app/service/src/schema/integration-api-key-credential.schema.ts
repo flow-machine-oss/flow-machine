@@ -16,9 +16,16 @@ export const integrationApiKeyCredentialTable = pgTable(
     expiredAt: makeTimestampColumnType().notNull(),
   },
   (table) => [
-    ...makeDefaultOrganizationAwareIndexes(table, "integration_api_key_credential"),
+    ...makeDefaultOrganizationAwareIndexes(
+      table,
+      "integration_api_key_credential",
+    ),
   ],
 );
 
-export const integrationApiKeyCredentialSelectSchema = createSelectSchema(integrationApiKeyCredentialTable);
-export type IntegrationApiKeyCredentialSelect = z.infer<typeof integrationApiKeyCredentialSelectSchema>;
+export const integrationApiKeyCredentialSelectSchema = createSelectSchema(
+  integrationApiKeyCredentialTable,
+);
+export type IntegrationApiKeyCredentialSelect = z.infer<
+  typeof integrationApiKeyCredentialSelectSchema
+>;
