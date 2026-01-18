@@ -17,6 +17,7 @@ import { issueTable } from "@/schema/issue.schema";
 import { projectIntegrationTable } from "@/schema/project-integration.schema";
 import { projectTable } from "@/schema/project.schema";
 import { relation } from "@/schema/relation";
+import { workflowTable } from "@/schema/workflow.schema";
 
 const client = new SQL(config.database.url);
 
@@ -37,6 +38,7 @@ export const db = drizzle({
     issue: issueTable,
     projectIntegration: projectIntegrationTable,
     project: projectTable,
+    workflow: workflowTable,
   },
   relations: relation,
   casing: "snake_case",

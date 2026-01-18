@@ -13,6 +13,7 @@ import { issueIntegrationTable } from "@/schema/issue-integration.schema";
 import { issueTable } from "@/schema/issue.schema";
 import { projectIntegrationTable } from "@/schema/project-integration.schema";
 import { projectTable } from "@/schema/project.schema";
+import { workflowTable } from "@/schema/workflow.schema";
 
 export const relation = defineRelations(
   {
@@ -30,6 +31,7 @@ export const relation = defineRelations(
     issue: issueTable,
     projectIntegration: projectIntegrationTable,
     project: projectTable,
+    workflow: workflowTable,
   },
   (r) => ({
     document: {
