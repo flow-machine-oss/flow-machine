@@ -37,7 +37,10 @@ export const deleteIntegrationApiKeyCredentialUseCase = async (
       .where(
         and(
           eq(integrationApiKeyCredentialTable.id, id),
-          eq(integrationApiKeyCredentialTable.organizationId, user.organizationId),
+          eq(
+            integrationApiKeyCredentialTable.organizationId,
+            user.organizationId,
+          ),
         ),
       ),
     (e) => Err.from(e, { cause: e }),

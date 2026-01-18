@@ -12,10 +12,7 @@ type Payload = {
   user: z.infer<typeof currentUserSchema>;
 };
 
-export const deleteAiAgentUseCase = async (
-  ctx: Ctx,
-  { id, user }: Payload,
-) => {
+export const deleteAiAgentUseCase = async (ctx: Ctx, { id, user }: Payload) => {
   const existsResult = await ResultAsync.fromPromise(
     ctx.db.query.aiAgent.findFirst({
       where: { id, organizationId: user.organizationId },

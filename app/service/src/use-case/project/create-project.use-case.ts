@@ -13,7 +13,10 @@ type Payload = {
   user: z.infer<typeof currentUserSchema>;
 };
 
-export const createProjectUseCase = async (ctx: Ctx, { body, user }: Payload) => {
+export const createProjectUseCase = async (
+  ctx: Ctx,
+  { body, user }: Payload,
+) => {
   const newProject = {
     id: newId(),
     createdAt: new UTCDate(),
