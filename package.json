@@ -31,6 +31,7 @@
     "@clerk/nextjs": "6.36.5",
     "@clerk/themes": "2.4.47",
     "@date-fns/utc": "2.1.1",
+    "@daytonaio/sdk": "0.132.0",
     "@eslint/js": "9.39.1",
     "@elysiajs/openapi": "1.4.13",
     "@inngest/workflow-kit": "0.1.3",

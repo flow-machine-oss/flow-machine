@@ -6,10 +6,6 @@ export const configSchema = z.object({
     version: z.string().default("0.0.0"),
   }),
 
-  database: z.object({
-    url: z.string(),
-  }),
-
   clerk: z.object({
     jwksUrl: z
       .string()
@@ -17,6 +13,14 @@ export const configSchema = z.object({
         "https://united-raptor-76.clerk.accounts.dev/.well-known/jwks.json",
       ),
     issuer: z.string().default("https://united-raptor-76.clerk.accounts.dev"),
+  }),
+
+  database: z.object({
+    url: z.string(),
+  }),
+
+  daytona: z.object({
+    apiKey: z.string(),
   }),
 });
 
@@ -28,12 +32,16 @@ export const config = configSchema.parse({
     version: process.env.APP_VERSION,
   },
 
+  clerk: {
+    jwksUrl: process.env.CLERK_JWKS_URL,
+    issuer: process.env.CLERK_ISSUER,
+  },
+
   database: {
     url: process.env.DATABASE_URL,
   },
 
-  clerk: {
-    jwksUrl: process.env.CLERK_JWKS_URL,
-    issuer: process.env.CLERK_ISSUER,
+  daytona: {
+    apiKey: process.env.DAYTONA_API_KEY,
   },
 });
