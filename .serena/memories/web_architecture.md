@@ -34,7 +34,7 @@ Uses Clerk with `@clerk/nextjs`. Auth routes:
 
 ## Configuration
 
-Global config accessed via `globalConfig` from `@/lib/global-config.ts`:
+Global config accessed via `globalConfig` from `@/old/lib/global-config.ts`:
 
 - `globalConfig.app.env` - Environment (production/staging)
 - `globalConfig.app.version` - App version

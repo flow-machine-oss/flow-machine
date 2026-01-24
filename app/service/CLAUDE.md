@@ -36,7 +36,7 @@ Routes receive a `Ctx` object containing shared dependencies:
 Use `Err` class with predefined codes:
 
 ```typescript
-import { Err } from "@/lib/err";
+import { Err } from "@/old/lib/err";
 return Err.code("unauthorized");
 return Err.code("notFound", { message: "Custom message" });
 ```
@@ -48,7 +48,7 @@ Available codes: `unknown`, `unauthorized`, `forbidden`, `notFound`, `conflict`,
 Wrap responses in envelope format:
 
 ```typescript
-import { okEnvelope, errEnvelope } from "@/lib/http";
+import { okEnvelope, errEnvelope } from "@/old/lib/http";
 return okEnvelope({ data: result });
 return errEnvelope(Err.code("notFound"));
 ```
@@ -61,7 +61,7 @@ Tables use shared column helpers from `shared.schema.ts`:
 - `makeOrganizationAwareBaseSchemaTableColumns()` - adds organizationId
 - `makeDefaultOrganizationAwareIndexes(table)` - standard org index
 
-IDs are ULIDs generated via `newId()` from `@/lib/id`.
+IDs are ULIDs generated via `newId()` from `@/old/lib/id`.
 
 ### Authentication
 

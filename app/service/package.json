@@ -14,6 +14,8 @@
   "dependencies": {
     "@date-fns/utc": "catalog:",
     "@daytonaio/sdk": "catalog:",
+    "@elysiajs/bearer": "catalog:",
+    "@elysiajs/jwt": "catalog:",
     "@elysiajs/openapi": "catalog:",
     "@inngest/workflow-kit": "catalog:",
     "@openrouter/sdk": "catalog:",
@@ -25,6 +27,7 @@
     "es-toolkit": "catalog:",
     "inngest": "catalog:",
     "jose": "catalog:",
+    "mongodb": "catalog:",
     "neverthrow": "catalog:",
     "pino": "catalog:",
     "ulid": "catalog:",
