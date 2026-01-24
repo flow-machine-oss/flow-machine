@@ -1,0 +1,13 @@
+FROM oven/bun:1.3.5-alpine
+
+WORKDIR /app
+
+COPY ./.next/standalone/ ./
+COPY ./.next/static/ ./app/web/.next/static/
+COPY ./public/ ./app/web/public/
+
+ENV NODE_ENV=production
+
+EXPOSE 3000
+
+CMD ["bun", "app/web/server.js"]
