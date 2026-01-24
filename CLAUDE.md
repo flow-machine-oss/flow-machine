@@ -52,8 +52,10 @@ Both apps use `@/` as the import alias for their `src/` directory.
 All environment variables have to be defined in `turbo.json` globalEnv:
 
 - `APP_ENV`, `APP_VERSION`
-- `CLERK_ISSUER`, `CLERK_JWKS_URL`
-- `DATABASE_URL`
+- `CLERK_ISSUER`, `CLERK_JWKS_URL`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+- `DATABASE_URL`, `DATABASE_NAME`
+- `DAYTONA_API_KEY`
+- `INNGEST_DEV`, `INNGEST_BASE_URL`
 
 ## Code Style
 
