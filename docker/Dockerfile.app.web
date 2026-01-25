@@ -7,7 +7,10 @@ COPY ./.next/static/ ./app/web/.next/static/
 COPY ./public/ ./app/web/public/
 
 ENV NODE_ENV=production
+ENV PORT=3000
+
+ARG HOSTNAME
 
 EXPOSE 3000
 
-CMD ["bun", "app/web/server.js"]
+CMD ["bun", "./app/web/server.js"]

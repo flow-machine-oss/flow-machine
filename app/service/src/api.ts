@@ -17,5 +17,10 @@ app
     }),
   )
   .use(makeHttpErrorHandlerPlugin())
+  .get("/health", () => ({
+    status: "ok",
+    version: config.app.version,
+    environment: config.app.env,
+  }))
   .use(documentHttpV1Router)
   .listen(8000);
