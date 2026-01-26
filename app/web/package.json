@@ -13,10 +13,11 @@
   },
   "dependencies": {
     "@base-ui/react": "catalog:",
-    "@clerk/nextjs": "catalog:",
-    "@clerk/themes": "catalog:",
+    "@better-fetch/fetch": "^1.1.21",
+    "@daveyplate/better-auth-ui": "catalog:",
     "@tanstack/react-query": "catalog:",
     "axios": "catalog:",
+    "better-auth": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "cmdk": "catalog:",

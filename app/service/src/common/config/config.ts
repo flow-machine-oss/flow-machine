@@ -6,9 +6,10 @@ export const configSchema = z.object({
     version: z.string().default("0.0.0"),
   }),
 
-  clerk: z.object({
-    jwksUrl: z.string(),
-    issuer: z.string(),
+  betterAuth: z.object({
+    secret: z.string(),
+    url: z.url(),
+    trustedOrigins: z.array(z.string()),
   }),
 
   database: z.object({
@@ -18,6 +19,16 @@ export const configSchema = z.object({
 
   daytona: z.object({
     apiKey: z.string(),
+  }),
+
+  email: z.object({
+    apiKey: z.string(),
+    fromAddress: z.string().default("Flow Machine <root@email.flowmachine.io>"),
+  }),
+
+  billing: z.object({
+    polarAccessToken: z.string(),
+    polarEnvironment: z.enum(["production", "sandbox"]),
   }),
 });
 
@@ -29,9 +40,10 @@ export const config = configSchema.parse({
     version: process.env.APP_VERSION,
   },
 
-  clerk: {
-    jwksUrl: process.env.CLERK_JWKS_URL,
-    issuer: process.env.CLERK_ISSUER,
+  betterAuth: {
+    secret: process.env.BETTER_AUTH_SECRET,
+    url: process.env.BETTER_AUTH_URL,
+    trustedOrigins: process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(",") ?? [],
   },
 
   database: {
@@ -41,5 +53,15 @@ export const config = configSchema.parse({
 
   daytona: {
     apiKey: process.env.DAYTONA_API_KEY,
+  },
+
+  email: {
+    apiKey: process.env.RESEND_API_KEY,
+    fromAddress: process.env.EMAIL_FROM_ADDRESS,
+  },
+
+  billing: {
+    polarAccessToken: process.env.POLAR_ACCESS_TOKEN,
+    polarEnvironment: process.env.POLAR_ENVIRONMENT,
   },
 });

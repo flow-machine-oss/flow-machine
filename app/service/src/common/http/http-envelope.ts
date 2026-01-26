@@ -1,6 +1,6 @@
 import { isNil, omitBy } from "es-toolkit";
 import z from "zod";
-import type { Err } from "@/old/lib/err";
+import type { Err } from "@/common/err/err";
 
 type HttpEnvelope<T> = {
   status: number;

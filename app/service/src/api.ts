@@ -1,13 +1,17 @@
+import { cors } from "@elysiajs/cors";
 import openapi, { fromTypes } from "@elysiajs/openapi";
 import Elysia from "elysia";
 import z from "zod";
 import { config } from "@/common/config/config";
 import { makeHttpErrorHandlerPlugin } from "@/common/http/http-error-handler.plugin";
+import { authHttpRouter } from "@/di/auth-di";
 import { documentHttpV1Router } from "@/di/document-di";
+import { healthHttpV1Router } from "@/di/health-di";
 
 const app = new Elysia();
 
 app
+  .use(cors())
   .use(
     openapi({
       mapJsonSchema: { zod: z.toJSONSchema },
@@ -17,10 +21,7 @@ app
     }),
   )
   .use(makeHttpErrorHandlerPlugin())
-  .get("/health", () => ({
-    status: "ok",
-    version: config.app.version,
-    environment: config.app.env,
-  }))
+  .use(authHttpRouter)
   .use(documentHttpV1Router)
+  .use(healthHttpV1Router)
   .listen(8000);

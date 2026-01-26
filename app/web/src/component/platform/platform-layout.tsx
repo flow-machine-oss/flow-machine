@@ -1,4 +1,4 @@
-import { SignedIn } from "@clerk/nextjs";
+import { SignedIn } from "@daveyplate/better-auth-ui";
 import type { CSSProperties, PropsWithChildren } from "react";
 import { PlatformSidebar } from "@/component/platform/platform-sidebar";
 import { SidebarInset, SidebarProvider } from "@/component/ui/sidebar";

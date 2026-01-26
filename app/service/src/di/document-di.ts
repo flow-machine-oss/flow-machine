@@ -10,6 +10,7 @@ import { makeDeleteDocumentUseCase } from "@/app/use-case/document/delete-docume
 import { makeGetDocumentUseCase } from "@/app/use-case/document/get-document-use-case";
 import { makeListDocumentsUseCase } from "@/app/use-case/document/list-documents-use-case";
 import { makeUpdateDocumentUseCase } from "@/app/use-case/document/update-document-use-case";
+import { getActiveMember, getSession } from "@/di/auth-di";
 
 // Repositories
 const insertDocumentMongoRepository = makeInsertDocumentMongoRepository({
@@ -46,6 +47,8 @@ export const deleteDocumentUseCase = makeDeleteDocumentUseCase({
 });
 
 export const documentHttpV1Router = makeDocumentHttpV1Router({
+  getSession,
+  getActiveMember,
   createDocumentUseCase,
   deleteDocumentUseCase,
   getDocumentUseCase,

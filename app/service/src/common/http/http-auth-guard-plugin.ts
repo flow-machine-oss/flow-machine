@@ -1,84 +1,80 @@
 import Elysia from "elysia";
-import { isNil, isString, memoize } from "es-toolkit";
-import { type JWTVerifyGetKey, createRemoteJWKSet, jwtVerify } from "jose";
-import { ResultAsync, err, ok } from "neverthrow";
 import z from "zod";
-import { config } from "@/common/config/config";
 import { Err } from "@/common/err/err";
+import type {
+  GetActiveMember,
+  GetSession,
+} from "@/domain/port/auth/auth-service";
 
 export const currentUserSchema = z.object({
   id: z.string(),
-  createdAt: z.number().transform((timestamp) => new Date(timestamp * 1000)),
-  updatedAt: z.number().transform((timestamp) => new Date(timestamp * 1000)),
-
-  email: z.email(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  email: z.string().email(),
   firstName: z.string(),
   lastName: z.string(),
-
   organizationId: z.string(),
   organizationRole: z.enum(["org:admin", "org:member"] as const),
 });
 
-const getBearerToken = (headers: Record<string, unknown>) => {
-  const authorization = headers.authorization;
-  if (
-    isNil(authorization) ||
-    !isString(authorization) ||
-    !authorization.startsWith("Bearer ")
-  ) {
-    return err(Err.code("unauthorized"));
-  }
-  const token = authorization.slice(7).trim();
-  return token.length > 0 ? ok(token) : err(Err.code("unauthorized"));
+type Input = {
+  getSession: GetSession;
+  getActiveMember: GetActiveMember;
 };
 
-const makeGetDecodingKeys = memoize(() => {
-  return createRemoteJWKSet(new URL(config.clerk.jwksUrl));
-});
-
-const decodeToken = async (token: string, getKey: JWTVerifyGetKey) => {
-  const safeJwtVerify = ResultAsync.fromThrowable(jwtVerify);
-  const result = await safeJwtVerify(token, getKey, {
-    issuer: config.clerk.issuer,
-  });
-
-  if (result.isErr()) {
-    return err(Err.code("unauthorized", { cause: result.error }));
-  }
-  const parseResult = currentUserSchema.safeParse(result.value.payload);
-
-  if (!parseResult.success) {
-    return err(Err.code("unauthorized", { cause: parseResult.error }));
-  }
-  return ok(parseResult.data);
-};
-
-const checkAuth = async (headers: Record<string, string | unknown>) => {
-  const tokenResult = getBearerToken(headers);
-
-  if (tokenResult.isErr()) {
-    return tokenResult;
-  }
-  const getDecodingKey = makeGetDecodingKeys();
-  const decodeResult = await decodeToken(tokenResult.value, getDecodingKey);
-
-  if (decodeResult.isErr()) {
-    return decodeResult;
-  }
-  return decodeResult;
-};
-
-export const makeHttpAuthGuardPlugin = () =>
+export const makeHttpAuthGuardPlugin = ({
+  getSession,
+  getActiveMember,
+}: Input) =>
   new Elysia({ name: "authGuard" }).resolve(
     { as: "scoped" },
     async ({ headers }) => {
-      const result = await checkAuth(headers);
-      if (result.isErr()) {
-        throw result.error;
+      const sessionResult = await getSession({
+        headers: new Headers(headers as Record<string, string>),
+      });
+
+      if (sessionResult.isErr()) {
+        throw sessionResult.error;
       }
+
+      if (!sessionResult.value) {
+        throw Err.code("unauthorized");
+      }
+
+      const { session, user } = sessionResult.value;
+
+      let organizationRole: "org:admin" | "org:member" = "org:member";
+
+      if (session.activeOrganizationId) {
+        const memberResult = await getActiveMember({
+          headers: new Headers(headers as Record<string, string>),
+        });
+
+        if (memberResult.isErr()) {
+          throw memberResult.error;
+        }
+
+        if (memberResult.value) {
+          const { role } = memberResult.value;
+          organizationRole =
+            role === "owner" || role === "admin" ? "org:admin" : "org:member";
+        }
+      }
+
+      const nameParts = (user.name ?? "").split(" ");
+
       return {
-        organizationId: result.value.organizationId,
-        user: result.value,
+        organizationId: session.activeOrganizationId ?? "",
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: nameParts[0] ?? "",
+          lastName: nameParts.slice(1).join(" ") ?? "",
+          organizationId: session.activeOrganizationId ?? "",
+          organizationRole,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        },
       };
     },
   );

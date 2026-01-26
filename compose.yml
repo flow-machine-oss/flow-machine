@@ -1,24 +1,6 @@
 name: flow-machine
 
 services:
-  postgres:
-    image: postgres:18.1
-    container_name: flow-machine-postgres
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: flow_machine
-    volumes:
-      - postgres-data:/var/lib/postgresql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-
   inngest:
     image: inngest/inngest
     container_name: flow-machine-inngest
@@ -41,5 +23,4 @@ services:
       start_period: 10s
 
 volumes:
-  postgres-data:
   mongo-data:

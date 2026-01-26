@@ -10,6 +10,10 @@ import { errEnvelope, okEnvelope } from "@/common/http/http-envelope";
 import { makeHttpMongoCtxPlugin } from "@/common/http/http-mongo-ctx-plugin";
 import type { DocumentEntity } from "@/domain/entity/document/document-entity";
 import type {
+  GetActiveMember,
+  GetSession,
+} from "@/domain/port/auth/auth-service";
+import type {
   CreateDocumentUseCase,
   DeleteDocumentUseCase,
   GetDocumentUseCase,
@@ -18,6 +22,8 @@ import type {
 } from "@/domain/port/document/document-use-case";
 
 type Input = {
+  getSession: GetSession;
+  getActiveMember: GetActiveMember;
   createDocumentUseCase: CreateDocumentUseCase;
   deleteDocumentUseCase: DeleteDocumentUseCase;
   getDocumentUseCase: GetDocumentUseCase;
@@ -36,6 +42,8 @@ const toResponseDto = (entity: DocumentEntity): DocumentResponseDto => ({
 });
 
 export const makeDocumentHttpV1Router = ({
+  getSession,
+  getActiveMember,
   createDocumentUseCase,
   deleteDocumentUseCase,
   getDocumentUseCase,
@@ -44,7 +52,7 @@ export const makeDocumentHttpV1Router = ({
 }: Input) =>
   new Elysia({ name: "document.v1" })
     .use(makeHttpMongoCtxPlugin())
-    .use(makeHttpAuthGuardPlugin())
+    .use(makeHttpAuthGuardPlugin({ getSession, getActiveMember }))
     .group("/api/v1/document", (r) =>
       r
         .post(

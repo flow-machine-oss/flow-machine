@@ -1,12 +1,12 @@
 import type { InternalAxiosRequestConfig } from "axios";
 import axios from "axios";
 import { useMemo } from "react";
-import { globalConfig } from "@/lib/global-config";
+import { config } from "@/lib/config";
 
 export const useUnprotectedHttpClient = () => {
   return useMemo(() => {
     const instance = axios.create({
-      baseURL: globalConfig.service.baseUrl,
+      baseURL: config.service.baseUrl,
       timeout: 10 * 1000,
     });
 

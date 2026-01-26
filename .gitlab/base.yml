@@ -1,7 +1,6 @@
 .build_artifact:
   stage: build_artifact
   image: oven/bun:${BUN_IMAGE_TAG}
-  environment: ${ENVIRONMENT}
   cache:
     key: ${CI_COMMIT_REF_SLUG}-${APP_NAME}
     paths:
@@ -19,7 +18,6 @@
 .build_image:
   stage: build_image
   image: docker:${DOCKER_IMAGE_TAG}
-  environment: ${ENVIRONMENT}
   services:
     - docker:${DOCKER_IMAGE_TAG}
   variables:
@@ -36,7 +34,6 @@
 .upload_image:
   stage: upload_image
   image: docker:${DOCKER_IMAGE_TAG}
-  environment: ${ENVIRONMENT}
   services:
     - docker:${DOCKER_IMAGE_TAG}
   before_script:

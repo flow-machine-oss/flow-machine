@@ -1,11 +1,5 @@
-import { SQL } from "bun";
-import { DrizzleQueryError } from "drizzle-orm";
-import { isNil, isString } from "es-toolkit";
-import {
-  type ErrCode,
-  errDetails,
-  pgCodeToErrCode,
-} from "@/common/err/err-details";
+import { isString } from "es-toolkit";
+import { type ErrCode, errDetails } from "@/common/err/err-details";
 
 export class Err extends Error {
   code: ErrCode;
@@ -32,17 +26,6 @@ export class Err extends Error {
 
     if (isString(error) && Object.hasOwn(errDetails, error)) {
       const code = error as ErrCode;
-      const details = errDetails[code];
-      return new Err(code, options.message ?? details.message, options.cause);
-    }
-
-    if (
-      error instanceof DrizzleQueryError &&
-      error.cause instanceof SQL.PostgresError
-    ) {
-      const code = isNil(error.cause.errno)
-        ? "pgUnknown"
-        : (pgCodeToErrCode[error.cause.errno] ?? "pgUnknown");
       const details = errDetails[code];
       return new Err(code, options.message ?? details.message, options.cause);
     }
