@@ -16,12 +16,13 @@ The GitLab CI/CD pipeline has been successfully migrated to GitHub Actions. The 
 - **Triggers**:
   - Push to any branch
   - Push tags
-  - Pull requests to main
+  - Pull requests to main (builds artifacts only, no Docker images or ECR uploads)
 
 ## Jobs
 
 ### 1. Setup Environment
 Sets environment variables based on the trigger:
+- **Pull Requests**: Staging environment, version = pr-{number}-{sha}, upload disabled
 - **Tags**: Production environment, version = tag name, upload enabled
 - **Main branch**: Staging environment, version = main-{sha}, upload enabled  
 - **Other branches**: Staging environment, version = branch-{sha}, upload disabled
@@ -89,7 +90,7 @@ The following secrets must be configured in the GitHub repository settings:
 - Better caching mechanism with `actions/cache`
 - More mature marketplace with official AWS actions
 - Built-in artifact management with retention policies
-- No need for external Docker registry during builds
+- Simplified pull request testing
 
 ### Key Changes:
 1. **Caching**: Uses GitHub Actions cache instead of GitLab cache
@@ -97,6 +98,8 @@ The following secrets must be configured in the GitHub repository settings:
 3. **AWS Integration**: Uses official AWS actions for ECR login
 4. **Conditional Execution**: Uses `if` conditions instead of GitLab rules
 5. **Job Dependencies**: Uses `needs` instead of stage ordering
+6. **Docker Build**: Removed Docker Buildx setup (not needed for simple builds)
+7. **Pull Requests**: Explicitly handled with proper version naming
 
 ## Legacy Files
 
@@ -110,9 +113,10 @@ These can be removed once the GitHub Actions workflow is verified to work correc
 
 To test the workflow:
 
-1. **Branch builds**: Push to any branch - only builds artifacts
-2. **Main branch**: Push to main - builds artifacts, images, and uploads to ECR
-3. **Release**: Create and push a tag - builds and uploads with production environment
+1. **Pull request builds**: Open a PR - builds artifacts only, no Docker images
+2. **Branch builds**: Push to any branch - builds artifacts only, no Docker images
+3. **Main branch**: Push to main - builds artifacts, images, and uploads to ECR
+4. **Release**: Create and push a tag - builds and uploads with production environment
 
 ## Troubleshooting
 
