@@ -30,6 +30,13 @@ export const configSchema = z.object({
     polarAccessToken: z.string(),
     polarEnvironment: z.enum(["production", "sandbox"]),
   }),
+
+  inngest: z.object({
+    eventKey: z.string().optional(),
+    signingKey: z.string().optional(),
+    isDev: z.boolean().default(true),
+    baseUrl: z.url().optional(),
+  }),
 });
 
 export type Config = z.output<typeof configSchema>;
@@ -63,5 +70,12 @@ export const config = configSchema.parse({
   billing: {
     polarAccessToken: process.env.POLAR_ACCESS_TOKEN,
     polarEnvironment: process.env.POLAR_ENVIRONMENT,
+  },
+
+  inngest: {
+    eventKey: process.env.INNGEST_EVENT_KEY,
+    signingKey: process.env.INNGEST_SIGNING_KEY,
+    isDev: process.env.INNGEST_DEV === "true",
+    baseUrl: process.env.INNGEST_BASE_URL,
   },
 });

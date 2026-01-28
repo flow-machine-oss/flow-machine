@@ -7,6 +7,8 @@ import { makeHttpErrorHandlerPlugin } from "@/common/http/http-error-handler.plu
 import { authHttpRouter } from "@/di/auth-di";
 import { documentHttpV1Router } from "@/di/document-di";
 import { healthHttpV1Router } from "@/di/health-di";
+import { inngestHttpRouter } from "@/di/inngest-di";
+import { workflowHttpV1Router } from "@/di/workflow-di";
 
 const app = new Elysia();
 
@@ -24,4 +26,6 @@ app
   .use(authHttpRouter)
   .use(documentHttpV1Router)
   .use(healthHttpV1Router)
+  .use(inngestHttpRouter)
+  .use(workflowHttpV1Router)
   .listen(8000);

@@ -13,9 +13,10 @@
   },
   "dependencies": {
     "@base-ui/react": "catalog:",
-    "@better-fetch/fetch": "^1.1.21",
     "@daveyplate/better-auth-ui": "catalog:",
+    "@inngest/workflow-kit": "catalog:",
     "@tanstack/react-query": "catalog:",
+    "@xyflow/react": "catalog:",
     "axios": "catalog:",
     "better-auth": "catalog:",
     "class-variance-authority": "catalog:",
