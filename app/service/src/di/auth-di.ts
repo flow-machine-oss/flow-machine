@@ -4,11 +4,6 @@ import {
   makeGetSession,
 } from "@/adapter/auth/better-auth-adapter";
 import {
-  makeCancelSubscription,
-  makeCreateCheckoutSession,
-  makeGetUserSubscription,
-} from "@/adapter/billing/polar-billing-adapter";
-import {
   makeSendInvitationEmail,
   makeSendOTPEmail,
 } from "@/adapter/email/resend-email-adapter";
@@ -24,9 +19,5 @@ const betterAuth = makeBetterAuth({
 
 export const getSession = makeGetSession({ betterAuth });
 export const getActiveMember = makeGetActiveMember({ betterAuth });
-
-export const createCheckoutSession = makeCreateCheckoutSession();
-export const getUserSubscription = makeGetUserSubscription();
-export const cancelSubscription = makeCancelSubscription();
 
 export const authHttpRouter = makeAuthHttpRouter({ betterAuth });

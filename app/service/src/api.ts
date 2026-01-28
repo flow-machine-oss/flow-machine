@@ -5,6 +5,7 @@ import z from "zod";
 import { config } from "@/common/config/config";
 import { makeHttpErrorHandlerPlugin } from "@/common/http/http-error-handler.plugin";
 import { authHttpRouter } from "@/di/auth-di";
+import { billingHttpV1Router } from "@/di/billing-di";
 import { documentHttpV1Router } from "@/di/document-di";
 import { healthHttpV1Router } from "@/di/health-di";
 import { inngestHttpRouter } from "@/di/inngest-di";
@@ -24,6 +25,7 @@ app
   )
   .use(makeHttpErrorHandlerPlugin())
   .use(authHttpRouter)
+  .use(billingHttpV1Router)
   .use(documentHttpV1Router)
   .use(healthHttpV1Router)
   .use(inngestHttpRouter)

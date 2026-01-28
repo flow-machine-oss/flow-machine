@@ -27,8 +27,7 @@ export const configSchema = z.object({
   }),
 
   billing: z.object({
-    polarAccessToken: z.string(),
-    polarEnvironment: z.enum(["production", "sandbox"]),
+    autumnSecretKey: z.string(),
   }),
 
   inngest: z.object({
@@ -68,8 +67,7 @@ export const config = configSchema.parse({
   },
 
   billing: {
-    polarAccessToken: process.env.POLAR_ACCESS_TOKEN,
-    polarEnvironment: process.env.POLAR_ENVIRONMENT,
+    autumnSecretKey: process.env.AUTUMN_SECRET_KEY,
   },
 
   inngest: {

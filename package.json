@@ -49,7 +49,7 @@
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "@xyflow/react": "12.10.0",
-    "autumn-js": "0.1.71",
+    "autumn-js": "0.1.72",
     "axios": "1.13.2",
     "better-auth": "1.4.17",
     "class-variance-authority": "0.7.1",
