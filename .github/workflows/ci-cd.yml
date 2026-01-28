@@ -83,7 +83,7 @@ jobs:
         run: bun run build --filter ./app/web
 
       - name: Upload web artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.5.0
         with:
           name: web-build
           path: app/web/.next
@@ -120,7 +120,7 @@ jobs:
         run: bun run build --filter ./app/service
 
       - name: Upload service artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.5.0
         with:
           name: service-build
           path: app/service/dist
@@ -137,7 +137,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download web artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.8
         with:
           name: web-build
           path: app/web/.next
@@ -152,7 +152,7 @@ jobs:
           docker save ${{ env.DOCKER_IMAGE_PREFIX }}/web:${{ needs.setup.outputs.app_version }} -o docker-images/web.tar
 
       - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.5.0
         with:
           name: web-docker-image
           path: docker-images/web.tar
@@ -169,7 +169,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download service artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.8
         with:
           name: service-build
           path: app/service/dist
@@ -184,7 +184,7 @@ jobs:
           docker save ${{ env.DOCKER_IMAGE_PREFIX }}/service:${{ needs.setup.outputs.app_version }} -o docker-images/service.tar
 
       - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.5.0
         with:
           name: service-docker-image
           path: docker-images/service.tar
@@ -198,7 +198,7 @@ jobs:
     if: needs.setup.outputs.should_upload == 'true'
     steps:
       - name: Download Docker image artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.8
         with:
           name: web-docker-image
           path: docker-images
@@ -240,7 +240,7 @@ jobs:
     if: needs.setup.outputs.should_upload == 'true'
     steps:
       - name: Download Docker image artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.8
         with:
           name: service-docker-image
           path: docker-images
