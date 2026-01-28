@@ -1,3 +1,7 @@
+# ⚠️ MIGRATION NOTICE: This GitLab CI configuration has been migrated to GitHub Actions
+# See: .github/workflows/ci-cd.yml and .github/workflows/README.md
+# This file is kept for reference but is no longer actively used.
+
 workflow:
   rules:
     - if: $CI_COMMIT_TAG
