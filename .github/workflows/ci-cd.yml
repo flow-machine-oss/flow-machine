@@ -27,17 +27,18 @@ jobs:
       - name: Set environment variables
         id: set-env
         run: |
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
             echo "environment=production" >> $GITHUB_OUTPUT
             echo "app_version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
             echo "should_upload=true" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref_name }}" == "main" ]]; then
             echo "environment=staging" >> $GITHUB_OUTPUT
-            echo "app_version=main-${{ github.sha }}" >> $GITHUB_OUTPUT
+            echo "app_version=main-${SHORT_SHA}" >> $GITHUB_OUTPUT
             echo "should_upload=true" >> $GITHUB_OUTPUT
           else
             echo "environment=staging" >> $GITHUB_OUTPUT
-            echo "app_version=branch-${{ github.sha }}" >> $GITHUB_OUTPUT
+            echo "app_version=branch-${SHORT_SHA}" >> $GITHUB_OUTPUT
             echo "should_upload=false" >> $GITHUB_OUTPUT
           fi
 
