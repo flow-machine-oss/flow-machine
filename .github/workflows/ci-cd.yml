@@ -11,6 +11,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 env:
   BUN_VERSION: "1.3.5"
   DOCKER_IMAGE_PREFIX: "flow-machine"
