@@ -32,7 +32,7 @@ jobs:
         id: set-env
         run: |
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-          
+
           # Handle pull request events
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             echo "environment=staging" >> $GITHUB_OUTPUT
