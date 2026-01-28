@@ -142,10 +142,10 @@ jobs:
 
       - name: Load, tag, and push image to Amazon ECR
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          AWS_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           docker load -i docker-images/${{ matrix.app }}.tar
           docker tag \
             ${{ secrets.AWS_ECR_REPOSITORY }}/${{ matrix.app }}:${{ env.APP_VERSION }} \
-            ${{ env.ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ env.APP_VERSION }}
-          docker push ${{ env.ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ env.APP_VERSION }}
+            ${{ env.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ env.APP_VERSION }}
+          docker push ${{ env.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ env.APP_VERSION }}
