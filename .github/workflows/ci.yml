@@ -142,5 +142,5 @@ jobs:
           docker load -i docker-images/${{ matrix.app }}.tar
           docker tag \
             ${{ env.AWS_ECR_REPOSITORY }}/${{ matrix.app }}:${{ steps.extract-version.outputs.version }} \
-            ${{ env.AWS_ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ steps.extract-version.outputs.version }}
-          docker push ${{ env.AWS_ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ steps.extract-version.outputs.version }}
+            ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ steps.extract-version.outputs.version }}
+          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ steps.extract-version.outputs.version }}
