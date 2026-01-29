@@ -36,7 +36,7 @@ jobs:
           path: |
             node_modules
             app/${{ matrix.app }}/node_modules
-          key: ${{ runner.os }}-bun-${{ matrix.app }}-${{ hashFiles('**/bun.lockb') }}
+          key: ${{ runner.os }}-bun-${{ matrix.app }}-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-${{ matrix.app }}-
 
@@ -69,13 +69,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set version for tag
-        if: github.ref_type == 'tag'
-        run: echo "APP_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
-
-      - name: Set version for main branch
-        if: github.ref == 'refs/heads/main'
-        run: echo "APP_VERSION=main-${GITHUB_SHA::7}" >> $GITHUB_ENV
+      - name: Extract version
+        id: extract-version
+        uses: ./.github/actions/extract-version
 
       - name: Download build artifact
         uses: actions/download-artifact@v4
@@ -90,13 +86,13 @@ jobs:
         run: |
           docker build \
             -f docker/Dockerfile.app.${{ matrix.app }} \
-            -t ${{ secrets.AWS_ECR_REPOSITORY }}/${{ matrix.app }}:${{ env.APP_VERSION }} \
+            -t ${{ env.AWS_ECR_REPOSITORY }}/${{ matrix.app }}:${{ steps.extract-version.outputs.version }} \
             app/${{ matrix.app }}
 
       - name: Save Docker image
         run: |
           mkdir -p docker-images
-          docker save ${{ secrets.AWS_ECR_REPOSITORY }}/${{ matrix.app }}:${{ env.APP_VERSION }} \
+          docker save ${{ env.AWS_ECR_REPOSITORY }}/${{ matrix.app }}:${{ steps.extract-version.outputs.version }} \
             -o docker-images/${{ matrix.app }}.tar
 
       - name: Upload Docker image artifact
@@ -115,13 +111,12 @@ jobs:
       matrix:
         app: [web, service]
     steps:
-      - name: Set version for tag
-        if: github.ref_type == 'tag'
-        run: echo "APP_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Set version for main branch
-        if: github.ref == 'refs/heads/main'
-        run: echo "APP_VERSION=main-${GITHUB_SHA::7}" >> $GITHUB_ENV
+      - name: Extract version
+        id: extract-version
+        uses: ./.github/actions/extract-version
 
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4
@@ -134,7 +129,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -146,6 +141,6 @@ jobs:
         run: |
           docker load -i docker-images/${{ matrix.app }}.tar
           docker tag \
-            ${{ secrets.AWS_ECR_REPOSITORY }}/${{ matrix.app }}:${{ env.APP_VERSION }} \
-            ${{ env.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ env.APP_VERSION }}
-          docker push ${{ env.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ env.APP_VERSION }}
+            ${{ env.AWS_ECR_REPOSITORY }}/${{ matrix.app }}:${{ steps.extract-version.outputs.version }} \
+            ${{ env.AWS_ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ steps.extract-version.outputs.version }}
+          docker push ${{ env.AWS_ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:${{ matrix.app }}.${{ steps.extract-version.outputs.version }}
