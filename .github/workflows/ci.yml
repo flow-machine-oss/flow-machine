@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.app }}-build
-          path: app/${{ matrix.app }}/${{ matrix.build_dir }}
+          path: app/${{ matrix.app }}/${{ matrix.build_dir }}/
           retention-days: 1
 
   build_image:
