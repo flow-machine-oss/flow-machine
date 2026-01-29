@@ -46,14 +46,12 @@ jobs:
       - name: Build ${{ matrix.app }}
         run: bun run build --filter ./app/${{ matrix.app }}
 
-      - name: Logs all ${{ matrix.app }}
-        run: ls -la ./app/${{ matrix.app }}
-
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.app }}-build
-          path: app/${{ matrix.app }}/${{ matrix.build_dir }}/
+          path: app/${{ matrix.app }}/${{ matrix.build_dir }}
+          include-hidden-files: true
           retention-days: 1
 
   build_image:
