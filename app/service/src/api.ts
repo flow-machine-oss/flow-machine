@@ -8,6 +8,7 @@ import { authHttpRouter } from "@/di/auth-di";
 import { billingHttpV1Router } from "@/di/billing-di";
 import { documentHttpV1Router } from "@/di/document-di";
 import { healthHttpV1Router } from "@/di/health-di";
+import { projectHttpV1Router } from "@/di/project-di";
 import { inngestHttpRouter } from "@/di/inngest-di";
 import { workflowHttpV1Router } from "@/di/workflow-di";
 
@@ -29,5 +30,6 @@ app
   .use(documentHttpV1Router)
   .use(healthHttpV1Router)
   .use(inngestHttpRouter)
+  .use(projectHttpV1Router)
   .use(workflowHttpV1Router)
   .listen(8000);
