@@ -14,7 +14,7 @@ export const makeCreateWorkflowUseCase = ({
   insertWorkflowRepository,
 }: Input): CreateWorkflowUseCase =>
   createWorkflowUseCaseSchema.implementAsync(async ({ ctx, payload }) => {
-    const makeNewEntityResult = WorkflowEntity.makeNew(ctx.tenantId, {
+    const makeNewEntityResult = WorkflowEntity.makeNew(ctx.tenant, {
       name: payload.name,
       description: payload.description,
       projectId: payload.projectId,

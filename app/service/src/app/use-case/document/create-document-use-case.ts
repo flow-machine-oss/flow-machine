@@ -14,7 +14,7 @@ export const makeCreateDocumentUseCase = ({
   insertDocumentRepository,
 }: Input): CreateDocumentUseCase =>
   createDocumentUseCaseSchema.implementAsync(async ({ ctx, payload }) => {
-    const makeNewEntityResult = DocumentEntity.makeNew(ctx.tenantId, {
+    const makeNewEntityResult = DocumentEntity.makeNew(ctx.tenant, {
       content: payload.content,
       projectId: payload.projectId,
       title: payload.title,

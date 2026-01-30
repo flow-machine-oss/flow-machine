@@ -1,7 +1,10 @@
 import { ok } from "neverthrow";
 import z from "zod";
 import { type EntityIdInput, newEntityId } from "@/common/domain/entity-id";
-import { TenantAwareEntity } from "@/common/domain/tenant-aware-entity";
+import {
+  type Tenant,
+  TenantAwareEntity,
+} from "@/common/domain/tenant-aware-entity";
 
 export const credentialEntityProps = z.discriminatedUnion("type", [
   z.object({
@@ -19,19 +22,19 @@ export const credentialEntityProps = z.discriminatedUnion("type", [
 export type CredentialEntityProps = z.output<typeof credentialEntityProps>;
 
 export class CredentialEntity extends TenantAwareEntity<CredentialEntityProps> {
-  static makeNew(tenantId: string, props: CredentialEntityProps) {
-    return ok(new CredentialEntity(newEntityId(), tenantId, props));
+  static makeNew(tenant: Tenant, props: CredentialEntityProps) {
+    return ok(new CredentialEntity(newEntityId(), tenant, props));
   }
 
   static makeExisting(
     id: EntityIdInput,
     createdAt: Date,
     updatedAt: Date,
-    tenantId: string,
+    tenant: Tenant,
     props: CredentialEntityProps,
   ) {
     return ok(
-      new CredentialEntity(id, tenantId, props, { createdAt, updatedAt }),
+      new CredentialEntity(id, tenant, props, { createdAt, updatedAt }),
     );
   }
 }

@@ -17,7 +17,7 @@ bun run format
 # Testing
 bun run test
 
-# Start PostgreSQL (required for local development)
+# Start MongoDB and Inngest (required for local development)
 docker compose up -d
 
 # Run command on a specific app (use --filter from project root)

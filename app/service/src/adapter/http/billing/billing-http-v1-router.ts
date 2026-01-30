@@ -48,22 +48,17 @@ export const makeBillingHttpV1Router = ({
       r
         .post(
           "/check",
-          async ({ body, query, organizationId, user }) => {
-            const customerId =
-              query.scope === "user" ? user.id : organizationId;
-
+          async ({ body, tenant }) => {
             const result = await checkFeatureAccess({
-              customerId,
+              customerId: tenant.id,
               featureId: body.featureId,
               requiredBalance: body.requiredBalance,
               withPreview: body.withPreview,
               sendEvent: body.sendEvent,
             });
-
             if (result.isErr()) {
               return errEnvelope(result.error);
             }
-
             return okEnvelope({ data: result.value });
           },
           {
@@ -73,23 +68,18 @@ export const makeBillingHttpV1Router = ({
         )
         .post(
           "/track",
-          async ({ body, query, organizationId, user }) => {
-            const customerId =
-              query.scope === "user" ? user.id : organizationId;
-
+          async ({ body, tenant }) => {
             const result = await trackUsage({
-              customerId,
+              customerId: tenant.id,
               featureId: body.featureId,
               value: body.value,
               idempotencyKey: body.idempotencyKey,
               entityId: body.entityId,
               overageBehavior: body.overageBehavior,
             });
-
             if (result.isErr()) {
               return errEnvelope(result.error);
             }
-
             return okEnvelope({ data: result.value });
           },
           {
@@ -99,23 +89,18 @@ export const makeBillingHttpV1Router = ({
         )
         .post(
           "/attach",
-          async ({ body, query, organizationId, user }) => {
-            const customerId =
-              query.scope === "user" ? user.id : organizationId;
-
+          async ({ body, tenant }) => {
             const result = await attachProduct({
-              customerId,
+              customerId: tenant.id,
               productId: body.productId,
               customerData: body.customerData,
               options: body.options,
               invoiceImmediately: body.invoiceImmediately,
               successUrl: body.successUrl,
             });
-
             if (result.isErr()) {
               return errEnvelope(result.error);
             }
-
             return okEnvelope({ data: result.value });
           },
           {
@@ -125,21 +110,16 @@ export const makeBillingHttpV1Router = ({
         )
         .post(
           "/cancel",
-          async ({ body, query, organizationId, user }) => {
-            const customerId =
-              query.scope === "user" ? user.id : organizationId;
-
+          async ({ body, tenant }) => {
             const result = await cancelProduct({
-              customerId,
+              customerId: tenant.id,
               productId: body.productId,
               cancelImmediately: body.cancelImmediately,
               entityId: body.entityId,
             });
-
             if (result.isErr()) {
               return errEnvelope(result.error);
             }
-
             return okEnvelope({ data: result.value });
           },
           {
@@ -149,16 +129,11 @@ export const makeBillingHttpV1Router = ({
         )
         .get(
           "/entitlements",
-          async ({ query, organizationId, user }) => {
-            const customerId =
-              query.scope === "user" ? user.id : organizationId;
-
-            const result = await getEntitlements({ customerId });
-
+          async ({ tenant }) => {
+            const result = await getEntitlements({ customerId: tenant.id });
             if (result.isErr()) {
               return errEnvelope(result.error);
             }
-
             return okEnvelope({ data: result.value });
           },
           {
@@ -167,16 +142,11 @@ export const makeBillingHttpV1Router = ({
         )
         .get(
           "/portal",
-          async ({ query, organizationId, user }) => {
-            const customerId =
-              query.scope === "user" ? user.id : organizationId;
-
-            const result = await getBillingPortal({ customerId });
-
+          async ({ tenant }) => {
+            const result = await getBillingPortal({ customerId: tenant.id });
             if (result.isErr()) {
               return errEnvelope(result.error);
             }
-
             return okEnvelope({ data: result.value });
           },
           {

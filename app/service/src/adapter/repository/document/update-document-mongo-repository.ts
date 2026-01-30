@@ -23,7 +23,7 @@ export const makeUpdateDocumentMongoRepository = ({
     }
     const [error] = await attemptAsync(() =>
       collectionResult.value.updateOne(
-        { _id: id, tenantId: ctx.tenantId },
+        { _id: id, "tenant.id": ctx.tenant.id },
         { $set: { ...omitBy(data, isUndefined), updatedAt: new UTCDate() } },
       ),
     );
