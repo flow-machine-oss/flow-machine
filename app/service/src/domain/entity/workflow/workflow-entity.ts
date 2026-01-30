@@ -1,7 +1,10 @@
 import { ok } from "neverthrow";
 import z from "zod";
 import { type EntityIdInput, newEntityId } from "@/common/domain/entity-id";
-import { TenantAwareEntity } from "@/common/domain/tenant-aware-entity";
+import {
+  type Tenant,
+  TenantAwareEntity,
+} from "@/common/domain/tenant-aware-entity";
 
 export const workflowActionSchema = z.object({
   id: z.string(),
@@ -28,19 +31,19 @@ export const workflowEntityProps = z.object({
 export type WorkflowEntityProps = z.output<typeof workflowEntityProps>;
 
 export class WorkflowEntity extends TenantAwareEntity<WorkflowEntityProps> {
-  static makeNew(tenantId: string, props: WorkflowEntityProps) {
-    return ok(new WorkflowEntity(newEntityId(), tenantId, props));
+  static makeNew(tenant: Tenant, props: WorkflowEntityProps) {
+    return ok(new WorkflowEntity(newEntityId(), tenant, props));
   }
 
   static makeExisting(
     id: EntityIdInput,
     createdAt: Date,
     updatedAt: Date,
-    tenantId: string,
+    tenant: Tenant,
     props: WorkflowEntityProps,
   ) {
     return ok(
-      new WorkflowEntity(id, tenantId, props, { createdAt, updatedAt }),
+      new WorkflowEntity(id, tenant, props, { createdAt, updatedAt }),
     );
   }
 }

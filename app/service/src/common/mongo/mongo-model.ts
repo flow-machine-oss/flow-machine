@@ -1,7 +1,10 @@
 import type { UnknownRecord } from "type-fest";
 import type { Entity } from "@/common/domain/entity";
 import type { EntityId } from "@/common/domain/entity-id";
-import type { TenantAwareEntity } from "@/common/domain/tenant-aware-entity";
+import type {
+  Tenant,
+  TenantAwareEntity,
+} from "@/common/domain/tenant-aware-entity";
 
 export type MongoModel<T> = T & {
   _id: EntityId;
@@ -10,7 +13,7 @@ export type MongoModel<T> = T & {
 };
 
 export type TenantAwareMongoModel<T> = MongoModel<T> & {
-  tenantId: string;
+  tenant: Tenant;
 };
 
 export const entityToMongoModel = <
@@ -34,7 +37,7 @@ export const tenantAwareEntityToMongoModel = <
   entity: K,
 ): TenantAwareMongoModel<T> => ({
   _id: entity.id,
-  tenantId: entity.tenantId,
+  tenant: entity.tenant,
 
   ...entity.props,
 

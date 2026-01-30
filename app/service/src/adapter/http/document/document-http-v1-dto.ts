@@ -1,5 +1,6 @@
 import z from "zod";
 import { entityIdSchema } from "@/common/domain/entity-id";
+import { tenantSchema } from "@/common/domain/tenant-aware-entity";
 import { documentEntityProps } from "@/domain/entity/document/document-entity";
 import { createDocumentUseCaseInputSchema } from "@/domain/port/document/document-dto";
 
@@ -23,7 +24,7 @@ export const documentResponseDtoSchema = z.object({
   id: entityIdSchema,
   createdAt: z.date(),
   updatedAt: z.date(),
-  tenantId: z.string(),
+  tenant: tenantSchema,
   content: documentEntityProps.shape.content,
   projectId: documentEntityProps.shape.projectId,
   title: documentEntityProps.shape.title,

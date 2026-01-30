@@ -24,7 +24,7 @@ export const makeFindWorkflowByIdMongoRepository = ({
     const [error, doc] = await attemptAsync(() =>
       collectionResult.value.findOne({
         _id: id,
-        tenantId: ctx.tenantId,
+        "tenant.id": ctx.tenant.id,
       }),
     );
 
@@ -38,7 +38,7 @@ export const makeFindWorkflowByIdMongoRepository = ({
       doc._id,
       doc.createdAt,
       doc.updatedAt,
-      doc.tenantId,
+      doc.tenant,
       {
         name: doc.name,
         description: doc.description,

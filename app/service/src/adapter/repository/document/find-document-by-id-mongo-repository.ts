@@ -24,7 +24,7 @@ export const makeFindDocumentByIdMongoRepository = ({
     const [error, doc] = await attemptAsync(() =>
       collectionResult.value.findOne({
         _id: id,
-        tenantId: ctx.tenantId,
+        "tenant.id": ctx.tenant.id,
       }),
     );
 
@@ -38,7 +38,7 @@ export const makeFindDocumentByIdMongoRepository = ({
       doc._id,
       doc.createdAt,
       doc.updatedAt,
-      doc.tenantId,
+      doc.tenant,
       {
         content: doc.content,
         projectId: doc.projectId,

@@ -35,7 +35,7 @@ const toResponseDto = (entity: WorkflowEntity): WorkflowResponseDto => ({
   id: entity.id,
   createdAt: entity.createdAt,
   updatedAt: entity.updatedAt,
-  tenantId: entity.tenantId,
+  tenant: entity.tenant,
   name: entity.props.name,
   description: entity.props.description,
   projectId: entity.props.projectId,
@@ -60,9 +60,9 @@ export const makeWorkflowHttpV1Router = ({
       r
         .post(
           "",
-          async ({ body, ctx, organizationId }) => {
+          async ({ body, ctx, tenant }) => {
             const result = await createWorkflowUseCase({
-              ctx: { ...ctx, tenantId: organizationId },
+              ctx: { ...ctx, tenant },
               payload: body,
             });
             if (result.isErr()) {
@@ -74,9 +74,9 @@ export const makeWorkflowHttpV1Router = ({
             body: postWorkflowRequestBodyDtoSchema,
           },
         )
-        .get("", async ({ ctx, organizationId }) => {
+        .get("", async ({ ctx, tenant }) => {
           const result = await listWorkflowsUseCase({
-            ctx: { ...ctx, tenantId: organizationId },
+            ctx: { ...ctx, tenant },
           });
           if (result.isErr()) {
             return errEnvelope(result.error);
@@ -85,9 +85,9 @@ export const makeWorkflowHttpV1Router = ({
         })
         .get(
           "/:id",
-          async ({ ctx, organizationId, params }) => {
+          async ({ ctx, tenant, params }) => {
             const result = await getWorkflowUseCase({
-              ctx: { ...ctx, tenantId: organizationId },
+              ctx: { ...ctx, tenant },
               payload: { id: params.id },
             });
             if (result.isErr()) {
@@ -101,9 +101,9 @@ export const makeWorkflowHttpV1Router = ({
         )
         .patch(
           "/:id",
-          async ({ body, ctx, organizationId, params }) => {
+          async ({ body, ctx, tenant, params }) => {
             const result = await updateWorkflowUseCase({
-              ctx: { ...ctx, tenantId: organizationId },
+              ctx: { ...ctx, tenant },
               payload: {
                 id: params.id,
                 name: body.name,
@@ -126,9 +126,9 @@ export const makeWorkflowHttpV1Router = ({
         )
         .delete(
           "/:id",
-          async ({ ctx, organizationId, params }) => {
+          async ({ ctx, tenant, params }) => {
             const result = await deleteWorkflowUseCase({
-              ctx: { ...ctx, tenantId: organizationId },
+              ctx: { ...ctx, tenant },
               payload: { id: params.id },
             });
             if (result.isErr()) {

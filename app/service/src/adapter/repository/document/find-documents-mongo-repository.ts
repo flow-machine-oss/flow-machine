@@ -22,7 +22,7 @@ export const makeFindDocumentsMongoRepository = ({
       return err(collectionResult.error);
     }
     const [error, docs] = await attemptAsync(() =>
-      collectionResult.value.find({ tenantId: ctx.tenantId }).toArray(),
+      collectionResult.value.find({ "tenant.id": ctx.tenant.id }).toArray(),
     );
 
     if (isNotNil(error) || docs === null) {
@@ -35,7 +35,7 @@ export const makeFindDocumentsMongoRepository = ({
         doc._id,
         doc.createdAt,
         doc.updatedAt,
-        doc.tenantId,
+        doc.tenant,
         {
           content: doc.content,
           projectId: doc.projectId,

@@ -1,5 +1,7 @@
 import Elysia from "elysia";
+import { isNil } from "es-toolkit";
 import z from "zod";
+import type { Tenant } from "@/common/domain/tenant-aware-entity";
 import { Err } from "@/common/err/err";
 import type {
   GetActiveMember,
@@ -36,45 +38,38 @@ export const makeHttpAuthGuardPlugin = ({
       if (sessionResult.isErr()) {
         throw sessionResult.error;
       }
-
       if (!sessionResult.value) {
         throw Err.code("unauthorized");
       }
-
       const { session, user } = sessionResult.value;
 
-      let organizationRole: "org:admin" | "org:member" = "org:member";
-
-      if (session.activeOrganizationId) {
-        const memberResult = await getActiveMember({
-          headers: new Headers(headers as Record<string, string>),
-        });
-
-        if (memberResult.isErr()) {
-          throw memberResult.error;
-        }
-
-        if (memberResult.value) {
-          const { role } = memberResult.value;
-          organizationRole =
-            role === "owner" || role === "admin" ? "org:admin" : "org:member";
-        }
+      if (isNil(session.activeOrganizationId)) {
+        const tenant = { id: user.id, type: "user" } satisfies Tenant;
+        return { organization: null, tenant, user };
       }
 
-      const nameParts = (user.name ?? "").split(" ");
+      const memberResult = await getActiveMember({
+        headers: new Headers(headers as Record<string, string>),
+      });
+
+      if (memberResult.isErr()) {
+        throw memberResult.error;
+      }
+      if (isNil(memberResult.value)) {
+        throw Err.code("notFound");
+      }
+      const tenant = {
+        id: session.activeOrganizationId,
+        type: "organization",
+      } satisfies Tenant;
 
       return {
-        organizationId: session.activeOrganizationId ?? "",
-        user: {
-          id: user.id,
-          email: user.email,
-          firstName: nameParts[0] ?? "",
-          lastName: nameParts.slice(1).join(" ") ?? "",
-          organizationId: session.activeOrganizationId ?? "",
-          organizationRole,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
+        organization: {
+          id: session.activeOrganizationId,
+          role: memberResult.value.role,
         },
+        tenant,
+        user,
       };
     },
   );

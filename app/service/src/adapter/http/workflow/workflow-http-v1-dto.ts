@@ -1,5 +1,6 @@
 import z from "zod";
 import { entityIdSchema } from "@/common/domain/entity-id";
+import { tenantSchema } from "@/common/domain/tenant-aware-entity";
 import {
   workflowActionSchema,
   workflowEdgeSchema,
@@ -33,7 +34,7 @@ export const workflowResponseDtoSchema = z.object({
   id: entityIdSchema,
   createdAt: z.date(),
   updatedAt: z.date(),
-  tenantId: z.string(),
+  tenant: tenantSchema,
   name: workflowEntityProps.shape.name,
   description: workflowEntityProps.shape.description,
   projectId: workflowEntityProps.shape.projectId,
