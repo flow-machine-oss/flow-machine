@@ -4,6 +4,7 @@ import z from "zod";
 import { DocumentMongoModel } from "@/adapter/repository/document/document-mongo-model";
 import { mongoCtxSchema } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
+import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";
 import { makeResultSchema } from "@/common/schema/result-schema";
 
 export const getDocumentMongoCollectionSchema = z.function({
@@ -29,5 +30,6 @@ export type GetDocumentMongoCollection = z.infer<
 export const getDocumentMongoCollection =
   getDocumentMongoCollectionSchema.implementAsync(async ({ ctx }) => {
     const collection = ctx.mongoDb.collection<DocumentMongoModel>("document");
+    await collection.createIndexes(tenantAwareCollectionIndexes);
     return ok(collection);
   });

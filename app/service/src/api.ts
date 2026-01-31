@@ -8,8 +8,8 @@ import { authHttpRouter } from "@/di/auth-di";
 import { billingHttpV1Router } from "@/di/billing-di";
 import { documentHttpV1Router } from "@/di/document-di";
 import { healthHttpV1Router } from "@/di/health-di";
-import { projectHttpV1Router } from "@/di/project-di";
 import { inngestHttpRouter } from "@/di/inngest-di";
+import { projectHttpV1Router } from "@/di/project-di";
 import { workflowHttpV1Router } from "@/di/workflow-di";
 
 const app = new Elysia();

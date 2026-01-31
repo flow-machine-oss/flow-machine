@@ -4,6 +4,7 @@ import z from "zod";
 import { ProjectMongoModel } from "@/adapter/repository/project/project-mongo-model";
 import { mongoCtxSchema } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
+import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";
 import { makeResultSchema } from "@/common/schema/result-schema";
 
 export const getProjectMongoCollectionSchema = z.function({
@@ -29,5 +30,6 @@ export type GetProjectMongoCollection = z.infer<
 export const getProjectMongoCollection =
   getProjectMongoCollectionSchema.implementAsync(async ({ ctx }) => {
     const collection = ctx.mongoDb.collection<ProjectMongoModel>("project");
+    await collection.createIndexes(tenantAwareCollectionIndexes);
     return ok(collection);
   });

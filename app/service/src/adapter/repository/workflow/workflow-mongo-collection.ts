@@ -4,6 +4,7 @@ import z from "zod";
 import { WorkflowMongoModel } from "@/adapter/repository/workflow/workflow-mongo-model";
 import { mongoCtxSchema } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
+import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";
 import { makeResultSchema } from "@/common/schema/result-schema";
 
 export const getWorkflowMongoCollectionSchema = z.function({
@@ -29,5 +30,6 @@ export type GetWorkflowMongoCollection = z.infer<
 export const getWorkflowMongoCollection =
   getWorkflowMongoCollectionSchema.implementAsync(async ({ ctx }) => {
     const collection = ctx.mongoDb.collection<WorkflowMongoModel>("workflow");
+    await collection.createIndexes(tenantAwareCollectionIndexes);
     return ok(collection);
   });
