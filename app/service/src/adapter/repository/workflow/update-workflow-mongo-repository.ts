@@ -23,7 +23,7 @@ export const makeUpdateWorkflowMongoRepository = ({
     }
     const [error] = await attemptAsync(() =>
       collectionResult.value.updateOne(
-        { _id: id, "tenant.id": ctx.tenant.id },
+        { _id: id, tenant: ctx.tenant },
         { $set: { ...omitBy(data, isUndefined), updatedAt: new UTCDate() } },
       ),
     );

@@ -22,7 +22,7 @@ export const makeFindWorkflowsMongoRepository = ({
       return err(collectionResult.error);
     }
     const [error, docs] = await attemptAsync(() =>
-      collectionResult.value.find({ "tenant.id": ctx.tenant.id }).toArray(),
+      collectionResult.value.find({ tenant: ctx.tenant }).toArray(),
     );
 
     if (isNotNil(error) || docs === null) {
