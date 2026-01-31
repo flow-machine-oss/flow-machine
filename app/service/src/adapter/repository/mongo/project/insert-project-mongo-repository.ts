@@ -1,6 +1,6 @@
 import { attemptAsync, isNotNil } from "es-toolkit";
 import { err, ok } from "neverthrow";
-import type { GetProjectMongoCollection } from "@/adapter/repository/project/project-mongo-collection";
+import type { GetProjectMongoCollection } from "@/adapter/repository/mongo/project/project-mongo-collection";
 import { Err } from "@/common/err/err";
 import { tenantAwareEntityToMongoModel } from "@/common/mongo/mongo-model";
 import {

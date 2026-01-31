@@ -1,14 +1,14 @@
 import { makeWorkflowDefinitionHttpV1Router } from "@/adapter/http/workflow/definition/workflow-definition-http-v1-router";
-import { makeDeleteWorkflowDefinitionMongoRepository } from "@/adapter/repository/workflow/definition/mongo/op/delete-workflow-definition-mongo-repository";
-import { makeFindWorkflowDefinitionByIdMongoRepository } from "@/adapter/repository/workflow/definition/mongo/op/find-workflow-definition-by-id-mongo-repository";
-import { makeFindWorkflowDefinitionsMongoRepository } from "@/adapter/repository/workflow/definition/mongo/op/find-workflow-definitions-mongo-repository";
-import { makeInsertWorkflowDefinitionMongoRepository } from "@/adapter/repository/workflow/definition/mongo/op/insert-workflow-definition-mongo-repository";
-import { makeUpdateWorkflowDefinitionMongoRepository } from "@/adapter/repository/workflow/definition/mongo/op/update-workflow-definition-mongo-repository";
-import { getWorkflowDefinitionMongoCollection } from "@/adapter/repository/workflow/definition/mongo/workflow-definition-mongo-collection";
+import { makeDeleteWorkflowDefinitionMongoRepository } from "@/adapter/repository/mongo/workflow-definition/delete-workflow-definition-mongo-repository";
+import { makeFindWorkflowDefinitionByIdMongoRepository } from "@/adapter/repository/mongo/workflow-definition/find-workflow-definition-by-id-mongo-repository";
+import { makeFindWorkflowDefinitionsMongoRepository } from "@/adapter/repository/mongo/workflow-definition/find-workflow-definitions-mongo-repository";
+import { makeInsertWorkflowDefinitionMongoRepository } from "@/adapter/repository/mongo/workflow-definition/insert-workflow-definition-mongo-repository";
+import { makeUpdateWorkflowDefinitionMongoRepository } from "@/adapter/repository/mongo/workflow-definition/update-workflow-definition-mongo-repository";
+import { getWorkflowDefinitionMongoCollection } from "@/adapter/repository/mongo/workflow-definition/workflow-definition-mongo-collection";
 import {
   workflowDefinitionEntityToMongoModel,
   workflowDefinitionMongoModelToEntity,
-} from "@/adapter/repository/workflow/definition/mongo/workflow-definition-mongo-mapper";
+} from "@/adapter/repository/mongo/workflow-definition/workflow-definition-mongo-mapper";
 import { makeCreateWorkflowDefinitionUseCase } from "@/app/use-case/workflow/create-workflow-definition-use-case";
 import { makeDeleteWorkflowDefinitionUseCase } from "@/app/use-case/workflow/delete-workflow-definition-use-case";
 import { makeGetWorkflowDefinitionUseCase } from "@/app/use-case/workflow/get-workflow-definition-use-case";

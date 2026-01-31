@@ -1,7 +1,7 @@
 import { Collection } from "mongodb";
 import { ok } from "neverthrow";
 import z from "zod";
-import { DocumentMongoModel } from "@/adapter/repository/document/document-mongo-model";
+import { DocumentMongoModel } from "@/adapter/repository/mongo/document/document-mongo-model";
 import { mongoCtxSchema } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
 import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";

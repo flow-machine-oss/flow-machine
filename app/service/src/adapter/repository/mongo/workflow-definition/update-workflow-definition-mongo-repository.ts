@@ -1,7 +1,7 @@
 import { UTCDate } from "@date-fns/utc";
 import { attemptAsync, isNotNil, isUndefined, omitBy } from "es-toolkit";
 import { err, ok } from "neverthrow";
-import type { GetWorkflowDefinitionMongoCollection } from "@/adapter/repository/workflow/definition/mongo/workflow-definition-mongo-collection";
+import type { GetWorkflowDefinitionMongoCollection } from "@/adapter/repository/mongo/workflow-definition/workflow-definition-mongo-collection";
 import { Err } from "@/common/err/err";
 import {
   type UpdateWorkflowDefinitionRepository,

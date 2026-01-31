@@ -1,7 +1,7 @@
 import { Collection } from "mongodb";
 import { ok } from "neverthrow";
 import z from "zod";
-import type { WorkflowDefinitionMongoModel } from "@/adapter/repository/workflow/definition/mongo/workflow-definition-mongo-model";
+import type { WorkflowDefinitionMongoModel } from "@/adapter/repository/mongo/workflow-definition/workflow-definition-mongo-model";
 import { mongoCtxSchema } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
 import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";

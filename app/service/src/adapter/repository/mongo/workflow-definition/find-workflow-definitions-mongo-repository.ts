@@ -1,7 +1,7 @@
 import { attemptAsync, isNotNil } from "es-toolkit";
 import { err, ok } from "neverthrow";
-import type { GetWorkflowDefinitionMongoCollection } from "@/adapter/repository/workflow/definition/mongo/workflow-definition-mongo-collection";
-import type { WorkflowDefinitionMongoModelToEntity } from "@/adapter/repository/workflow/definition/mongo/workflow-definition-mongo-mapper";
+import type { GetWorkflowDefinitionMongoCollection } from "@/adapter/repository/mongo/workflow-definition/workflow-definition-mongo-collection";
+import type { WorkflowDefinitionMongoModelToEntity } from "@/adapter/repository/mongo/workflow-definition/workflow-definition-mongo-mapper";
 import { Err } from "@/common/err/err";
 import {
   type FindWorkflowDefinitionsRepository,

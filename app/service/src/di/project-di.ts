@@ -1,10 +1,10 @@
 import { makeProjectHttpV1Router } from "@/adapter/http/project/project-http-v1-router";
-import { makeDeleteProjectMongoRepository } from "@/adapter/repository/project/delete-project-mongo-repository";
-import { makeFindProjectByIdMongoRepository } from "@/adapter/repository/project/find-project-by-id-mongo-repository";
-import { makeFindProjectsMongoRepository } from "@/adapter/repository/project/find-projects-mongo-repository";
-import { makeInsertProjectMongoRepository } from "@/adapter/repository/project/insert-project-mongo-repository";
-import { getProjectMongoCollection } from "@/adapter/repository/project/project-mongo-collection";
-import { makeUpdateProjectMongoRepository } from "@/adapter/repository/project/update-project-mongo-repository";
+import { makeDeleteProjectMongoRepository } from "@/adapter/repository/mongo/project/delete-project-mongo-repository";
+import { makeFindProjectByIdMongoRepository } from "@/adapter/repository/mongo/project/find-project-by-id-mongo-repository";
+import { makeFindProjectsMongoRepository } from "@/adapter/repository/mongo/project/find-projects-mongo-repository";
+import { makeInsertProjectMongoRepository } from "@/adapter/repository/mongo/project/insert-project-mongo-repository";
+import { getProjectMongoCollection } from "@/adapter/repository/mongo/project/project-mongo-collection";
+import { makeUpdateProjectMongoRepository } from "@/adapter/repository/mongo/project/update-project-mongo-repository";
 import { makeCreateProjectUseCase } from "@/app/use-case/project/create-project-use-case";
 import { makeDeleteProjectUseCase } from "@/app/use-case/project/delete-project-use-case";
 import { makeGetProjectUseCase } from "@/app/use-case/project/get-project-use-case";

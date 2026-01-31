@@ -1,7 +1,7 @@
 import { UTCDate } from "@date-fns/utc";
 import { attemptAsync, isNotNil, isUndefined, omitBy } from "es-toolkit";
 import { err, ok } from "neverthrow";
-import type { GetDocumentMongoCollection } from "@/adapter/repository/document/document-mongo-collection";
+import type { GetDocumentMongoCollection } from "@/adapter/repository/mongo/document/document-mongo-collection";
 import { Err } from "@/common/err/err";
 import {
   type UpdateDocumentRepository,
