@@ -1,14 +1,17 @@
 import type { PropsWithChildren } from "react";
 import { Separator } from "@/component/ui/separator";
 import { SidebarTrigger } from "@/component/ui/sidebar";
+import { cn } from "@/lib/util";
 
 type PlatformPageTemplate = {
   heading: string;
+  paddingDisabled?: boolean;
 };
 
 export function PlatformPageTemplate({
   children,
   heading,
+  paddingDisabled = false,
 }: PropsWithChildren<PlatformPageTemplate>) {
   return (
     <div className="grid h-full w-full grid-rows-[auto_1fr]">
@@ -20,7 +23,14 @@ export function PlatformPageTemplate({
         />
         <h1 className="ml-1.5 text-sm font-medium tracking-wide">{heading}</h1>
       </header>
-      <main className="h-full w-full overflow-auto p-4">{children}</main>
+      <main
+        className={cn(
+          "h-full w-full overflow-auto p-4",
+          paddingDisabled && "p-0",
+        )}
+      >
+        {children}
+      </main>
     </div>
   );
 }
