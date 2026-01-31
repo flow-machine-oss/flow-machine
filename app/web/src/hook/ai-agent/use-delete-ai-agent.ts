@@ -12,7 +12,7 @@ import {
 import {
   type DeleteAiAgentPayload,
   makeDeleteAiAgent,
-} from "@/service/ai-agent/delete-ai-agent.service";
+} from "@/service/ai-agent/delete-ai-agent-service";
 
 type UseDeleteAiAgentOptions = Omit<
   UseMutationOptions<

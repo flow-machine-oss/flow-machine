@@ -11,7 +11,6 @@ import {
   KeyRoundIcon,
   ListTodoIcon,
   type LucideIcon,
-  SettingsIcon,
   SquareMousePointerIcon,
   UserRoundPenIcon,
   WorkflowIcon,

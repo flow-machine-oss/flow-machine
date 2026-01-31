@@ -10,7 +10,8 @@ import { documentHttpV1Router } from "@/di/document-di";
 import { healthHttpV1Router } from "@/di/health-di";
 import { inngestHttpRouter } from "@/di/inngest-di";
 import { projectHttpV1Router } from "@/di/project-di";
-import { workflowHttpV1Router } from "@/di/workflow-di";
+import { workflowActionDefinitionHttpV1Router } from "@/di/workflow-action-definition-di";
+import { workflowDefinitionHttpV1Router } from "@/di/workflow-definition-di";
 
 const app = new Elysia();
 
@@ -31,5 +32,6 @@ app
   .use(healthHttpV1Router)
   .use(inngestHttpRouter)
   .use(projectHttpV1Router)
-  .use(workflowHttpV1Router)
+  .use(workflowActionDefinitionHttpV1Router)
+  .use(workflowDefinitionHttpV1Router)
   .listen(8000);

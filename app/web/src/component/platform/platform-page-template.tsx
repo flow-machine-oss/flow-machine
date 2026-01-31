@@ -20,7 +20,7 @@ export function PlatformPageTemplate({
         />
         <h1 className="ml-1.5 text-sm font-medium tracking-wide">{heading}</h1>
       </header>
-      <main className="h-full w-full overflow-auto px-4 py-2">{children}</main>
+      <main className="h-full w-full overflow-auto px-4 pb-4">{children}</main>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { emailOTP, organization } from "better-auth/plugins";
 import { config } from "@/common/config/config";
+import { newEntityId } from "@/common/domain/entity-id";
 import { mongoClient } from "@/common/mongo/mongo-client";
 import type {
   SendInvitationEmail,
@@ -51,6 +52,12 @@ export const makeBetterAuth = ({ sendOTPEmail, sendInvitationEmail }: Input) =>
         },
       }),
     ],
+
+    advanced: {
+      database: {
+        generateId: () => newEntityId(),
+      },
+    },
   });
 
 export type BetterAuthInstance = ReturnType<typeof makeBetterAuth>;

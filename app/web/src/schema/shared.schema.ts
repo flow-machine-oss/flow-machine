@@ -18,6 +18,21 @@ export const organizationAwareBaseDtoSchema = z.object({
   organizationId: z.string(),
 });
 
+// Tenant schema matching service's tenant-aware-entity.ts
+export const tenantTypes = ["organization", "user"] as const;
+
+export const tenantSchema = z.object({
+  id: z.string(),
+  type: z.enum(tenantTypes),
+});
+export type Tenant = z.output<typeof tenantSchema>;
+
+// Tenant-aware base DTO schema
+export const tenantAwareBaseDtoSchema = z.object({
+  ...baseDtoSchema.shape,
+  tenant: tenantSchema,
+});
+
 export const idParamsDtoSchema = z.object({
   id: idDtoSchema,
 });
