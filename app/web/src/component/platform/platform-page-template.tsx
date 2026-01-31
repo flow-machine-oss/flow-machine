@@ -12,7 +12,7 @@ export function PlatformPageTemplate({
 }: PropsWithChildren<PlatformPageTemplate>) {
   return (
     <div className="grid h-full w-full grid-rows-[auto_1fr]">
-      <header className="flex shrink-0 items-center gap-1.5 px-4 py-3">
+      <header className="border-muted flex shrink-0 items-center gap-1.5 border-b px-4 py-2">
         <SidebarTrigger className="-ml-1" />
         <Separator
           orientation="vertical"
@@ -20,7 +20,7 @@ export function PlatformPageTemplate({
         />
         <h1 className="ml-1.5 text-sm font-medium tracking-wide">{heading}</h1>
       </header>
-      <main className="h-full w-full overflow-auto px-4 pb-4">{children}</main>
+      <main className="h-full w-full overflow-auto p-4">{children}</main>
     </div>
   );
 }
