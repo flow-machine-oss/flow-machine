@@ -23,7 +23,7 @@ export const makeDeleteWorkflowMongoRepository = ({
     const [error] = await attemptAsync(() =>
       collectionResult.value.deleteOne({
         _id: id,
-        "tenant.id": ctx.tenant.id,
+        tenant: ctx.tenant,
       }),
     );
 
