@@ -1,4 +1,3 @@
-import { ok } from "neverthrow";
 import z from "zod";
 import { type EntityIdInput, newEntityId } from "@/common/domain/entity-id";
 import {
@@ -20,7 +19,7 @@ export const workflowEdgeSchema = z.object({
 });
 export type WorkflowEdge = z.output<typeof workflowEdgeSchema>;
 
-export const workflowEntityProps = z.object({
+export const workflowDefinitionEntityProps = z.object({
   name: z.string().min(1).max(255),
   description: z.string().max(2000).optional(),
   projectId: z.ulid().nullable(),
@@ -28,11 +27,13 @@ export const workflowEntityProps = z.object({
   edges: z.array(workflowEdgeSchema),
   isActive: z.boolean(),
 });
-export type WorkflowEntityProps = z.output<typeof workflowEntityProps>;
+export type WorkflowDefinitionEntityProps = z.output<
+  typeof workflowDefinitionEntityProps
+>;
 
-export class WorkflowEntity extends TenantAwareEntity<WorkflowEntityProps> {
-  static makeNew(tenant: Tenant, props: WorkflowEntityProps) {
-    return ok(new WorkflowEntity(newEntityId(), tenant, props));
+export class WorkflowDefinitionEntity extends TenantAwareEntity<WorkflowDefinitionEntityProps> {
+  static makeNew(tenant: Tenant, props: WorkflowDefinitionEntityProps) {
+    return new WorkflowDefinitionEntity(newEntityId(), tenant, props);
   }
 
   static makeExisting(
@@ -40,10 +41,11 @@ export class WorkflowEntity extends TenantAwareEntity<WorkflowEntityProps> {
     createdAt: Date,
     updatedAt: Date,
     tenant: Tenant,
-    props: WorkflowEntityProps,
+    props: WorkflowDefinitionEntityProps,
   ) {
-    return ok(
-      new WorkflowEntity(id, tenant, props, { createdAt, updatedAt }),
-    );
+    return new WorkflowDefinitionEntity(id, tenant, props, {
+      createdAt,
+      updatedAt,
+    });
   }
 }

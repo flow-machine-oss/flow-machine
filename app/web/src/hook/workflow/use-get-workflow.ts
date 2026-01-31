@@ -1,11 +1,11 @@
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
 import { makeGetWorkflowQueryKey } from "@/lib/query/query-key";
-import type { WorkflowResponseDto } from "@/schema/workflow/workflow-service.schema";
+import type { WorkflowDefinitionResponseDto } from "@/schema/workflow/workflow-service.schema";
 import { makeGetWorkflow } from "@/service/workflow/get-workflow.service";
 
 type UseGetWorkflowOptions = Omit<
-  UseQueryOptions<WorkflowResponseDto, Error>,
+  UseQueryOptions<WorkflowDefinitionResponseDto, Error>,
   "queryKey" | "queryFn"
 >;
 

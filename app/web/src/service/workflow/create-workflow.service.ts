@@ -1,9 +1,9 @@
 import type { HttpClient } from "@/lib/http/http-client";
 import type { HttpEnvelope } from "@/lib/http/http-dto";
-import { type CreateWorkflowRequestBodyDto } from "@/schema/workflow/create-workflow-service.schema";
+import { type CreateWorkflowDefinitionRequestBodyDto } from "@/schema/workflow/create-workflow-service.schema";
 
 export type CreateWorkflowPayload = {
-  body: CreateWorkflowRequestBodyDto;
+  body: CreateWorkflowDefinitionRequestBodyDto;
 };
 
 export const makeCreateWorkflow =

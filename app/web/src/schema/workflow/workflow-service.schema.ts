@@ -13,7 +13,7 @@ export const workflowEdgeSchema = z.object({
   to: z.string(),
 });
 
-export const workflowResponseDtoSchema = z.object({
+export const workflowDefinitionResponseDtoSchema = z.object({
   ...organizationAwareBaseDtoSchema.shape,
   name: z.string(),
   description: z.string().optional(),
@@ -23,6 +23,8 @@ export const workflowResponseDtoSchema = z.object({
   isActive: z.boolean(),
 });
 
-export type WorkflowResponseDto = z.output<typeof workflowResponseDtoSchema>;
+export type WorkflowDefinitionResponseDto = z.output<
+  typeof workflowDefinitionResponseDtoSchema
+>;
 export type WorkflowAction = z.output<typeof workflowActionSchema>;
 export type WorkflowEdge = z.output<typeof workflowEdgeSchema>;

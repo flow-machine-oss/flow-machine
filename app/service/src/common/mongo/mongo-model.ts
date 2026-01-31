@@ -1,17 +1,27 @@
 import type { UnknownRecord } from "type-fest";
+import z from "zod";
 import type { Entity } from "@/common/domain/entity";
-import type { EntityId } from "@/common/domain/entity-id";
-import type {
-  Tenant,
-  TenantAwareEntity,
+import { type EntityId, entityIdSchema } from "@/common/domain/entity-id";
+import {
+  type Tenant,
+  type TenantAwareEntity,
+  tenantSchema,
 } from "@/common/domain/tenant-aware-entity";
 
+export const baseMongoModelSchema = z.object({
+  _id: entityIdSchema,
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
 export type MongoModel<T> = T & {
   _id: EntityId;
   createdAt: Date;
   updatedAt: Date;
 };
 
+export const baseTenantAwareMongoModelSchema = baseMongoModelSchema.extend({
+  tenant: tenantSchema,
+});
 export type TenantAwareMongoModel<T> = MongoModel<T> & {
   tenant: Tenant;
 };

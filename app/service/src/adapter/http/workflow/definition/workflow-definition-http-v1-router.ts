@@ -1,37 +1,39 @@
 import Elysia from "elysia";
 import {
-  type WorkflowResponseDto,
+  type WorkflowDefinitionResponseDto,
   idParamsDtoSchema,
-  patchWorkflowRequestBodyDtoSchema,
-  postWorkflowRequestBodyDtoSchema,
-} from "@/adapter/http/workflow/workflow-http-v1-dto";
+  patchWorkflowDefinitionRequestBodyDtoSchema,
+  postWorkflowDefinitionRequestBodyDtoSchema,
+} from "@/adapter/http/workflow/definition/workflow-definition-http-v1-dto";
 import { makeHttpAuthGuardPlugin } from "@/common/http/http-auth-guard-plugin";
 import { errEnvelope, okEnvelope } from "@/common/http/http-envelope";
 import { makeHttpMongoCtxPlugin } from "@/common/http/http-mongo-ctx-plugin";
-import type { WorkflowEntity } from "@/domain/entity/workflow/workflow-entity";
+import type { WorkflowDefinitionEntity } from "@/domain/entity/workflow/workflow-definition-entity";
 import type {
   GetActiveMember,
   GetSession,
 } from "@/domain/port/auth/auth-service";
 import type {
-  CreateWorkflowUseCase,
-  DeleteWorkflowUseCase,
-  GetWorkflowUseCase,
-  ListWorkflowsUseCase,
-  UpdateWorkflowUseCase,
-} from "@/domain/port/workflow/workflow-use-case";
+  CreateWorkflowDefinitionUseCase,
+  DeleteWorkflowDefinitionUseCase,
+  GetWorkflowDefinitionUseCase,
+  ListWorkflowDefinitionsUseCase,
+  UpdateWorkflowDefinitionUseCase,
+} from "@/domain/port/workflow/workflow-definition-use-case";
 
 type Input = {
   getSession: GetSession;
   getActiveMember: GetActiveMember;
-  createWorkflowUseCase: CreateWorkflowUseCase;
-  deleteWorkflowUseCase: DeleteWorkflowUseCase;
-  getWorkflowUseCase: GetWorkflowUseCase;
-  listWorkflowsUseCase: ListWorkflowsUseCase;
-  updateWorkflowUseCase: UpdateWorkflowUseCase;
+  createWorkflowDefinitionUseCase: CreateWorkflowDefinitionUseCase;
+  deleteWorkflowDefinitionUseCase: DeleteWorkflowDefinitionUseCase;
+  getWorkflowDefinitionUseCase: GetWorkflowDefinitionUseCase;
+  listWorkflowDefinitionsUseCase: ListWorkflowDefinitionsUseCase;
+  updateWorkflowDefinitionUseCase: UpdateWorkflowDefinitionUseCase;
 };
 
-const toResponseDto = (entity: WorkflowEntity): WorkflowResponseDto => ({
+const toResponseDto = (
+  entity: WorkflowDefinitionEntity,
+): WorkflowDefinitionResponseDto => ({
   id: entity.id,
   createdAt: entity.createdAt,
   updatedAt: entity.updatedAt,
@@ -44,24 +46,24 @@ const toResponseDto = (entity: WorkflowEntity): WorkflowResponseDto => ({
   isActive: entity.props.isActive,
 });
 
-export const makeWorkflowHttpV1Router = ({
+export const makeWorkflowDefinitionHttpV1Router = ({
   getSession,
   getActiveMember,
-  createWorkflowUseCase,
-  deleteWorkflowUseCase,
-  getWorkflowUseCase,
-  listWorkflowsUseCase,
-  updateWorkflowUseCase,
+  createWorkflowDefinitionUseCase,
+  deleteWorkflowDefinitionUseCase,
+  getWorkflowDefinitionUseCase,
+  listWorkflowDefinitionsUseCase,
+  updateWorkflowDefinitionUseCase,
 }: Input) =>
-  new Elysia({ name: "workflow.v1" })
+  new Elysia({ name: "workflow-definition.v1" })
     .use(makeHttpMongoCtxPlugin())
     .use(makeHttpAuthGuardPlugin({ getSession, getActiveMember }))
-    .group("/api/v1/workflow", (r) =>
+    .group("/api/v1/workflow-definition", (r) =>
       r
         .post(
           "",
           async ({ body, ctx, tenant }) => {
-            const result = await createWorkflowUseCase({
+            const result = await createWorkflowDefinitionUseCase({
               ctx: { ...ctx, tenant },
               payload: body,
             });
@@ -71,11 +73,11 @@ export const makeWorkflowHttpV1Router = ({
             return okEnvelope();
           },
           {
-            body: postWorkflowRequestBodyDtoSchema,
+            body: postWorkflowDefinitionRequestBodyDtoSchema,
           },
         )
         .get("", async ({ ctx, tenant }) => {
-          const result = await listWorkflowsUseCase({
+          const result = await listWorkflowDefinitionsUseCase({
             ctx: { ...ctx, tenant },
           });
           if (result.isErr()) {
@@ -86,7 +88,7 @@ export const makeWorkflowHttpV1Router = ({
         .get(
           "/:id",
           async ({ ctx, tenant, params }) => {
-            const result = await getWorkflowUseCase({
+            const result = await getWorkflowDefinitionUseCase({
               ctx: { ...ctx, tenant },
               payload: { id: params.id },
             });
@@ -102,7 +104,7 @@ export const makeWorkflowHttpV1Router = ({
         .patch(
           "/:id",
           async ({ body, ctx, tenant, params }) => {
-            const result = await updateWorkflowUseCase({
+            const result = await updateWorkflowDefinitionUseCase({
               ctx: { ...ctx, tenant },
               payload: {
                 id: params.id,
@@ -120,14 +122,14 @@ export const makeWorkflowHttpV1Router = ({
             return okEnvelope();
           },
           {
-            body: patchWorkflowRequestBodyDtoSchema,
+            body: patchWorkflowDefinitionRequestBodyDtoSchema,
             params: idParamsDtoSchema,
           },
         )
         .delete(
           "/:id",
           async ({ ctx, tenant, params }) => {
-            const result = await deleteWorkflowUseCase({
+            const result = await deleteWorkflowDefinitionUseCase({
               ctx: { ...ctx, tenant },
               payload: { id: params.id },
             });

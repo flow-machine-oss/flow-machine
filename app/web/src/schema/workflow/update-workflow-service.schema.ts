@@ -4,7 +4,7 @@ import {
   workflowEdgeSchema,
 } from "./workflow-service.schema";
 
-export const updateWorkflowRequestBodyDtoSchema = z.object({
+export const updateWorkflowDefinitionRequestBodyDtoSchema = z.object({
   name: z.string().min(1).max(255).optional(),
   description: z.string().max(2000).optional(),
   projectId: z.string().nullable().optional(),
@@ -13,6 +13,6 @@ export const updateWorkflowRequestBodyDtoSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
-export type UpdateWorkflowRequestBodyDto = z.input<
-  typeof updateWorkflowRequestBodyDtoSchema
+export type UpdateWorkflowDefinitionRequestBodyDto = z.input<
+  typeof updateWorkflowDefinitionRequestBodyDtoSchema
 >;
