@@ -4,6 +4,7 @@ import z from "zod";
 import type { WorkflowDefinitionMongoModel } from "@/adapter/repository/workflow/definition/mongo/workflow-definition-mongo-model";
 import { mongoCtxSchema } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
+import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";
 import { makeResultSchema } from "@/common/schema/result-schema";
 
 export const getWorkflowDefinitionMongoCollectionSchema = z.function({
@@ -30,5 +31,6 @@ export const getWorkflowDefinitionMongoCollection =
     const collection = ctx.mongoDb.collection<WorkflowDefinitionMongoModel>(
       "workflow-definition",
     );
+    await collection.createIndexes(tenantAwareCollectionIndexes);
     return ok(collection);
   });
