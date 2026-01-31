@@ -1,6 +1,6 @@
 import type { HttpClient } from "@/lib/http/http-client";
 import type { HttpEnvelope } from "@/lib/http/http-dto";
-import type { AiAgentResponseDto } from "@/schema/ai-agent/ai-agent-service.schema";
+import type { AiAgentResponseDto } from "@/schema/ai-agent/ai-agent-service-schema";
 import type { IdParamsDto } from "@/schema/shared.schema";
 
 export type GetAiAgentPayload = {

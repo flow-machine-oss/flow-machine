@@ -1,7 +1,7 @@
 import { z } from "zod/v4";
 import { organizationAwareBaseDtoSchema } from "@/schema/shared.schema";
 
-export const aiAgentModels = [
+export const aiModels = [
   "anthropic/claude-haiku-4.5",
   "anthropic/claude-opus-4.5",
   "anthropic/claude-sonnet-4.5",
@@ -12,7 +12,7 @@ export const aiAgentModels = [
 
 export const aiAgentResponseDtoSchema = z.object({
   ...organizationAwareBaseDtoSchema.shape,
-  model: z.enum(aiAgentModels),
+  model: z.enum(aiModels),
   name: z.string(),
 });
 

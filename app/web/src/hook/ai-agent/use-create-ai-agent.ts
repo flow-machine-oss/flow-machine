@@ -9,7 +9,7 @@ import { makeListAiAgentsQueryKey } from "@/lib/query/query-key";
 import {
   type CreateAiAgentPayload,
   makeCreateAiAgent,
-} from "@/service/ai-agent/create-ai-agent.service";
+} from "@/service/ai-agent/create-ai-agent-service";
 
 type UseCreateAiAgentOptions = Omit<
   UseMutationOptions<

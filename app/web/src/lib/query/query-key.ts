@@ -4,6 +4,6 @@ export const makeListAiAgentsQueryKey = () => ["ai-agent"];
 
 export const makeGetAiAgentQueryKey = (id: string) => ["ai-agent", id];
 
-export const makeListWorkflowsQueryKey = () => ["workflow"];
+export const makeListWorkflowDefinitionsQueryKey = () => ["workflow-definition"];
 
-export const makeGetWorkflowQueryKey = (id: string) => ["workflow", id];
+export const makeGetWorkflowDefinitionQueryKey = (id: string) => ["workflow-definition", id];

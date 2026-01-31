@@ -2,7 +2,7 @@ import { z } from "zod/v4";
 import {
   workflowActionSchema,
   workflowEdgeSchema,
-} from "./workflow-service.schema";
+} from "./workflow-definition-service-schema";
 
 export const createWorkflowDefinitionRequestBodyDtoSchema = z.object({
   name: z.string().min(1).max(255),

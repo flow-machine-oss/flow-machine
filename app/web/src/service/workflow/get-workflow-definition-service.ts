@@ -1,17 +1,17 @@
 import type { HttpClient } from "@/lib/http/http-client";
 import type { HttpEnvelope } from "@/lib/http/http-dto";
 import type { IdParamsDto } from "@/schema/shared.schema";
-import type { WorkflowDefinitionResponseDto } from "@/schema/workflow/workflow-service.schema";
+import type { WorkflowDefinitionResponseDto } from "@/schema/workflow/workflow-definition-service-schema";
 
-export type GetWorkflowPayload = {
+export type GetWorkflowDefinitionPayload = {
   params: IdParamsDto;
 };
 
-export const makeGetWorkflow =
+export const makeGetWorkflowDefinition =
   (httpClient: HttpClient) =>
-  async ({ params }: GetWorkflowPayload) => {
+  async ({ params }: GetWorkflowDefinitionPayload) => {
     const response = await httpClient.get<
       HttpEnvelope<WorkflowDefinitionResponseDto>
-    >(`/api/v1/workflow/${params.id}`);
+    >(`/api/v1/workflow-definition/${params.id}`);
     return response.data.data;
   };

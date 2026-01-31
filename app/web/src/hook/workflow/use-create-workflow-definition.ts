@@ -5,37 +5,34 @@ import {
 } from "@tanstack/react-query";
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
 import type { HttpEnvelope } from "@/lib/http/http-dto";
+import { makeListWorkflowDefinitionsQueryKey } from "@/lib/query/query-key";
 import {
-  makeGetAiAgentQueryKey,
-  makeListAiAgentsQueryKey,
-} from "@/lib/query/query-key";
-import {
-  type DeleteAiAgentPayload,
-  makeDeleteAiAgent,
-} from "@/service/ai-agent/delete-ai-agent-service";
+  type CreateWorkflowDefinitionPayload,
+  makeCreateWorkflowDefinition,
+} from "@/service/workflow/create-workflow-definition-service";
 
-type UseDeleteAiAgentOptions = Omit<
+type UseCreateWorkflowDefinitionOptions = Omit<
   UseMutationOptions<
     HttpEnvelope<undefined>,
     Error,
-    DeleteAiAgentPayload,
+    CreateWorkflowDefinitionPayload,
     unknown
   >,
   "mutationFn"
 >;
 
-export const useDeleteAiAgent = (options?: UseDeleteAiAgentOptions) => {
+export const useCreateWorkflowDefinition = (
+  options?: UseCreateWorkflowDefinitionOptions,
+) => {
   const httpClient = useProtectedHttpClient();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: makeDeleteAiAgent(httpClient),
+    mutationFn: makeCreateWorkflowDefinition(httpClient),
     ...options,
     onSuccess: (...args) => {
-      const [, variables] = args;
-      queryClient.invalidateQueries({ queryKey: makeListAiAgentsQueryKey() });
       queryClient.invalidateQueries({
-        queryKey: makeGetAiAgentQueryKey(variables.params.id),
+        queryKey: makeListWorkflowDefinitionsQueryKey(),
       });
       options?.onSuccess?.(...args);
     },

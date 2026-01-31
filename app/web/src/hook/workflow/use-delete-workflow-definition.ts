@@ -6,36 +6,40 @@ import {
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
 import type { HttpEnvelope } from "@/lib/http/http-dto";
 import {
-  makeGetWorkflowQueryKey,
-  makeListWorkflowsQueryKey,
+  makeGetWorkflowDefinitionQueryKey,
+  makeListWorkflowDefinitionsQueryKey,
 } from "@/lib/query/query-key";
 import {
-  type DeleteWorkflowPayload,
-  makeDeleteWorkflow,
-} from "@/service/workflow/delete-workflow.service";
+  type DeleteWorkflowDefinitionPayload,
+  makeDeleteWorkflowDefinition,
+} from "@/service/workflow/delete-workflow-definition-service";
 
-type UseDeleteWorkflowOptions = Omit<
+type UseDeleteWorkflowDefinitionOptions = Omit<
   UseMutationOptions<
     HttpEnvelope<undefined>,
     Error,
-    DeleteWorkflowPayload,
+    DeleteWorkflowDefinitionPayload,
     unknown
   >,
   "mutationFn"
 >;
 
-export const useDeleteWorkflow = (options?: UseDeleteWorkflowOptions) => {
+export const useDeleteWorkflowDefinition = (
+  options?: UseDeleteWorkflowDefinitionOptions,
+) => {
   const httpClient = useProtectedHttpClient();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: makeDeleteWorkflow(httpClient),
+    mutationFn: makeDeleteWorkflowDefinition(httpClient),
     ...options,
     onSuccess: (...args) => {
       const [, variables] = args;
-      queryClient.invalidateQueries({ queryKey: makeListWorkflowsQueryKey() });
       queryClient.invalidateQueries({
-        queryKey: makeGetWorkflowQueryKey(variables.params.id),
+        queryKey: makeListWorkflowDefinitionsQueryKey(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: makeGetWorkflowDefinitionQueryKey(variables.params.id),
       });
       options?.onSuccess?.(...args);
     },

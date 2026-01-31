@@ -1,6 +1,6 @@
 import type { HttpClient } from "@/lib/http/http-client";
 import type { HttpEnvelope } from "@/lib/http/http-dto";
-import { type CreateAiAgentRequestBodyDto } from "@/schema/ai-agent/create-ai-agent-service.schema";
+import { type CreateAiAgentRequestBodyDto } from "@/schema/ai-agent/create-ai-agent-service-schema";
 
 export type CreateAiAgentPayload = {
   body: CreateAiAgentRequestBodyDto;

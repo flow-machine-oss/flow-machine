@@ -1,8 +1,8 @@
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
 import { makeGetAiAgentQueryKey } from "@/lib/query/query-key";
-import type { AiAgentResponseDto } from "@/schema/ai-agent/ai-agent-service.schema";
-import { makeGetAiAgent } from "@/service/ai-agent/get-ai-agent.service";
+import type { AiAgentResponseDto } from "@/schema/ai-agent/ai-agent-service-schema";
+import { makeGetAiAgent } from "@/service/ai-agent/get-ai-agent-service";
 
 type UseGetAiAgentOptions = Omit<
   UseQueryOptions<AiAgentResponseDto, Error>,

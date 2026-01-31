@@ -1,5 +1,5 @@
 import { z } from "zod/v4";
-import { organizationAwareBaseDtoSchema } from "@/schema/shared.schema";
+import { tenantAwareBaseDtoSchema } from "@/schema/shared.schema";
 
 export const workflowActionSchema = z.object({
   id: z.string(),
@@ -14,7 +14,7 @@ export const workflowEdgeSchema = z.object({
 });
 
 export const workflowDefinitionResponseDtoSchema = z.object({
-  ...organizationAwareBaseDtoSchema.shape,
+  ...tenantAwareBaseDtoSchema.shape,
   name: z.string(),
   description: z.string().optional(),
   projectId: z.string().nullable(),
