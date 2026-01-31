@@ -23,14 +23,14 @@ export function PlatformPageTemplate({
         />
         <h1 className="ml-1.5 text-sm font-medium tracking-wide">{heading}</h1>
       </header>
-      <main
+      <div
         className={cn(
-          "h-full w-full overflow-auto p-4",
+          "h-full w-full max-w-7xl overflow-auto p-4",
           paddingDisabled && "p-0",
         )}
       >
         {children}
-      </main>
+      </div>
     </div>
   );
 }

@@ -17,6 +17,7 @@
     "@inngest/workflow-kit": "catalog:",
     "@lexical/react": "catalog:",
     "@tanstack/react-query": "catalog:",
+    "@uidotdev/usehooks": "catalog:",
     "@xyflow/react": "catalog:",
     "axios": "catalog:",
     "better-auth": "catalog:",
