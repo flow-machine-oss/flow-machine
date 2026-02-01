@@ -1,3 +1,4 @@
+import { gitRepositoryEntityToResponseDto } from "@/adapter/http/git-repository/git-repository-http-v1-dto-mapper";
 import { makeGitRepositoryHttpV1Router } from "@/adapter/http/git-repository/git-repository-http-v1-router";
 import { makeDeleteGitRepositoryMongoRepository } from "@/adapter/repository/mongo/git-repository/delete-git-repository-mongo-repository";
 import { makeFindGitRepositoriesMongoRepository } from "@/adapter/repository/mongo/git-repository/find-git-repositories-mongo-repository";
@@ -42,34 +43,29 @@ const deleteGitRepositoryMongoRepository =
   });
 
 // Use cases
-export const createGitRepositoryUseCase =
-  makeCreateGitRepositoryUseCase({
-    insertGitRepositoryRepository: insertGitRepositoryMongoRepository,
-  });
-export const getGitRepositoryUseCase = makeGetGitRepositoryUseCase({
-  findGitRepositoryByIdRepository:
-    findGitRepositoryByIdMongoRepository,
+export const createGitRepositoryUseCase = makeCreateGitRepositoryUseCase({
+  insertGitRepositoryRepository: insertGitRepositoryMongoRepository,
 });
-export const listGitRepositoriesUseCase =
-  makeListGitRepositoriesUseCase({
-    findGitRepositoriesRepository: findGitRepositoriesMongoRepository,
-  });
-export const updateGitRepositoryUseCase =
-  makeUpdateGitRepositoryUseCase({
-    updateGitRepositoryRepository: updateGitRepositoryMongoRepository,
-  });
-export const deleteGitRepositoryUseCase =
-  makeDeleteGitRepositoryUseCase({
-    deleteGitRepositoryRepository: deleteGitRepositoryMongoRepository,
-  });
+export const getGitRepositoryUseCase = makeGetGitRepositoryUseCase({
+  findGitRepositoryByIdRepository: findGitRepositoryByIdMongoRepository,
+});
+export const listGitRepositoriesUseCase = makeListGitRepositoriesUseCase({
+  findGitRepositoriesRepository: findGitRepositoriesMongoRepository,
+});
+export const updateGitRepositoryUseCase = makeUpdateGitRepositoryUseCase({
+  updateGitRepositoryRepository: updateGitRepositoryMongoRepository,
+});
+export const deleteGitRepositoryUseCase = makeDeleteGitRepositoryUseCase({
+  deleteGitRepositoryRepository: deleteGitRepositoryMongoRepository,
+});
 
-export const gitRepositoryHttpV1Router =
-  makeGitRepositoryHttpV1Router({
-    getSession,
-    getActiveMember,
-    createGitRepositoryUseCase,
-    deleteGitRepositoryUseCase,
-    getGitRepositoryUseCase,
-    listGitRepositoriesUseCase,
-    updateGitRepositoryUseCase,
-  });
+export const gitRepositoryHttpV1Router = makeGitRepositoryHttpV1Router({
+  getSession,
+  getActiveMember,
+  createGitRepositoryUseCase,
+  deleteGitRepositoryUseCase,
+  getGitRepositoryUseCase,
+  gitRepositoryEntityToResponseDto,
+  listGitRepositoriesUseCase,
+  updateGitRepositoryUseCase,
+});

@@ -1,14 +1,13 @@
 import Elysia from "elysia";
 import {
-  type GitRepositoryResponseDto,
   idParamsDtoSchema,
   patchGitRepositoryRequestBodyDtoSchema,
   postGitRepositoryRequestBodyDtoSchema,
 } from "@/adapter/http/git-repository/git-repository-http-v1-dto";
+import type { GitRepositoryEntityToResponseDto } from "@/adapter/http/git-repository/git-repository-http-v1-dto-mapper";
 import { makeHttpAuthGuardPlugin } from "@/common/http/http-auth-guard-plugin";
 import { errEnvelope, okEnvelope } from "@/common/http/http-envelope";
 import { makeHttpMongoCtxPlugin } from "@/common/http/http-mongo-ctx-plugin";
-import type { GitRepositoryEntity } from "@/domain/entity/git-repository/git-repository-entity";
 import type {
   GetActiveMember,
   GetSession,
@@ -27,22 +26,10 @@ type Input = {
   createGitRepositoryUseCase: CreateGitRepositoryUseCase;
   deleteGitRepositoryUseCase: DeleteGitRepositoryUseCase;
   getGitRepositoryUseCase: GetGitRepositoryUseCase;
+  gitRepositoryEntityToResponseDto: GitRepositoryEntityToResponseDto;
   listGitRepositoriesUseCase: ListGitRepositoriesUseCase;
   updateGitRepositoryUseCase: UpdateGitRepositoryUseCase;
 };
-
-const toResponseDto = (
-  entity: GitRepositoryEntity,
-): GitRepositoryResponseDto => ({
-  id: entity.id,
-  createdAt: entity.createdAt,
-  updatedAt: entity.updatedAt,
-  tenant: entity.tenant,
-  name: entity.props.name,
-  url: entity.props.url,
-  config: entity.props.config,
-  integration: entity.props.integration,
-});
 
 export const makeGitRepositoryHttpV1Router = ({
   getSession,
@@ -50,6 +37,7 @@ export const makeGitRepositoryHttpV1Router = ({
   createGitRepositoryUseCase,
   deleteGitRepositoryUseCase,
   getGitRepositoryUseCase,
+  gitRepositoryEntityToResponseDto,
   listGitRepositoriesUseCase,
   updateGitRepositoryUseCase,
 }: Input) =>
@@ -81,7 +69,11 @@ export const makeGitRepositoryHttpV1Router = ({
           if (result.isErr()) {
             return errEnvelope(result.error);
           }
-          return okEnvelope({ data: result.value.map(toResponseDto) });
+          return okEnvelope({
+            data: result.value.map((entity) =>
+              gitRepositoryEntityToResponseDto(entity),
+            ),
+          });
         })
         .get(
           "/:id",
@@ -93,7 +85,9 @@ export const makeGitRepositoryHttpV1Router = ({
             if (result.isErr()) {
               return errEnvelope(result.error);
             }
-            return okEnvelope({ data: toResponseDto(result.value) });
+            return okEnvelope({
+              data: gitRepositoryEntityToResponseDto(result.value),
+            });
           },
           {
             params: idParamsDtoSchema,
