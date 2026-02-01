@@ -1,15 +1,16 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import type { z } from "zod/v4";
 
-type useJsonEditorOptions = {
+type UseJsonEditorOptions<TSchema extends z.ZodType> = {
   initialValue?: string;
-  schema: z.ZodType;
+  schema: TSchema;
 };
 
-export const useJsonEditor = ({
+export const useJsonEditor = <TSchema extends z.ZodType>({
   initialValue,
   schema,
-}: useJsonEditorOptions) => {
+}: UseJsonEditorOptions<TSchema>) => {
   const [value, setValue] = useState<string>(initialValue ?? "");
   const [error, setError] = useState<Error | null>(null);
 
@@ -52,14 +53,27 @@ export const useJsonEditor = ({
     }
   };
 
-  const handleValidateSchema = () => {
-    try {
-      const parsed = JSON.parse(value);
-      schema.parse(parsed);
-      setError(null);
-    } catch (err) {
-      setError(err as Error);
-    }
+  const withValidation = (onSave: (data: z.output<TSchema>) => void) => {
+    return () => {
+      try {
+        const parsed = JSON.parse(value);
+        const validationResult = schema.safeParse(parsed);
+
+        if (!validationResult.success) {
+          const firstIssue = validationResult.error.issues[0];
+          const errorMessage = firstIssue?.message ?? "Validation failed";
+          toast.error(`Validation error: ${errorMessage}`);
+          setError(new Error(errorMessage));
+          return;
+        }
+
+        setError(null);
+        onSave(validationResult.data);
+      } catch (err) {
+        toast.error("Invalid JSON syntax");
+        setError(err as Error);
+      }
+    };
   };
 
   return {
@@ -68,6 +82,6 @@ export const useJsonEditor = ({
     onChange: handleValueChange,
     onFormat: handleFormatJson,
     onKeyDown: handleKeyDown,
-    onValidateSchema: handleValidateSchema,
+    withValidation,
   } as const;
 };

@@ -1,7 +1,6 @@
 "use client";
 
 import { BrushCleaningIcon } from "lucide-react";
-import { toast } from "sonner";
 import type { z } from "zod/v4";
 import { workflowJsonEditorSchema } from "@/app/platform/workflow/_schema/workflow-editor-schema";
 import { JsonEditorTextarea } from "@/component/extended-ui/json-editor-textarea";
@@ -30,25 +29,7 @@ export function WorkflowJsonEditor({
     schema: workflowJsonEditorSchema,
   });
 
-  const handleSave = () => {
-    try {
-      const parsed = JSON.parse(jsonEditor.value);
-      const validationResult = workflowJsonEditorSchema.safeParse(parsed);
-
-      if (!validationResult.success) {
-        const firstIssue = validationResult.error.issues[0];
-        toast.error(
-          "Invalid workflow JSON: " +
-            (firstIssue?.message ?? "Validation failed"),
-        );
-        return;
-      }
-
-      onSave(validationResult.data);
-    } catch {
-      toast.error("Invalid JSON syntax");
-    }
-  };
+  const handleSave = jsonEditor.withValidation(onSave);
 
   return (
     <div className="relative grid h-full grid-rows-[1fr_auto] gap-2">
