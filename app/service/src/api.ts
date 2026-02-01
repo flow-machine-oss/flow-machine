@@ -4,6 +4,7 @@ import Elysia from "elysia";
 import z from "zod";
 import { config } from "@/common/config/config";
 import { makeHttpErrorHandlerPlugin } from "@/common/http/http-error-handler.plugin";
+import { aiAgentHttpV1Router } from "@/di/ai-agent-di";
 import { authHttpRouter } from "@/di/auth-di";
 import { billingHttpV1Router } from "@/di/billing-di";
 import { documentHttpV1Router } from "@/di/document-di";
@@ -27,6 +28,7 @@ app
     }),
   )
   .use(makeHttpErrorHandlerPlugin())
+  .use(aiAgentHttpV1Router)
   .use(authHttpRouter)
   .use(billingHttpV1Router)
   .use(documentHttpV1Router)
