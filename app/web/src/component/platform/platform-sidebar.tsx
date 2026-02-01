@@ -1,6 +1,6 @@
 "use client";
 
-import { OrganizationSwitcher, UserButton } from "@daveyplate/better-auth-ui";
+import { OrganizationSwitcher } from "@daveyplate/better-auth-ui";
 import {
   BotIcon,
   FileTextIcon,
@@ -61,17 +61,6 @@ export function PlatformSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <OrganizationSwitcher
-                align="start"
-                variant="outline"
-                onSetActive={() => router.refresh()}
-              />
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroup>
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
           <SidebarGroupLabel>Personal</SidebarGroupLabel>
           <SidebarMenu>
@@ -144,7 +133,11 @@ export function PlatformSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <UserButton align="start" size="sm" variant="outline" />
+            <OrganizationSwitcher
+              align="start"
+              variant="outline"
+              onSetActive={() => router.refresh()}
+            />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

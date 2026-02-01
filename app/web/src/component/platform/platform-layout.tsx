@@ -7,6 +7,7 @@ export function PlatformLayout({ children }: PropsWithChildren) {
   return (
     <SignedIn>
       <SidebarProvider
+        className="h-full"
         style={
           {
             "--sidebar-width": "calc(var(--spacing) * 56)",

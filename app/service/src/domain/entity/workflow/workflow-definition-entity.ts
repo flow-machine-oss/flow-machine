@@ -1,5 +1,9 @@
 import z from "zod";
-import { type EntityIdInput, newEntityId } from "@/common/domain/entity-id";
+import {
+  type EntityIdInput,
+  entityIdSchema,
+  newEntityId,
+} from "@/common/domain/entity-id";
 import {
   type Tenant,
   TenantAwareEntity,
@@ -22,9 +26,9 @@ export type WorkflowEdge = z.output<typeof workflowEdgeSchema>;
 export const workflowDefinitionEntityProps = z.object({
   name: z.string().min(1).max(255),
   description: z.string().max(2000).optional(),
-  projectId: z.ulid().nullable(),
-  actions: z.array(workflowActionSchema),
-  edges: z.array(workflowEdgeSchema),
+  projectId: entityIdSchema.nullable(),
+  actions: workflowActionSchema.array(),
+  edges: workflowEdgeSchema.array(),
   isActive: z.boolean(),
 });
 export type WorkflowDefinitionEntityProps = z.output<

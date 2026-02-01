@@ -53,7 +53,7 @@ export const findWorkflowDefinitionsRepositorySchema = z.function({
   ],
   output: z.promise(
     makeResultSchema(
-      z.array(z.instanceof(WorkflowDefinitionEntity)),
+      z.instanceof(WorkflowDefinitionEntity).array(),
       z.instanceof(Err),
     ),
   ),
