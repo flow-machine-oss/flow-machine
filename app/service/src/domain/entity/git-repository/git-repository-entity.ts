@@ -1,6 +1,9 @@
-import { ok } from "neverthrow";
 import z from "zod";
-import { entityIdSchema, newEntityId } from "@/common/domain/entity-id";
+import {
+  type EntityIdInput,
+  entityIdSchema,
+  newEntityId,
+} from "@/common/domain/entity-id";
 import {
   type Tenant,
   TenantAwareEntity,
@@ -26,21 +29,19 @@ export type GitRepositoryEntityProps = z.output<
 
 export class GitRepositoryEntity extends TenantAwareEntity<GitRepositoryEntityProps> {
   static makeNew(tenant: Tenant, props: GitRepositoryEntityProps) {
-    return ok(new GitRepositoryEntity(newEntityId(), tenant, props));
+    return new GitRepositoryEntity(newEntityId(), tenant, props);
   }
 
   static makeExisting(
-    id: string,
+    id: EntityIdInput,
     createdAt: Date,
     updatedAt: Date,
     tenant: Tenant,
     props: GitRepositoryEntityProps,
   ) {
-    return ok(
-      new GitRepositoryEntity(id, tenant, props, {
-        createdAt,
-        updatedAt,
-      }),
-    );
+    return new GitRepositoryEntity(id, tenant, props, {
+      createdAt,
+      updatedAt,
+    });
   }
 }
