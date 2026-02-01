@@ -32,5 +32,5 @@ export const makeFindWorkflowDefinitionsMongoRepository = ({
     if (isNotNil(error) || docs === null) {
       return err(Err.from(error));
     }
-    return ok(docs.map(workflowDefinitionMongoModelToEntity));
+    return ok(docs.map((doc) => workflowDefinitionMongoModelToEntity(doc)));
   });

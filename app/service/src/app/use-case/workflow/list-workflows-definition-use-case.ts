@@ -14,7 +14,6 @@ export const makeListWorkflowDefinitionsUseCase = ({
 }: Input): ListWorkflowDefinitionsUseCase =>
   listWorkflowDefinitionsUseCaseSchema.implementAsync(async ({ ctx }) => {
     const findResult = await findWorkflowDefinitionsRepository({ ctx });
-
     if (findResult.isErr()) {
       return err(findResult.error);
     }

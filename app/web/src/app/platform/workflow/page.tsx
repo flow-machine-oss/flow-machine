@@ -30,7 +30,6 @@ import {
 } from "@/component/ui/alert-dialog";
 import { Badge } from "@/component/ui/badge";
 import { Button } from "@/component/ui/button";
-import { Checkbox } from "@/component/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -106,25 +105,6 @@ function ActionsCell({
 }
 
 const columns: ColumnDef<WorkflowDefinitionResponseDto>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -213,7 +193,11 @@ export default function WorkflowPage() {
       ) : (
         <div className="space-y-2.5">
           <div className="flex w-full justify-end">
-            <Button render={<Link href="/platform/workflow/new" />}>
+            <Button
+              render={(props) => (
+                <Link href="/platform/workflow/new" {...props} />
+              )}
+            >
               <PlusIcon />
               Create Workflow
             </Button>
