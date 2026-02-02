@@ -7,6 +7,7 @@ import { makeHttpErrorHandlerPlugin } from "@/common/http/http-error-handler.plu
 import { aiAgentHttpV1Router } from "@/di/ai-agent-di";
 import { authHttpRouter } from "@/di/auth-di";
 import { billingHttpV1Router } from "@/di/billing-di";
+import { credentialHttpV1Router } from "@/di/credential-di";
 import { documentHttpV1Router } from "@/di/document-di";
 import { gitRepositoryHttpV1Router } from "@/di/git-repository-di";
 import { healthHttpV1Router } from "@/di/health-di";
@@ -31,6 +32,7 @@ app
   .use(aiAgentHttpV1Router)
   .use(authHttpRouter)
   .use(billingHttpV1Router)
+  .use(credentialHttpV1Router)
   .use(documentHttpV1Router)
   .use(gitRepositoryHttpV1Router)
   .use(healthHttpV1Router)
