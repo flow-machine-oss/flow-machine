@@ -10,6 +10,7 @@ import { billingHttpV1Router } from "@/di/billing-di";
 import { documentHttpV1Router } from "@/di/document-di";
 import { gitRepositoryHttpV1Router } from "@/di/git-repository-di";
 import { healthHttpV1Router } from "@/di/health-di";
+import { issueHttpV1Router } from "@/di/issue-di";
 import { inngestHttpRouter } from "@/di/inngest-di";
 import { projectHttpV1Router } from "@/di/project-di";
 import { workflowActionDefinitionHttpV1Router } from "@/di/workflow-action-definition-di";
@@ -35,6 +36,7 @@ app
   .use(gitRepositoryHttpV1Router)
   .use(healthHttpV1Router)
   .use(inngestHttpRouter)
+  .use(issueHttpV1Router)
   .use(projectHttpV1Router)
   .use(workflowActionDefinitionHttpV1Router)
   .use(workflowDefinitionHttpV1Router)
