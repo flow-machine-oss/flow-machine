@@ -6,8 +6,8 @@ import { workflowJsonEditorSchema } from "@/app/platform/workflow/_schema/workfl
 import { JsonEditorTextarea } from "@/component/extended-ui/json-editor-textarea";
 import { Button } from "@/component/ui/button";
 import { ButtonGroup } from "@/component/ui/button-group";
+import type { WorkflowDefinitionDomain } from "@/domain/entity/workflow-definition/workflow-definition-domain-schema";
 import { useJsonEditor } from "@/hook/use-json-editor";
-import type { WorkflowDefinitionResponseDto } from "@/schema/workflow/workflow-definition-service-schema";
 
 export type WorkflowJsonEditorData = z.output<typeof workflowJsonEditorSchema>;
 
@@ -62,7 +62,7 @@ export function WorkflowJsonEditor({
 }
 
 export function workflowToEditorJson(
-  workflow: WorkflowDefinitionResponseDto,
+  workflow: WorkflowDefinitionDomain,
 ): string {
   return JSON.stringify(
     {

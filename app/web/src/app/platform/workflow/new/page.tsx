@@ -8,7 +8,7 @@ import {
 } from "@/app/platform/workflow/_component/workflow-json-editor";
 import { PlatformPageTemplate } from "@/component/platform/platform-page-template";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/component/ui/tabs";
-import { useCreateWorkflowDefinition } from "@/hook/workflow/use-create-workflow-definition";
+import { useCreateWorkflowDefinition } from "@/hook/workflow-definition/use-create-workflow-definition";
 
 const INITIAL_WORKFLOW_JSON_VALUE = JSON.stringify(
   {
@@ -51,7 +51,7 @@ export default function Page() {
 
   const handleSave = (data: WorkflowJsonEditorData) => {
     createWorkflow.mutate({
-      body: {
+      payload: {
         name: data.name,
         description: data.description,
         projectId: null,

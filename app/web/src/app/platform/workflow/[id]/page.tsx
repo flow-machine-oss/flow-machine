@@ -4,15 +4,15 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   WorkflowJsonEditor,
-  workflowToEditorJson,
   type WorkflowJsonEditorData,
+  workflowToEditorJson,
 } from "@/app/platform/workflow/_component/workflow-json-editor";
 import { Center } from "@/component/extended-ui/center";
 import { Pending } from "@/component/extended-ui/pending";
 import { PlatformPageTemplate } from "@/component/platform/platform-page-template";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/component/ui/tabs";
-import { useGetWorkflowDefinition } from "@/hook/workflow/use-get-workflow-definition";
-import { useUpdateWorkflowDefinition } from "@/hook/workflow/use-update-workflow-definition";
+import { useGetWorkflowDefinition } from "@/hook/workflow-definition/use-get-workflow-definition";
+import { useUpdateWorkflowDefinition } from "@/hook/workflow-definition/use-update-workflow-definition";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
@@ -32,12 +32,14 @@ export default function Page() {
 
   const handleSave = (data: WorkflowJsonEditorData) => {
     updateWorkflow.mutate({
-      params: { id: params.id },
-      body: {
-        name: data.name,
-        description: data.description,
-        actions: data.actions,
-        edges: data.edges,
+      payload: {
+        id: params.id,
+        body: {
+          name: data.name,
+          description: data.description,
+          actions: data.actions,
+          edges: data.edges,
+        },
       },
     });
   };

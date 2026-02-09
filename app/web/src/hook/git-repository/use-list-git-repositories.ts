@@ -1,11 +1,11 @@
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { makeGitRepositoryHttpClient } from "@/backend/http-client/git-repository/git-repository-http-client";
+import type { GitRepositoryDomain } from "@/domain/entity/git-repository/git-repository-domain-schema";
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
 import { makeListGitRepositoriesQueryKey } from "@/lib/query/query-key";
-import type { GitRepositoryResponseDto } from "@/schema/git-repository/git-repository-service-schema";
-import { makeListGitRepositories } from "@/service/git-repository/list-git-repositories-service";
 
 type UseListGitRepositoriesOptions = Omit<
-  UseQueryOptions<GitRepositoryResponseDto[], Error>,
+  UseQueryOptions<GitRepositoryDomain[], Error>,
   "queryKey" | "queryFn"
 >;
 
@@ -16,7 +16,7 @@ export const useListGitRepositories = (
 
   return useQuery({
     queryKey: makeListGitRepositoriesQueryKey(),
-    queryFn: makeListGitRepositories(httpClient),
+    queryFn: makeGitRepositoryHttpClient(httpClient).list,
     ...options,
   });
 };

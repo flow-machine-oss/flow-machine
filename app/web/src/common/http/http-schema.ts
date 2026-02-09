@@ -12,12 +12,12 @@ export type HttpEnvelope<T = undefined> = Omit<
   "data"
 > & { data: T };
 
-export const okHttpEnvelope = <T>({
+export const okHttpEnvelope = <T = undefined>({
   code,
   data,
   message,
   status,
-}: Partial<HttpEnvelope & { data: T }> = {}): HttpEnvelope<T> => ({
+}: Partial<HttpEnvelope<T>> = {}): HttpEnvelope<T> => ({
   code: code ?? "ok",
   data: data as T,
   message: message ?? "ok",

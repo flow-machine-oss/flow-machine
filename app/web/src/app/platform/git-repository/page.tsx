@@ -36,21 +36,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/component/ui/dropdown-menu";
+import type { GitRepositoryDomain } from "@/domain/entity/git-repository/git-repository-domain-schema";
 import { useDeleteGitRepository } from "@/hook/git-repository/use-delete-git-repository";
 import { useListGitRepositories } from "@/hook/git-repository/use-list-git-repositories";
-import type { GitRepositoryResponseDto } from "@/schema/git-repository/git-repository-service-schema";
 
-function ActionsCell({
-  repository,
-}: {
-  repository: GitRepositoryResponseDto;
-}) {
+function ActionsCell({ repository }: { repository: GitRepositoryDomain }) {
   const deleteRepository = useDeleteGitRepository();
   const [open, setOpen] = useState(false);
 
   const handleDelete = () => {
     deleteRepository.mutate(
-      { params: { id: repository.id } },
+      { payload: { id: repository.id } },
       { onSuccess: () => setOpen(false) },
     );
   };
@@ -85,8 +81,8 @@ function ActionsCell({
         <AlertDialogHeader>
           <AlertDialogTitle>Delete repository</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete &ldquo;{repository.name}&rdquo;? This
-            action cannot be undone.
+            Are you sure you want to delete &ldquo;{repository.name}&rdquo;?
+            This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -104,7 +100,7 @@ function ActionsCell({
   );
 }
 
-const columns: ColumnDef<GitRepositoryResponseDto>[] = [
+const columns: ColumnDef<GitRepositoryDomain>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (

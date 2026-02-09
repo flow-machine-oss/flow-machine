@@ -36,11 +36,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/component/ui/dropdown-menu";
+import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
 import { useDeleteAiAgent } from "@/hook/ai-agent/use-delete-ai-agent";
 import { useListAiAgents } from "@/hook/ai-agent/use-list-ai-agents";
-import type { AiAgentResponseDto } from "@/schema/ai-agent/ai-agent-service-schema";
 
-const modelDisplayNames: Record<AiAgentResponseDto["model"], string> = {
+const modelDisplayNames: Record<AiAgentDomain["model"], string> = {
   "anthropic/claude-haiku-4.5": "Claude Haiku 4.5",
   "anthropic/claude-opus-4.5": "Claude Opus 4.5",
   "anthropic/claude-sonnet-4.5": "Claude Sonnet 4.5",
@@ -49,13 +49,13 @@ const modelDisplayNames: Record<AiAgentResponseDto["model"], string> = {
   "z-ai/glm-4.7": "GLM 4.7",
 };
 
-function ActionsCell({ aiAgent }: { aiAgent: AiAgentResponseDto }) {
+function ActionsCell({ aiAgent }: { aiAgent: AiAgentDomain }) {
   const deleteAiAgent = useDeleteAiAgent();
   const [open, setOpen] = useState(false);
 
   const handleDelete = () => {
     deleteAiAgent.mutate(
-      { params: { id: aiAgent.id } },
+      { payload: { id: aiAgent.id } },
       { onSuccess: () => setOpen(false) },
     );
   };
@@ -109,7 +109,7 @@ function ActionsCell({ aiAgent }: { aiAgent: AiAgentResponseDto }) {
   );
 }
 
-const columns: ColumnDef<AiAgentResponseDto>[] = [
+const columns: ColumnDef<AiAgentDomain>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -131,7 +131,7 @@ const columns: ColumnDef<AiAgentResponseDto>[] = [
       <DataTableColumnHeader column={column} title="Model" />
     ),
     cell: ({ row }) => {
-      const model = row.getValue("model") as AiAgentResponseDto["model"];
+      const model = row.getValue("model") as AiAgentDomain["model"];
       return <Badge variant="secondary">{modelDisplayNames[model]}</Badge>;
     },
     enableSorting: false,

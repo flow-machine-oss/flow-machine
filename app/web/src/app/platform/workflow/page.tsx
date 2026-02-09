@@ -36,21 +36,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/component/ui/dropdown-menu";
-import { useDeleteWorkflowDefinition } from "@/hook/workflow/use-delete-workflow-definition";
-import { useListWorkflowDefinitions } from "@/hook/workflow/use-list-workflow-definitions";
-import type { WorkflowDefinitionResponseDto } from "@/schema/workflow/workflow-definition-service-schema";
+import type { WorkflowDefinitionDomain } from "@/domain/entity/workflow-definition/workflow-definition-domain-schema";
+import { useDeleteWorkflowDefinition } from "@/hook/workflow-definition/use-delete-workflow-definition";
+import { useListWorkflowDefinitions } from "@/hook/workflow-definition/use-list-workflow-definitions";
 
-function ActionsCell({
-  workflow,
-}: {
-  workflow: WorkflowDefinitionResponseDto;
-}) {
+function ActionsCell({ workflow }: { workflow: WorkflowDefinitionDomain }) {
   const deleteWorkflow = useDeleteWorkflowDefinition();
   const [open, setOpen] = useState(false);
 
   const handleDelete = () => {
     deleteWorkflow.mutate(
-      { params: { id: workflow.id } },
+      { payload: { id: workflow.id } },
       { onSuccess: () => setOpen(false) },
     );
   };
@@ -104,7 +100,7 @@ function ActionsCell({
   );
 }
 
-const columns: ColumnDef<WorkflowDefinitionResponseDto>[] = [
+const columns: ColumnDef<WorkflowDefinitionDomain>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (

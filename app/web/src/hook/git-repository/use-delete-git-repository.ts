@@ -3,24 +3,16 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
+import { makeGitRepositoryHttpClient } from "@/backend/http-client/git-repository/git-repository-http-client";
+import type { DeleteGitRepositoryClientIn } from "@/backend/http-client/git-repository/git-repository-http-client-dto";
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
-import type { HttpEnvelope } from "@/lib/http/http-dto";
 import {
   makeGetGitRepositoryQueryKey,
   makeListGitRepositoriesQueryKey,
 } from "@/lib/query/query-key";
-import {
-  type DeleteGitRepositoryPayload,
-  makeDeleteGitRepository,
-} from "@/service/git-repository/delete-git-repository-service";
 
 type UseDeleteGitRepositoryOptions = Omit<
-  UseMutationOptions<
-    HttpEnvelope<undefined>,
-    Error,
-    DeleteGitRepositoryPayload,
-    unknown
-  >,
+  UseMutationOptions<void, Error, DeleteGitRepositoryClientIn, unknown>,
   "mutationFn"
 >;
 
@@ -31,7 +23,7 @@ export const useDeleteGitRepository = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: makeDeleteGitRepository(httpClient),
+    mutationFn: makeGitRepositoryHttpClient(httpClient).deleteById,
     ...options,
     onSuccess: (...args) => {
       const [, variables] = args;
@@ -39,7 +31,7 @@ export const useDeleteGitRepository = (
         queryKey: makeListGitRepositoriesQueryKey(),
       });
       queryClient.invalidateQueries({
-        queryKey: makeGetGitRepositoryQueryKey(variables.params.id),
+        queryKey: makeGetGitRepositoryQueryKey(variables.payload.id),
       });
       options?.onSuccess?.(...args);
     },

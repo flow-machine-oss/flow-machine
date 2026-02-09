@@ -1,11 +1,11 @@
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { makeAiAgentHttpClient } from "@/backend/http-client/ai-agent/ai-agent-http-client";
+import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
 import { makeGetAiAgentQueryKey } from "@/lib/query/query-key";
-import type { AiAgentResponseDto } from "@/schema/ai-agent/ai-agent-service-schema";
-import { makeGetAiAgent } from "@/service/ai-agent/get-ai-agent-service";
 
 type UseGetAiAgentOptions = Omit<
-  UseQueryOptions<AiAgentResponseDto, Error>,
+  UseQueryOptions<AiAgentDomain, Error>,
   "queryKey" | "queryFn"
 >;
 
@@ -14,7 +14,8 @@ export const useGetAiAgent = (id: string, options?: UseGetAiAgentOptions) => {
 
   return useQuery({
     queryKey: makeGetAiAgentQueryKey(id),
-    queryFn: () => makeGetAiAgent(httpClient)({ params: { id } }),
+    queryFn: () =>
+      makeAiAgentHttpClient(httpClient).getById({ payload: { id } }),
     ...options,
   });
 };
