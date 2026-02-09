@@ -50,3 +50,21 @@ export const getAiAgentByIdClientInSchema = z.object({
 export type GetAiAgentByIdClientIn = z.output<
   typeof getAiAgentByIdClientInSchema
 >;
+
+export const updateAiAgentHttpRequestBodyDtoSchema = z.object({
+  model: z.enum(aiModels).optional(),
+  name: z.string().min(1).max(256).optional(),
+});
+export type UpdateAiAgentHttpRequestBodyDto = z.output<
+  typeof updateAiAgentHttpRequestBodyDtoSchema
+>;
+
+export const updateAiAgentHttpClientInSchema = z.object({
+  payload: z.object({
+    id: idParamsSchema.shape.id,
+    body: updateAiAgentHttpRequestBodyDtoSchema,
+  }),
+});
+export type UpdateAiAgentHttpClientIn = z.output<
+  typeof updateAiAgentHttpClientInSchema
+>;
