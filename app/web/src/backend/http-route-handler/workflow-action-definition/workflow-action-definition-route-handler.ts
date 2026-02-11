@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type { WorkflowActionDefinitionHttpClient } from "@/backend/http-client/workflow-action-definition/workflow-action-definition-http-client";
 import { workflowActionDefinitionDomainCodec } from "@/backend/http-route-handler/workflow-action-definition/workflow-action-definition-route-handler-codec";
-import { type HttpEnvelope, okHttpEnvelope } from "@/common/http/http-schema";
 import type { WorkflowActionDefinitionDomain } from "@/domain/entity/workflow-action-definition/workflow-action-definition-schema";
+import { type HttpEnvelope, okHttpEnvelope } from "@/lib/http/http-schema";
 
 type MakeWorkflowActionDefinitionRouteHandlerIn = {
   workflowActionDefinitionHttpClient: WorkflowActionDefinitionHttpClient;

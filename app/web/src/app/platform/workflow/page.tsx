@@ -46,7 +46,7 @@ function ActionsCell({ workflow }: { workflow: WorkflowDefinitionDomain }) {
 
   const handleDelete = () => {
     deleteWorkflow.mutate(
-      { payload: { id: workflow.id } },
+      { params: { id: workflow.id } },
       { onSuccess: () => setOpen(false) },
     );
   };
@@ -178,7 +178,7 @@ const columns: ColumnDef<WorkflowDefinitionDomain>[] = [
 ];
 
 export default function WorkflowPage() {
-  const { data = [], isPending } = useListWorkflowDefinitions();
+  const { data, isPending } = useListWorkflowDefinitions();
 
   return (
     <PlatformPageTemplate heading="Workflow">
@@ -200,7 +200,7 @@ export default function WorkflowPage() {
           </div>
           <DataTable
             columns={columns}
-            data={data}
+            data={data ?? []}
             searchKey="name"
             searchPlaceholder="Filter workflows..."
           />

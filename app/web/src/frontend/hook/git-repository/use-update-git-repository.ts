@@ -3,7 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import type { DeleteGitRepositoryServicePortIn } from "@/domain/port/git-repository/git-repository-service-port";
+import type { UpdateGitRepositoryServicePortIn } from "@/domain/port/git-repository/git-repository-service-port";
 import { useProtectedHttpClient } from "@/frontend/hook/use-protected-http-client";
 import { makeGitRepositoryHttpClient } from "@/frontend/http-client/git-repository/git-repository-http-client";
 import {
@@ -11,20 +11,20 @@ import {
   makeListGitRepositoriesQueryKey,
 } from "@/frontend/lib/query/query-key";
 
-type UseDeleteGitRepositoryOptions = Omit<
-  UseMutationOptions<void, Error, DeleteGitRepositoryServicePortIn, unknown>,
+type UseUpdateGitRepositoryOptions = Omit<
+  UseMutationOptions<void, Error, UpdateGitRepositoryServicePortIn, unknown>,
   "mutationFn"
 >;
 
-export const useDeleteGitRepository = (
-  options?: UseDeleteGitRepositoryOptions,
+export const useUpdateGitRepository = (
+  options?: UseUpdateGitRepositoryOptions,
 ) => {
   const httpClient = useProtectedHttpClient();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: DeleteGitRepositoryServicePortIn) => {
-      await makeGitRepositoryHttpClient({ httpClient }).deleteById(input);
+    mutationFn: async (input: UpdateGitRepositoryServicePortIn) => {
+      await makeGitRepositoryHttpClient({ httpClient }).updateById(input);
     },
     ...options,
     onSuccess: (...args) => {

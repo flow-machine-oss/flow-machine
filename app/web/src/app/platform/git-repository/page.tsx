@@ -46,7 +46,7 @@ function ActionsCell({ repository }: { repository: GitRepositoryDomain }) {
 
   const handleDelete = () => {
     deleteRepository.mutate(
-      { payload: { id: repository.id } },
+      { params: { id: repository.id } },
       { onSuccess: () => setOpen(false) },
     );
   };
@@ -179,7 +179,7 @@ const columns: ColumnDef<GitRepositoryDomain>[] = [
 ];
 
 export default function GitRepositoryPage() {
-  const { data = [], isPending } = useListGitRepositories();
+  const { data, isPending } = useListGitRepositories();
 
   return (
     <PlatformPageTemplate heading="Git Repository">
@@ -201,7 +201,7 @@ export default function GitRepositoryPage() {
           </div>
           <DataTable
             columns={columns}
-            data={data}
+            data={data ?? []}
             searchKey="name"
             searchPlaceholder="Filter repositories..."
           />

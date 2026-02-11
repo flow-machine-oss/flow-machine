@@ -4,12 +4,12 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import type { DeleteAiAgentServicePortIn } from "@/domain/port/ai-agent/ai-agent-service-port";
+import { useProtectedHttpClient } from "@/frontend/hook/use-protected-http-client";
 import { makeAiAgentHttpClient } from "@/frontend/http-client/ai-agent/ai-agent-http-client";
-import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
 import {
   makeGetAiAgentQueryKey,
   makeListAiAgentsQueryKey,
-} from "@/lib/query/query-key";
+} from "@/frontend/lib/query/query-key";
 
 type UseDeleteAiAgentOptions = Omit<
   UseMutationOptions<void, Error, DeleteAiAgentServicePortIn, unknown>,

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { GitRepositoryHttpClient } from "@/backend/http-client/git-repository/git-repository-http-client";
 import { gitRepositoryDomainCodec } from "@/backend/http-route-handler/git-repository/git-repository-route-handler-codec";
-import { type HttpEnvelope, okHttpEnvelope } from "@/common/http/http-schema";
 import type { GitRepositoryDomain } from "@/domain/entity/git-repository/git-repository-domain-schema";
 import {
   createGitRepositoryServicePortInSchema,
@@ -9,6 +8,7 @@ import {
   getGitRepositoryServicePortInSchema,
   updateGitRepositoryServicePortInSchema,
 } from "@/domain/port/git-repository/git-repository-service-port";
+import { type HttpEnvelope, okHttpEnvelope } from "@/lib/http/http-schema";
 
 type MakeGitRepositoryRouteHandlerIn = {
   gitRepositoryHttpClient: GitRepositoryHttpClient;

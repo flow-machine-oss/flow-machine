@@ -3,19 +3,19 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { makeWorkflowDefinitionHttpClient } from "@/backend/http-client/workflow-definition/workflow-definition-http-client";
-import type { UpdateWorkflowDefinitionHttpClientIn } from "@/backend/http-client/workflow-definition/workflow-definition-http-client-dto";
-import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
+import type { UpdateWorkflowDefinitionServicePortIn } from "@/domain/port/workflow-definition/workflow-definition-service-port";
+import { useProtectedHttpClient } from "@/frontend/hook/use-protected-http-client";
+import { makeWorkflowDefinitionHttpClient } from "@/frontend/http-client/workflow-definition/workflow-definition-http-client";
 import {
   makeGetWorkflowDefinitionQueryKey,
   makeListWorkflowDefinitionsQueryKey,
-} from "@/lib/query/query-key";
+} from "@/frontend/lib/query/query-key";
 
 type UseUpdateWorkflowDefinitionOptions = Omit<
   UseMutationOptions<
     void,
     Error,
-    UpdateWorkflowDefinitionHttpClientIn,
+    UpdateWorkflowDefinitionServicePortIn,
     unknown
   >,
   "mutationFn"
@@ -28,7 +28,9 @@ export const useUpdateWorkflowDefinition = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: makeWorkflowDefinitionHttpClient({ httpClient }).updateById,
+    mutationFn: async (input: UpdateWorkflowDefinitionServicePortIn) => {
+      await makeWorkflowDefinitionHttpClient({ httpClient }).updateById(input);
+    },
     ...options,
     onSuccess: (...args) => {
       const [, variables] = args;
@@ -36,7 +38,7 @@ export const useUpdateWorkflowDefinition = (
         queryKey: makeListWorkflowDefinitionsQueryKey(),
       });
       queryClient.invalidateQueries({
-        queryKey: makeGetWorkflowDefinitionQueryKey(variables.payload.id),
+        queryKey: makeGetWorkflowDefinitionQueryKey(variables.params.id),
       });
       options?.onSuccess?.(...args);
     },

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { WorkflowDefinitionHttpClient } from "@/backend/http-client/workflow-definition/workflow-definition-http-client";
 import { workflowDefinitionDomainCodec } from "@/backend/http-route-handler/workflow-definition/workflow-definition-route-handler-codec";
-import { type HttpEnvelope, okHttpEnvelope } from "@/common/http/http-schema";
 import type { WorkflowDefinitionDomain } from "@/domain/entity/workflow-definition/workflow-definition-domain-schema";
 import {
   createWorkflowDefinitionServicePortInSchema,
@@ -9,6 +8,7 @@ import {
   getWorkflowDefinitionServicePortInSchema,
   updateWorkflowDefinitionServicePortInSchema,
 } from "@/domain/port/workflow-definition/workflow-definition-service-port";
+import { type HttpEnvelope, okHttpEnvelope } from "@/lib/http/http-schema";
 
 type MakeWorkflowDefinitionRouteHandlerIn = {
   workflowDefinitionHttpClient: WorkflowDefinitionHttpClient;
@@ -20,8 +20,9 @@ export const makeWorkflowDefinitionRouteHandler = ({
   create: async (request: NextRequest) => {
     const body = await request.json();
 
-    const { body: payload } =
-      createWorkflowDefinitionServicePortInSchema.parse({ body });
+    const { body: payload } = createWorkflowDefinitionServicePortInSchema.parse(
+      { body },
+    );
 
     await workflowDefinitionHttpClient.create({ payload });
 

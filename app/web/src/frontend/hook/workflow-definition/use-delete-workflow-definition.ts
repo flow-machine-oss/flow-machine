@@ -3,16 +3,21 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { makeWorkflowDefinitionHttpClient } from "@/backend/http-client/workflow-definition/workflow-definition-http-client";
-import type { DeleteWorkflowDefinitionClientIn } from "@/backend/http-client/workflow-definition/workflow-definition-http-client-dto";
-import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
+import type { DeleteWorkflowDefinitionServicePortIn } from "@/domain/port/workflow-definition/workflow-definition-service-port";
+import { useProtectedHttpClient } from "@/frontend/hook/use-protected-http-client";
+import { makeWorkflowDefinitionHttpClient } from "@/frontend/http-client/workflow-definition/workflow-definition-http-client";
 import {
   makeGetWorkflowDefinitionQueryKey,
   makeListWorkflowDefinitionsQueryKey,
-} from "@/lib/query/query-key";
+} from "@/frontend/lib/query/query-key";
 
 type UseDeleteWorkflowDefinitionOptions = Omit<
-  UseMutationOptions<void, Error, DeleteWorkflowDefinitionClientIn, unknown>,
+  UseMutationOptions<
+    void,
+    Error,
+    DeleteWorkflowDefinitionServicePortIn,
+    unknown
+  >,
   "mutationFn"
 >;
 
@@ -23,7 +28,7 @@ export const useDeleteWorkflowDefinition = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: DeleteWorkflowDefinitionClientIn) => {
+    mutationFn: async (input: DeleteWorkflowDefinitionServicePortIn) => {
       await makeWorkflowDefinitionHttpClient({ httpClient }).deleteById(input);
     },
     ...options,
@@ -33,7 +38,7 @@ export const useDeleteWorkflowDefinition = (
         queryKey: makeListWorkflowDefinitionsQueryKey(),
       });
       queryClient.invalidateQueries({
-        queryKey: makeGetWorkflowDefinitionQueryKey(variables.payload.id),
+        queryKey: makeGetWorkflowDefinitionQueryKey(variables.params.id),
       });
       options?.onSuccess?.(...args);
     },

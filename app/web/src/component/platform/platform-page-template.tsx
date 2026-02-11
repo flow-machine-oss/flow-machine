@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { Separator } from "@/component/ui/separator";
 import { SidebarTrigger } from "@/component/ui/sidebar";
-import { cn } from "@/lib/util";
+import { cn } from "@/frontend/lib/util";
 
 type PlatformPageTemplate = {
   heading: string;

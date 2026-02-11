@@ -51,7 +51,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/component/ui/table";
-import { cn } from "@/lib/util";
+import { cn } from "@/frontend/lib/util";
 
 // ============================================================================
 // DataTableColumnHeader

@@ -3,16 +3,16 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { makeWorkflowDefinitionHttpClient } from "@/backend/http-client/workflow-definition/workflow-definition-http-client";
-import type { CreateWorkflowDefinitionHttpClientIn } from "@/backend/http-client/workflow-definition/workflow-definition-http-client-dto";
-import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
-import { makeListWorkflowDefinitionsQueryKey } from "@/lib/query/query-key";
+import type { CreateWorkflowDefinitionServicePortIn } from "@/domain/port/workflow-definition/workflow-definition-service-port";
+import { useProtectedHttpClient } from "@/frontend/hook/use-protected-http-client";
+import { makeWorkflowDefinitionHttpClient } from "@/frontend/http-client/workflow-definition/workflow-definition-http-client";
+import { makeListWorkflowDefinitionsQueryKey } from "@/frontend/lib/query/query-key";
 
 type UseCreateWorkflowDefinitionOptions = Omit<
   UseMutationOptions<
     void,
     Error,
-    CreateWorkflowDefinitionHttpClientIn,
+    CreateWorkflowDefinitionServicePortIn,
     unknown
   >,
   "mutationFn"
@@ -25,7 +25,7 @@ export const useCreateWorkflowDefinition = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: CreateWorkflowDefinitionHttpClientIn) => {
+    mutationFn: async (input: CreateWorkflowDefinitionServicePortIn) => {
       await makeWorkflowDefinitionHttpClient({ httpClient }).create(input);
     },
     ...options,

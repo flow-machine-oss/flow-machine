@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { AiAgentHttpClient } from "@/backend/http-client/ai-agent/ai-agent-http-client";
 import { aiAgentDomainCodec } from "@/backend/http-route-handler/ai-agent/ai-agent-route-handler-codec";
-import { type HttpEnvelope, okHttpEnvelope } from "@/common/http/http-schema";
 import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
 import {
   createAiAgentServicePortInSchema,
@@ -9,6 +8,7 @@ import {
   getAiAgentServicePortInSchema,
   updateAiAgentServicePortInSchema,
 } from "@/domain/port/ai-agent/ai-agent-service-port";
+import { type HttpEnvelope, okHttpEnvelope } from "@/lib/http/http-schema";
 
 type MakeAiAgentRouteHandlerIn = {
   aiAgentHttpClient: AiAgentHttpClient;

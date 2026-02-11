@@ -51,7 +51,7 @@ export default function Page() {
 
   const handleSave = (data: WorkflowJsonEditorData) => {
     createWorkflow.mutate({
-      payload: {
+      body: {
         name: data.name,
         description: data.description,
         projectId: null,

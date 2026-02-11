@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/util";
+import { cn } from "@/frontend/lib/util";
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
   return (

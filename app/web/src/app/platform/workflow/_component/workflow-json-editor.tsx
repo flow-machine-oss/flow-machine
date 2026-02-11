@@ -7,7 +7,7 @@ import { JsonEditorTextarea } from "@/component/extended-ui/json-editor-textarea
 import { Button } from "@/component/ui/button";
 import { ButtonGroup } from "@/component/ui/button-group";
 import type { WorkflowDefinitionDomain } from "@/domain/entity/workflow-definition/workflow-definition-domain-schema";
-import { useJsonEditor } from "@/hook/use-json-editor";
+import { useJsonEditor } from "@/frontend/hook/use-json-editor";
 
 export type WorkflowJsonEditorData = z.output<typeof workflowJsonEditorSchema>;
 

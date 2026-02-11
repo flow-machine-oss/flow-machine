@@ -55,7 +55,7 @@ function ActionsCell({ aiAgent }: { aiAgent: AiAgentDomain }) {
 
   const handleDelete = () => {
     deleteAiAgent.mutate(
-      { payload: { id: aiAgent.id } },
+      { params: { id: aiAgent.id } },
       { onSuccess: () => setOpen(false) },
     );
   };
@@ -156,7 +156,7 @@ const columns: ColumnDef<AiAgentDomain>[] = [
 ];
 
 export default function AiAgentPage() {
-  const { data = [], isPending } = useListAiAgents();
+  const { data, isPending } = useListAiAgents();
 
   return (
     <PlatformPageTemplate heading="AI Agent">
@@ -178,7 +178,7 @@ export default function AiAgentPage() {
           </div>
           <DataTable
             columns={columns}
-            data={data}
+            data={data ?? []}
             searchKey="name"
             searchPlaceholder="Filter AI agents..."
           />

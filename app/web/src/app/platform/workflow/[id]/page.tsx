@@ -17,9 +17,9 @@ import { useUpdateWorkflowDefinition } from "@/frontend/hook/workflow-definition
 export default function Page() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const { data: workflow, isPending: isLoading } = useGetWorkflowDefinition(
-    params.id,
-  );
+  const { data: workflowEnvelope, isPending: isLoading } =
+    useGetWorkflowDefinition(params.id);
+  const workflow = workflowEnvelope?.data;
   const updateWorkflow = useUpdateWorkflowDefinition({
     onSuccess: () => {
       toast.success("Workflow updated successfully");
@@ -32,14 +32,13 @@ export default function Page() {
 
   const handleSave = (data: WorkflowJsonEditorData) => {
     updateWorkflow.mutate({
-      payload: {
-        id: params.id,
-        body: {
-          name: data.name,
-          description: data.description,
-          actions: data.actions,
-          edges: data.edges,
-        },
+      params: { id: params.id },
+      body: {
+        name: data.name,
+        description: data.description,
+        projectId: workflow?.projectId ?? null,
+        actions: data.actions,
+        edges: data.edges,
       },
     });
   };

@@ -4,9 +4,9 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import type { UpdateAiAgentServicePortIn } from "@/domain/port/ai-agent/ai-agent-service-port";
+import { useProtectedHttpClient } from "@/frontend/hook/use-protected-http-client";
 import { makeAiAgentHttpClient } from "@/frontend/http-client/ai-agent/ai-agent-http-client";
-import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
-import { makeListAiAgentsQueryKey } from "@/lib/query/query-key";
+import { makeListAiAgentsQueryKey } from "@/frontend/lib/query/query-key";
 
 type UseUpdateAiAgentOptions = Omit<
   UseMutationOptions<void, Error, UpdateAiAgentServicePortIn, unknown>,
