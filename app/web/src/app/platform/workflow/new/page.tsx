@@ -8,7 +8,7 @@ import {
 } from "@/app/platform/workflow/_component/workflow-json-editor";
 import { PlatformPageTemplate } from "@/component/platform/platform-page-template";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/component/ui/tabs";
-import { useCreateWorkflowDefinition } from "@/hook/workflow-definition/use-create-workflow-definition";
+import { useCreateWorkflowDefinition } from "@/frontend/hook/workflow-definition/use-create-workflow-definition";
 
 const INITIAL_WORKFLOW_JSON_VALUE = JSON.stringify(
   {

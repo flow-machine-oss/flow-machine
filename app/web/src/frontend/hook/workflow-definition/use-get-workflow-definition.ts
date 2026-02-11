@@ -1,5 +1,6 @@
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { makeWorkflowDefinitionHttpClient } from "@/backend/http-client/workflow-definition/workflow-definition-http-client";
+import { workflowDefinitionDomainCodec } from "@/backend/http-route-handler/workflow-definition/workflow-definition-route-handler-codec";
 import type { WorkflowDefinitionDomain } from "@/domain/entity/workflow-definition/workflow-definition-domain-schema";
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
 import { makeGetWorkflowDefinitionQueryKey } from "@/lib/query/query-key";
@@ -17,8 +18,12 @@ export const useGetWorkflowDefinition = (
 
   return useQuery({
     queryKey: makeGetWorkflowDefinitionQueryKey(id),
-    queryFn: () =>
-      makeWorkflowDefinitionHttpClient(httpClient).getById({ payload: { id } }),
+    queryFn: async () => {
+      const response = await makeWorkflowDefinitionHttpClient({
+        httpClient,
+      }).getById({ payload: { id } });
+      return workflowDefinitionDomainCodec.decode(response.data);
+    },
     ...options,
   });
 };

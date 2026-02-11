@@ -3,7 +3,7 @@ import { z } from "zod/v4";
 import { workflowDefinitionHttpResponseDtoSchema } from "@/backend/http-client/workflow-definition/workflow-definition-http-client-dto";
 import { workflowDefinitionDomainSchema } from "@/domain/entity/workflow-definition/workflow-definition-domain-schema";
 
-export const workflowDefinitionHttpResponseDtoToDomainCodec = z.codec(
+export const workflowDefinitionDomainCodec = z.codec(
   workflowDefinitionHttpResponseDtoSchema,
   workflowDefinitionDomainSchema,
   {

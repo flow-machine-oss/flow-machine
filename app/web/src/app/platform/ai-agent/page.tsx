@@ -37,8 +37,8 @@ import {
   DropdownMenuTrigger,
 } from "@/component/ui/dropdown-menu";
 import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
-import { useDeleteAiAgent } from "@/hook/ai-agent/use-delete-ai-agent";
-import { useListAiAgents } from "@/hook/ai-agent/use-list-ai-agents";
+import { useDeleteAiAgent } from "@/frontend/hook/ai-agent/use-delete-ai-agent";
+import { useListAiAgents } from "@/frontend/hook/ai-agent/use-list-ai-agents";
 
 const modelDisplayNames: Record<AiAgentDomain["model"], string> = {
   "anthropic/claude-haiku-4.5": "Claude Haiku 4.5",

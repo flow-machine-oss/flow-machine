@@ -3,13 +3,13 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { makeAiAgentHttpClient } from "@/backend/http-client/ai-agent/ai-agent-http-client";
-import type { CreateAiAgentHttpClientIn } from "@/backend/http-client/ai-agent/ai-agent-http-client-dto";
+import type { CreateAiAgentServicePortIn } from "@/domain/port/ai-agent/ai-agent-service-port";
+import { makeAiAgentHttpClient } from "@/frontend/http-client/ai-agent/ai-agent-http-client";
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
 import { makeListAiAgentsQueryKey } from "@/lib/query/query-key";
 
 type UseCreateAiAgentOptions = Omit<
-  UseMutationOptions<void, Error, CreateAiAgentHttpClientIn, unknown>,
+  UseMutationOptions<void, Error, CreateAiAgentServicePortIn, unknown>,
   "mutationFn"
 >;
 
@@ -18,7 +18,9 @@ export const useCreateAiAgent = (options?: UseCreateAiAgentOptions) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: makeAiAgentHttpClient(httpClient).create,
+    mutationFn: async (input: CreateAiAgentServicePortIn) => {
+      await makeAiAgentHttpClient({ httpClient }).create(input);
+    },
     ...options,
     onSuccess: (...args) => {
       queryClient.invalidateQueries({ queryKey: makeListAiAgentsQueryKey() });

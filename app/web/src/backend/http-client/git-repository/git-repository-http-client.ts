@@ -1,4 +1,4 @@
-import { gitRepositoryHttpResponseDtoToDomainCodec } from "@/backend/http-client/git-repository/git-repository-http-client-codec";
+import { z } from "zod/v4";
 import {
   type CreateGitRepositoryHttpClientIn,
   type DeleteGitRepositoryClientIn,
@@ -11,9 +11,29 @@ import type { HttpClient } from "@/lib/http/http-client";
 
 const BASE_PATH = "/api/v1/git-repository";
 
-export const makeGitRepositoryHttpClient = (httpClient: HttpClient) => ({
+type MakeGitRepositoryHttpClientIn = {
+  httpClient: HttpClient;
+};
+
+export const makeGitRepositoryHttpClient = ({
+  httpClient,
+}: MakeGitRepositoryHttpClientIn) => ({
   create: async ({ payload }: CreateGitRepositoryHttpClientIn) => {
-    await httpClient.post(BASE_PATH, payload);
+    const response = await httpClient.post(BASE_PATH, payload);
+    const schema = withHttpEnvelopeSchema(gitRepositoryHttpResponseDtoSchema);
+    return schema.parse(response.data);
+  },
+
+  deleteById: async ({ payload }: DeleteGitRepositoryClientIn) => {
+    const response = await httpClient.delete(`${BASE_PATH}/${payload.id}`);
+    const schema = withHttpEnvelopeSchema(z.void());
+    return schema.parse(response.data);
+  },
+
+  getById: async ({ payload }: GetGitRepositoryByIdClientIn) => {
+    const response = await httpClient.get(`${BASE_PATH}/${payload.id}`);
+    const schema = withHttpEnvelopeSchema(gitRepositoryHttpResponseDtoSchema);
+    return schema.parse(response.data);
   },
 
   list: async () => {
@@ -21,24 +41,14 @@ export const makeGitRepositoryHttpClient = (httpClient: HttpClient) => ({
     const schema = withHttpEnvelopeSchema(
       gitRepositoryHttpResponseDtoSchema.array(),
     );
-    const envelope = schema.parse(response.data);
-    return envelope.data.map((item) =>
-      gitRepositoryHttpResponseDtoToDomainCodec.decode(item),
-    );
-  },
-
-  getById: async ({ payload }: GetGitRepositoryByIdClientIn) => {
-    const response = await httpClient.get(`${BASE_PATH}/${payload.id}`);
-    const schema = withHttpEnvelopeSchema(gitRepositoryHttpResponseDtoSchema);
-    const envelope = schema.parse(response.data);
-    return gitRepositoryHttpResponseDtoToDomainCodec.decode(envelope.data);
+    return schema.parse(response.data);
   },
 
   updateById: async ({ payload }: UpdateGitRepositoryHttpClientIn) => {
     await httpClient.patch(`${BASE_PATH}/${payload.id}`, payload.body);
   },
-
-  deleteById: async ({ payload }: DeleteGitRepositoryClientIn) => {
-    await httpClient.delete(`${BASE_PATH}/${payload.id}`);
-  },
 });
+
+export type GitRepositoryHttpClient = ReturnType<
+  typeof makeGitRepositoryHttpClient
+>;

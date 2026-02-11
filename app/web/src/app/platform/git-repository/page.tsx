@@ -37,8 +37,8 @@ import {
   DropdownMenuTrigger,
 } from "@/component/ui/dropdown-menu";
 import type { GitRepositoryDomain } from "@/domain/entity/git-repository/git-repository-domain-schema";
-import { useDeleteGitRepository } from "@/hook/git-repository/use-delete-git-repository";
-import { useListGitRepositories } from "@/hook/git-repository/use-list-git-repositories";
+import { useDeleteGitRepository } from "@/frontend/hook/git-repository/use-delete-git-repository";
+import { useListGitRepositories } from "@/frontend/hook/git-repository/use-list-git-repositories";
 
 function ActionsCell({ repository }: { repository: GitRepositoryDomain }) {
   const deleteRepository = useDeleteGitRepository();

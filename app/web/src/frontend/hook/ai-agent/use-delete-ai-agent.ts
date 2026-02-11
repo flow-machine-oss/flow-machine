@@ -3,8 +3,8 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { makeAiAgentHttpClient } from "@/backend/http-client/ai-agent/ai-agent-http-client";
-import type { DeleteAiAgentClientIn } from "@/backend/http-client/ai-agent/ai-agent-http-client-dto";
+import type { DeleteAiAgentServicePortIn } from "@/domain/port/ai-agent/ai-agent-service-port";
+import { makeAiAgentHttpClient } from "@/frontend/http-client/ai-agent/ai-agent-http-client";
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
 import {
   makeGetAiAgentQueryKey,
@@ -12,7 +12,7 @@ import {
 } from "@/lib/query/query-key";
 
 type UseDeleteAiAgentOptions = Omit<
-  UseMutationOptions<void, Error, DeleteAiAgentClientIn, unknown>,
+  UseMutationOptions<void, Error, DeleteAiAgentServicePortIn, unknown>,
   "mutationFn"
 >;
 
@@ -21,13 +21,15 @@ export const useDeleteAiAgent = (options?: UseDeleteAiAgentOptions) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: makeAiAgentHttpClient(httpClient).deleteById,
+    mutationFn: async (input: DeleteAiAgentServicePortIn) => {
+      await makeAiAgentHttpClient({ httpClient }).deleteById(input);
+    },
     ...options,
     onSuccess: (...args) => {
       const [, variables] = args;
       queryClient.invalidateQueries({ queryKey: makeListAiAgentsQueryKey() });
       queryClient.invalidateQueries({
-        queryKey: makeGetAiAgentQueryKey(variables.payload.id),
+        queryKey: makeGetAiAgentQueryKey(variables.params.id),
       });
       options?.onSuccess?.(...args);
     },

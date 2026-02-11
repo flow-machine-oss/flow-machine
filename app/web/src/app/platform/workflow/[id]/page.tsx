@@ -11,8 +11,8 @@ import { Center } from "@/component/extended-ui/center";
 import { Pending } from "@/component/extended-ui/pending";
 import { PlatformPageTemplate } from "@/component/platform/platform-page-template";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/component/ui/tabs";
-import { useGetWorkflowDefinition } from "@/hook/workflow-definition/use-get-workflow-definition";
-import { useUpdateWorkflowDefinition } from "@/hook/workflow-definition/use-update-workflow-definition";
+import { useGetWorkflowDefinition } from "@/frontend/hook/workflow-definition/use-get-workflow-definition";
+import { useUpdateWorkflowDefinition } from "@/frontend/hook/workflow-definition/use-update-workflow-definition";
 
 export default function Page() {
   const params = useParams<{ id: string }>();

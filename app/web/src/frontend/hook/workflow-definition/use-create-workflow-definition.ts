@@ -4,39 +4,34 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { makeWorkflowDefinitionHttpClient } from "@/backend/http-client/workflow-definition/workflow-definition-http-client";
-import type { UpdateWorkflowDefinitionHttpClientIn } from "@/backend/http-client/workflow-definition/workflow-definition-http-client-dto";
+import type { CreateWorkflowDefinitionHttpClientIn } from "@/backend/http-client/workflow-definition/workflow-definition-http-client-dto";
 import { useProtectedHttpClient } from "@/hook/use-protected-http-client";
-import {
-  makeGetWorkflowDefinitionQueryKey,
-  makeListWorkflowDefinitionsQueryKey,
-} from "@/lib/query/query-key";
+import { makeListWorkflowDefinitionsQueryKey } from "@/lib/query/query-key";
 
-type UseUpdateWorkflowDefinitionOptions = Omit<
+type UseCreateWorkflowDefinitionOptions = Omit<
   UseMutationOptions<
     void,
     Error,
-    UpdateWorkflowDefinitionHttpClientIn,
+    CreateWorkflowDefinitionHttpClientIn,
     unknown
   >,
   "mutationFn"
 >;
 
-export const useUpdateWorkflowDefinition = (
-  options?: UseUpdateWorkflowDefinitionOptions,
+export const useCreateWorkflowDefinition = (
+  options?: UseCreateWorkflowDefinitionOptions,
 ) => {
   const httpClient = useProtectedHttpClient();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: makeWorkflowDefinitionHttpClient(httpClient).updateById,
+    mutationFn: async (input: CreateWorkflowDefinitionHttpClientIn) => {
+      await makeWorkflowDefinitionHttpClient({ httpClient }).create(input);
+    },
     ...options,
     onSuccess: (...args) => {
-      const [, variables] = args;
       queryClient.invalidateQueries({
         queryKey: makeListWorkflowDefinitionsQueryKey(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: makeGetWorkflowDefinitionQueryKey(variables.payload.id),
       });
       options?.onSuccess?.(...args);
     },

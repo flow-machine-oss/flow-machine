@@ -23,7 +23,9 @@ export const useDeleteGitRepository = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: makeGitRepositoryHttpClient(httpClient).deleteById,
+    mutationFn: async (input: DeleteGitRepositoryClientIn) => {
+      await makeGitRepositoryHttpClient({ httpClient }).deleteById(input);
+    },
     ...options,
     onSuccess: (...args) => {
       const [, variables] = args;

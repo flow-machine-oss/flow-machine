@@ -3,7 +3,7 @@ import { z } from "zod/v4";
 import { gitRepositoryHttpResponseDtoSchema } from "@/backend/http-client/git-repository/git-repository-http-client-dto";
 import { gitRepositoryDomainSchema } from "@/domain/entity/git-repository/git-repository-domain-schema";
 
-export const gitRepositoryHttpResponseDtoToDomainCodec = z.codec(
+export const gitRepositoryDomainCodec = z.codec(
   gitRepositoryHttpResponseDtoSchema,
   gitRepositoryDomainSchema,
   {

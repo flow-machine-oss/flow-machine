@@ -37,8 +37,8 @@ import {
   DropdownMenuTrigger,
 } from "@/component/ui/dropdown-menu";
 import type { WorkflowDefinitionDomain } from "@/domain/entity/workflow-definition/workflow-definition-domain-schema";
-import { useDeleteWorkflowDefinition } from "@/hook/workflow-definition/use-delete-workflow-definition";
-import { useListWorkflowDefinitions } from "@/hook/workflow-definition/use-list-workflow-definitions";
+import { useDeleteWorkflowDefinition } from "@/frontend/hook/workflow-definition/use-delete-workflow-definition";
+import { useListWorkflowDefinitions } from "@/frontend/hook/workflow-definition/use-list-workflow-definitions";
 
 function ActionsCell({ workflow }: { workflow: WorkflowDefinitionDomain }) {
   const deleteWorkflow = useDeleteWorkflowDefinition();
