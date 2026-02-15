@@ -71,6 +71,7 @@ function ActionsCell({ aiAgent }: { aiAgent: AiAgentDomain }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem
+            nativeButton={false}
             render={<Link href={`/platform/ai-agent/${aiAgent.id}`} />}
           >
             <PencilIcon className="size-4" />
@@ -168,6 +169,7 @@ export default function AiAgentPage() {
         <div className="space-y-2.5">
           <div className="flex w-full justify-end">
             <Button
+              nativeButton={false}
               render={(props) => (
                 <Link href="/platform/ai-agent/new" {...props} />
               )}

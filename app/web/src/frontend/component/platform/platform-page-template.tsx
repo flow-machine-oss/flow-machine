@@ -5,13 +5,11 @@ import { cn } from "@/frontend/lib/util";
 
 type PlatformPageTemplate = {
   heading: string;
-  paddingDisabled?: boolean;
 };
 
 export function PlatformPageTemplate({
   children,
   heading,
-  paddingDisabled = false,
 }: PropsWithChildren<PlatformPageTemplate>) {
   return (
     <div className="grid h-full w-full grid-rows-[auto_1fr]">
@@ -23,12 +21,7 @@ export function PlatformPageTemplate({
         />
         <h1 className="ml-1.5 text-sm font-medium tracking-wide">{heading}</h1>
       </header>
-      <div
-        className={cn(
-          "h-full w-full max-w-7xl overflow-auto p-4",
-          paddingDisabled && "p-0",
-        )}
-      >
+      <div className={cn("h-full w-full max-w-7xl overflow-auto p-4")}>
         {children}
       </div>
     </div>
