@@ -10,13 +10,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { Center } from "@/component/extended-ui/center";
+import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
+import { Center } from "@/frontend/component/extended-ui/center";
 import {
   DataTable,
   DataTableColumnHeader,
-} from "@/component/extended-ui/data-table";
-import { Pending } from "@/component/extended-ui/pending";
-import { PlatformPageTemplate } from "@/component/platform/platform-page-template";
+} from "@/frontend/component/extended-ui/data-table";
+import { Pending } from "@/frontend/component/extended-ui/pending";
+import { PlatformPageTemplate } from "@/frontend/component/platform/platform-page-template";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,20 +28,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/component/ui/alert-dialog";
-import { Badge } from "@/component/ui/badge";
-import { Button } from "@/component/ui/button";
+} from "@/frontend/component/ui/alert-dialog";
+import { Badge } from "@/frontend/component/ui/badge";
+import { Button } from "@/frontend/component/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/component/ui/dropdown-menu";
-import { useDeleteAiAgent } from "@/hook/ai-agent/use-delete-ai-agent";
-import { useListAiAgents } from "@/hook/ai-agent/use-list-ai-agents";
-import type { AiAgentResponseDto } from "@/schema/ai-agent/ai-agent-service-schema";
+} from "@/frontend/component/ui/dropdown-menu";
+import { useDeleteAiAgent } from "@/frontend/hook/ai-agent/use-delete-ai-agent";
+import { useListAiAgents } from "@/frontend/hook/ai-agent/use-list-ai-agents";
 
-const modelDisplayNames: Record<AiAgentResponseDto["model"], string> = {
+const modelDisplayNames: Record<AiAgentDomain["model"], string> = {
   "anthropic/claude-haiku-4.5": "Claude Haiku 4.5",
   "anthropic/claude-opus-4.5": "Claude Opus 4.5",
   "anthropic/claude-sonnet-4.5": "Claude Sonnet 4.5",
@@ -49,7 +49,7 @@ const modelDisplayNames: Record<AiAgentResponseDto["model"], string> = {
   "z-ai/glm-4.7": "GLM 4.7",
 };
 
-function ActionsCell({ aiAgent }: { aiAgent: AiAgentResponseDto }) {
+function ActionsCell({ aiAgent }: { aiAgent: AiAgentDomain }) {
   const deleteAiAgent = useDeleteAiAgent();
   const [open, setOpen] = useState(false);
 
@@ -109,7 +109,7 @@ function ActionsCell({ aiAgent }: { aiAgent: AiAgentResponseDto }) {
   );
 }
 
-const columns: ColumnDef<AiAgentResponseDto>[] = [
+const columns: ColumnDef<AiAgentDomain>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -131,7 +131,7 @@ const columns: ColumnDef<AiAgentResponseDto>[] = [
       <DataTableColumnHeader column={column} title="Model" />
     ),
     cell: ({ row }) => {
-      const model = row.getValue("model") as AiAgentResponseDto["model"];
+      const model = row.getValue("model") as AiAgentDomain["model"];
       return <Badge variant="secondary">{modelDisplayNames[model]}</Badge>;
     },
     enableSorting: false,
@@ -156,7 +156,7 @@ const columns: ColumnDef<AiAgentResponseDto>[] = [
 ];
 
 export default function AiAgentPage() {
-  const { data = [], isPending } = useListAiAgents();
+  const { data, isPending } = useListAiAgents();
 
   return (
     <PlatformPageTemplate heading="AI Agent">
@@ -178,7 +178,7 @@ export default function AiAgentPage() {
           </div>
           <DataTable
             columns={columns}
-            data={data}
+            data={data ?? []}
             searchKey="name"
             searchPlaceholder="Filter AI agents..."
           />

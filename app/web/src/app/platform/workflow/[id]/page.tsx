@@ -4,22 +4,27 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   WorkflowJsonEditor,
-  workflowToEditorJson,
   type WorkflowJsonEditorData,
+  workflowToEditorJson,
 } from "@/app/platform/workflow/_component/workflow-json-editor";
-import { Center } from "@/component/extended-ui/center";
-import { Pending } from "@/component/extended-ui/pending";
-import { PlatformPageTemplate } from "@/component/platform/platform-page-template";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/component/ui/tabs";
-import { useGetWorkflowDefinition } from "@/hook/workflow/use-get-workflow-definition";
-import { useUpdateWorkflowDefinition } from "@/hook/workflow/use-update-workflow-definition";
+import { Center } from "@/frontend/component/extended-ui/center";
+import { Pending } from "@/frontend/component/extended-ui/pending";
+import { PlatformPageTemplate } from "@/frontend/component/platform/platform-page-template";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/frontend/component/ui/tabs";
+import { useGetWorkflowDefinition } from "@/frontend/hook/workflow-definition/use-get-workflow-definition";
+import { useUpdateWorkflowDefinition } from "@/frontend/hook/workflow-definition/use-update-workflow-definition";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const { data: workflow, isPending: isLoading } = useGetWorkflowDefinition(
-    params.id,
-  );
+  const { data: workflowEnvelope, isPending: isLoading } =
+    useGetWorkflowDefinition(params.id);
+  const workflow = workflowEnvelope?.data;
   const updateWorkflow = useUpdateWorkflowDefinition({
     onSuccess: () => {
       toast.success("Workflow updated successfully");
@@ -36,6 +41,7 @@ export default function Page() {
       body: {
         name: data.name,
         description: data.description,
+        projectId: workflow?.projectId ?? null,
         actions: data.actions,
         edges: data.edges,
       },

@@ -10,13 +10,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { Center } from "@/component/extended-ui/center";
+import type { WorkflowDefinitionDomain } from "@/domain/entity/workflow-definition/workflow-definition-domain-schema";
+import { Center } from "@/frontend/component/extended-ui/center";
 import {
   DataTable,
   DataTableColumnHeader,
-} from "@/component/extended-ui/data-table";
-import { Pending } from "@/component/extended-ui/pending";
-import { PlatformPageTemplate } from "@/component/platform/platform-page-template";
+} from "@/frontend/component/extended-ui/data-table";
+import { Pending } from "@/frontend/component/extended-ui/pending";
+import { PlatformPageTemplate } from "@/frontend/component/platform/platform-page-template";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,24 +28,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/component/ui/alert-dialog";
-import { Badge } from "@/component/ui/badge";
-import { Button } from "@/component/ui/button";
+} from "@/frontend/component/ui/alert-dialog";
+import { Badge } from "@/frontend/component/ui/badge";
+import { Button } from "@/frontend/component/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/component/ui/dropdown-menu";
-import { useDeleteWorkflowDefinition } from "@/hook/workflow/use-delete-workflow-definition";
-import { useListWorkflowDefinitions } from "@/hook/workflow/use-list-workflow-definitions";
-import type { WorkflowDefinitionResponseDto } from "@/schema/workflow/workflow-definition-service-schema";
+} from "@/frontend/component/ui/dropdown-menu";
+import { useDeleteWorkflowDefinition } from "@/frontend/hook/workflow-definition/use-delete-workflow-definition";
+import { useListWorkflowDefinitions } from "@/frontend/hook/workflow-definition/use-list-workflow-definitions";
 
-function ActionsCell({
-  workflow,
-}: {
-  workflow: WorkflowDefinitionResponseDto;
-}) {
+function ActionsCell({ workflow }: { workflow: WorkflowDefinitionDomain }) {
   const deleteWorkflow = useDeleteWorkflowDefinition();
   const [open, setOpen] = useState(false);
 
@@ -104,7 +100,7 @@ function ActionsCell({
   );
 }
 
-const columns: ColumnDef<WorkflowDefinitionResponseDto>[] = [
+const columns: ColumnDef<WorkflowDefinitionDomain>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -182,7 +178,7 @@ const columns: ColumnDef<WorkflowDefinitionResponseDto>[] = [
 ];
 
 export default function WorkflowPage() {
-  const { data = [], isPending } = useListWorkflowDefinitions();
+  const { data, isPending } = useListWorkflowDefinitions();
 
   return (
     <PlatformPageTemplate heading="Workflow">
@@ -204,7 +200,7 @@ export default function WorkflowPage() {
           </div>
           <DataTable
             columns={columns}
-            data={data}
+            data={data ?? []}
             searchKey="name"
             searchPlaceholder="Filter workflows..."
           />

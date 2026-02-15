@@ -10,13 +10,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { Center } from "@/component/extended-ui/center";
+import type { GitRepositoryDomain } from "@/domain/entity/git-repository/git-repository-domain-schema";
+import { Center } from "@/frontend/component/extended-ui/center";
 import {
   DataTable,
   DataTableColumnHeader,
-} from "@/component/extended-ui/data-table";
-import { Pending } from "@/component/extended-ui/pending";
-import { PlatformPageTemplate } from "@/component/platform/platform-page-template";
+} from "@/frontend/component/extended-ui/data-table";
+import { Pending } from "@/frontend/component/extended-ui/pending";
+import { PlatformPageTemplate } from "@/frontend/component/platform/platform-page-template";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,24 +28,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/component/ui/alert-dialog";
-import { Badge } from "@/component/ui/badge";
-import { Button } from "@/component/ui/button";
+} from "@/frontend/component/ui/alert-dialog";
+import { Badge } from "@/frontend/component/ui/badge";
+import { Button } from "@/frontend/component/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/component/ui/dropdown-menu";
-import { useDeleteGitRepository } from "@/hook/git-repository/use-delete-git-repository";
-import { useListGitRepositories } from "@/hook/git-repository/use-list-git-repositories";
-import type { GitRepositoryResponseDto } from "@/schema/git-repository/git-repository-service-schema";
+} from "@/frontend/component/ui/dropdown-menu";
+import { useDeleteGitRepository } from "@/frontend/hook/git-repository/use-delete-git-repository";
+import { useListGitRepositories } from "@/frontend/hook/git-repository/use-list-git-repositories";
 
-function ActionsCell({
-  repository,
-}: {
-  repository: GitRepositoryResponseDto;
-}) {
+function ActionsCell({ repository }: { repository: GitRepositoryDomain }) {
   const deleteRepository = useDeleteGitRepository();
   const [open, setOpen] = useState(false);
 
@@ -85,8 +81,8 @@ function ActionsCell({
         <AlertDialogHeader>
           <AlertDialogTitle>Delete repository</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete &ldquo;{repository.name}&rdquo;? This
-            action cannot be undone.
+            Are you sure you want to delete &ldquo;{repository.name}&rdquo;?
+            This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -104,7 +100,7 @@ function ActionsCell({
   );
 }
 
-const columns: ColumnDef<GitRepositoryResponseDto>[] = [
+const columns: ColumnDef<GitRepositoryDomain>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -183,7 +179,7 @@ const columns: ColumnDef<GitRepositoryResponseDto>[] = [
 ];
 
 export default function GitRepositoryPage() {
-  const { data = [], isPending } = useListGitRepositories();
+  const { data, isPending } = useListGitRepositories();
 
   return (
     <PlatformPageTemplate heading="Git Repository">
@@ -205,7 +201,7 @@ export default function GitRepositoryPage() {
           </div>
           <DataTable
             columns={columns}
-            data={data}
+            data={data ?? []}
             searchKey="name"
             searchPlaceholder="Filter repositories..."
           />
