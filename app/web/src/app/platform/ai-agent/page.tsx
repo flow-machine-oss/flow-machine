@@ -10,13 +10,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { Center } from "@/component/extended-ui/center";
+import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
+import { Center } from "@/frontend/component/extended-ui/center";
 import {
   DataTable,
   DataTableColumnHeader,
-} from "@/component/extended-ui/data-table";
-import { Pending } from "@/component/extended-ui/pending";
-import { PlatformPageTemplate } from "@/component/platform/platform-page-template";
+} from "@/frontend/component/extended-ui/data-table";
+import { Pending } from "@/frontend/component/extended-ui/pending";
+import { PlatformPageTemplate } from "@/frontend/component/platform/platform-page-template";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,16 +28,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/component/ui/alert-dialog";
-import { Badge } from "@/component/ui/badge";
-import { Button } from "@/component/ui/button";
+} from "@/frontend/component/ui/alert-dialog";
+import { Badge } from "@/frontend/component/ui/badge";
+import { Button } from "@/frontend/component/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/component/ui/dropdown-menu";
-import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
+} from "@/frontend/component/ui/dropdown-menu";
 import { useDeleteAiAgent } from "@/frontend/hook/ai-agent/use-delete-ai-agent";
 import { useListAiAgents } from "@/frontend/hook/ai-agent/use-list-ai-agents";
 

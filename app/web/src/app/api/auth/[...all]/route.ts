@@ -5,7 +5,6 @@ async function handler(request: NextRequest) {
   const url = new URL(request.url);
   const path = url.pathname.replace("/api/auth", "");
 
-  // Forward to auth service
   const response = await fetch(
     `${config.service.baseUrl}/api/auth${path}${url.search}`,
     {
@@ -16,12 +15,9 @@ async function handler(request: NextRequest) {
           ? request.body
           : undefined,
       credentials: "include",
-      // @ts-expect-error - duplex is required for streaming body
-      duplex: "half",
     },
   );
 
-  // Forward response headers (especially Set-Cookie)
   const responseHeaders = new Headers();
   response.headers.forEach((value, key) => {
     responseHeaders.append(key, value);

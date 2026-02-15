@@ -7,10 +7,15 @@ import {
   type WorkflowJsonEditorData,
   workflowToEditorJson,
 } from "@/app/platform/workflow/_component/workflow-json-editor";
-import { Center } from "@/component/extended-ui/center";
-import { Pending } from "@/component/extended-ui/pending";
-import { PlatformPageTemplate } from "@/component/platform/platform-page-template";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/component/ui/tabs";
+import { Center } from "@/frontend/component/extended-ui/center";
+import { Pending } from "@/frontend/component/extended-ui/pending";
+import { PlatformPageTemplate } from "@/frontend/component/platform/platform-page-template";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/frontend/component/ui/tabs";
 import { useGetWorkflowDefinition } from "@/frontend/hook/workflow-definition/use-get-workflow-definition";
 import { useUpdateWorkflowDefinition } from "@/frontend/hook/workflow-definition/use-update-workflow-definition";
 

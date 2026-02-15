@@ -1,7 +1,7 @@
 import { SignedIn } from "@daveyplate/better-auth-ui";
 import type { CSSProperties, PropsWithChildren } from "react";
-import { PlatformSidebar } from "@/component/platform/platform-sidebar";
-import { SidebarInset, SidebarProvider } from "@/component/ui/sidebar";
+import { PlatformSidebar } from "@/frontend/component/platform/platform-sidebar";
+import { SidebarInset, SidebarProvider } from "@/frontend/component/ui/sidebar";
 
 export function PlatformLayout({ children }: PropsWithChildren) {
   return (

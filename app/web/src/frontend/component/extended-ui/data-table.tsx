@@ -26,7 +26,7 @@ import {
   Settings2Icon,
 } from "lucide-react";
 import * as React from "react";
-import { Button } from "@/component/ui/button";
+import { Button } from "@/frontend/component/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -34,15 +34,15 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/component/ui/dropdown-menu";
-import { Input } from "@/component/ui/input";
+} from "@/frontend/component/ui/dropdown-menu";
+import { Input } from "@/frontend/component/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/component/ui/select";
+} from "@/frontend/component/ui/select";
 import {
   Table,
   TableBody,
@@ -50,7 +50,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/component/ui/table";
+} from "@/frontend/component/ui/table";
 import { cn } from "@/frontend/lib/util";
 
 // ============================================================================

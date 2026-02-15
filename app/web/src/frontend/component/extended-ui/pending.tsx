@@ -1,4 +1,4 @@
-import { Spinner } from "@/component/ui/spinner";
+import { Spinner } from "@/frontend/component/ui/spinner";
 
 type PendingProps = {
   message?: string;

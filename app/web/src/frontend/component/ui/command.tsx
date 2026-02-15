@@ -9,8 +9,11 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/component/ui/dialog";
-import { InputGroup, InputGroupAddon } from "@/component/ui/input-group";
+} from "@/frontend/component/ui/dialog";
+import {
+  InputGroup,
+  InputGroupAddon,
+} from "@/frontend/component/ui/input-group";
 import { cn } from "@/frontend/lib/util";
 
 function Command({

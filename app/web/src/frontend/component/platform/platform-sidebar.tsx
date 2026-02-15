@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Logo } from "@/component/extended-ui/logo";
+import { Logo } from "@/frontend/component/extended-ui/logo";
 import {
   Sidebar,
   SidebarContent,
@@ -28,7 +28,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/component/ui/sidebar";
+} from "@/frontend/component/ui/sidebar";
 import { config } from "@/lib/config";
 
 type NavigationItem = {
