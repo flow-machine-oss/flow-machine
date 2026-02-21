@@ -1,4 +1,4 @@
-import { ViewAiAgentPage } from "@/frontend/feature/view-ai-agent/view-ai-agent-page";
+import { EditableAiAgentDetailsPage } from "@/frontend/feature/editable-ai-agent-details/editable-ai-agent-details-page";
 
 export default async function Page({
   params,
@@ -6,5 +6,5 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  return <ViewAiAgentPage id={id} />;
+  return <EditableAiAgentDetailsPage id={id} />;
 }
