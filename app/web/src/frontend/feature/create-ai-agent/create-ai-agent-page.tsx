@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { PlatformPageTemplate } from "@/frontend/component/platform/platform-page-template";
 import type { CreateAiAgentFormValues } from "@/frontend/feature/create-ai-agent/create-ai-agent-form";
@@ -11,6 +12,8 @@ import { useCreateAiAgent } from "@/frontend/hook/ai-agent/use-create-ai-agent";
 const FORM_ID = "create-ai-agent-form";
 
 export function CreateAiAgentPage() {
+  const router = useRouter();
+
   const { isPending, mutateAsync } = useCreateAiAgent();
   const form = useCreateAiAgentForm({ disabled: isPending });
 
@@ -19,6 +22,7 @@ export function CreateAiAgentPage() {
       await mutateAsync({ body: data });
       form.reset();
       toast.success("AI Agent created successfully");
+      router.push("/platform/ai-agent");
     } catch (error) {
       console.error(error);
       toast.error("Failed to create AI Agent");
