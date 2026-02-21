@@ -10,8 +10,8 @@ export const gitRepositoryDomainCodec = z.codec(
     decode: (dto) => ({
       id: dto.id,
       tenant: dto.tenant,
-      createdAt: new Date(dto.createdAt),
-      updatedAt: new Date(dto.updatedAt),
+      createdAt: dto.createdAt,
+      updatedAt: dto.updatedAt,
       name: dto.name,
       url: dto.url,
       config: dto.config,

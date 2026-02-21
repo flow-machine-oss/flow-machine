@@ -10,8 +10,8 @@ export const workflowDefinitionDomainCodec = z.codec(
     decode: (dto) => ({
       id: dto.id,
       tenant: dto.tenant,
-      createdAt: new Date(dto.createdAt),
-      updatedAt: new Date(dto.updatedAt),
+      createdAt: dto.createdAt,
+      updatedAt: dto.updatedAt,
       name: dto.name,
       description: dto.description,
       projectId: dto.projectId,
