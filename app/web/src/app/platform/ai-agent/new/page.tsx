@@ -1,5 +1,5 @@
-import { CreateAiAgentPage } from "@/frontend/feature/create-ai-agent/create-ai-agent-page";
+import { NewAiAgentPage } from "@/frontend/feature/new-ai-agent/new-ai-agent-page";
 
 export default function Page() {
-  return <CreateAiAgentPage />;
+  return <NewAiAgentPage />;
 }
