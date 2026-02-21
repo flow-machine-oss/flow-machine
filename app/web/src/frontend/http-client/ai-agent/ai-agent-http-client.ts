@@ -20,7 +20,7 @@ export const makeAiAgentHttpClient = ({
 }: MakeAiAgentHttpClientIn) => ({
   create: async ({ body }: CreateAiAgentServicePortIn) => {
     const response = await httpClient.post(BASE_PATH, body);
-    const schema = withHttpEnvelopeSchema(aiAgentDomainSchema);
+    const schema = withHttpEnvelopeSchema(z.void());
     return schema.parse(response.data);
   },
 

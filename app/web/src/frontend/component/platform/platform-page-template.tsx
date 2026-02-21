@@ -1,17 +1,19 @@
 import type { PropsWithChildren } from "react";
+import { Center } from "@/frontend/component/extended-ui/center";
+import { Pending } from "@/frontend/component/extended-ui/pending";
 import { Separator } from "@/frontend/component/ui/separator";
 import { SidebarTrigger } from "@/frontend/component/ui/sidebar";
 import { cn } from "@/frontend/lib/util";
 
 type PlatformPageTemplate = {
   heading: string;
-  paddingDisabled?: boolean;
+  isPending?: boolean;
 };
 
 export function PlatformPageTemplate({
   children,
   heading,
-  paddingDisabled = false,
+  isPending = false,
 }: PropsWithChildren<PlatformPageTemplate>) {
   return (
     <div className="grid h-full w-full grid-rows-[auto_1fr]">
@@ -23,13 +25,14 @@ export function PlatformPageTemplate({
         />
         <h1 className="ml-1.5 text-sm font-medium tracking-wide">{heading}</h1>
       </header>
-      <div
-        className={cn(
-          "h-full w-full max-w-7xl overflow-auto p-4",
-          paddingDisabled && "p-0",
+      <div className={cn("h-full w-full max-w-7xl overflow-auto p-4")}>
+        {isPending ? (
+          <Center>
+            <Pending />
+          </Center>
+        ) : (
+          children
         )}
-      >
-        {children}
       </div>
     </div>
   );

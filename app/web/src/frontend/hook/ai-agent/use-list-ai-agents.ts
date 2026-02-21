@@ -15,7 +15,7 @@ export const useListAiAgents = (options?: UseListAiAgentsOptions) => {
 
   return useQuery({
     queryKey: makeListAiAgentsQueryKey(),
-    queryFn: ({}) => makeAiAgentHttpClient({ httpClient }).list(),
+    queryFn: () => makeAiAgentHttpClient({ httpClient }).list(),
     select: (envelope) => envelope.data,
     ...options,
   });

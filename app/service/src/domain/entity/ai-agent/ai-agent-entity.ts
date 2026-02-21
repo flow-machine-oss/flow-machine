@@ -6,7 +6,14 @@ import {
   TenantAwareEntity,
 } from "@/common/domain/tenant-aware-entity";
 
-export const aiModels = ["gpt-3.5-turbo", "gpt-4"] as const;
+const aiModels = [
+  "anthropic/claude-haiku-4.5",
+  "anthropic/claude-opus-4.5",
+  "anthropic/claude-sonnet-4.5",
+  "minimax/minimax-m2.1",
+  "x-ai/grok-code-fast-1",
+  "z-ai/glm-4.7",
+] as const;
 
 export const aiAgentEntityProps = z.object({
   name: z.string().min(1).max(256),
