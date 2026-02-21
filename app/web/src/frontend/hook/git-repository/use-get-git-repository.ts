@@ -6,7 +6,7 @@ import { makeGetGitRepositoryQueryKey } from "@/frontend/lib/query/query-key";
 import type { HttpEnvelope } from "@/lib/http/http-schema";
 
 type UseGetGitRepositoryOptions = Omit<
-  UseQueryOptions<HttpEnvelope<GitRepositoryDomain>, Error>,
+  UseQueryOptions<HttpEnvelope<GitRepositoryDomain>, Error, GitRepositoryDomain>,
   "queryKey" | "queryFn"
 >;
 
@@ -22,6 +22,7 @@ export const useGetGitRepository = (
       makeGitRepositoryHttpClient({ httpClient }).getById({
         params: { id },
       }),
+    select: (envelope) => envelope.data,
     ...options,
   });
 };
