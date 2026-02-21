@@ -26,6 +26,7 @@ src/
 │   ├── billing/          # Polar billing adapter
 │   ├── email/            # Resend email adapter
 │   ├── http/             # HTTP routers (Elysia routes)
+│   ├── inngest/          # Workflow engine (actions, client, functions)
 │   └── repository/       # Database repositories (MongoDB implementations)
 ├── app/                  # Application layer
 │   └── use-case/         # Business use cases
@@ -163,8 +164,11 @@ Uses **Better Auth** with email OTP and organization plugins. Configuration at `
 
 Uses MongoDB 8 with native driver. Collections:
 
+**Domain Entities:**
+- ai-agent, credential, document, git-repository, issue, project, provider, workflow
+
 **Application Collections:**
-- `document` - User documents
+- `ai-agent`, `credential`, `document`, `git-repository`, `project`, `workflow-definition`
 
 **Better Auth Collections (auto-managed):**
 - `user`, `session`, `account`, `verification`
@@ -173,7 +177,7 @@ Uses MongoDB 8 with native driver. Collections:
 **Patterns:**
 - Collections accessed via factory functions in `adapter/repository/*/`
 - Models convert between entities and MongoDB documents using `tenantAwareEntityToMongoModel()`
-- IDs are ULIDs generated via `newEntityId()` from `@/common/domain/entity-id`
+- IDs are UUIDv7 generated via `newEntityId()` (uses `randomUUIDv7()` from Bun) from `@/common/domain/entity-id`
 - All queries filter by `tenantId` for multi-tenant isolation
 - HTTP requests wrapped in MongoDB transactions via `makeHttpMongoCtxPlugin()`
 
@@ -199,5 +203,4 @@ Uses MongoDB 8 with native driver. Collections:
 - `@polar-sh/sdk` - Billing/subscriptions
 - `inngest` - Background job processing
 - `es-toolkit` - Utility functions
-- `ulid` - ULID generation for entity IDs
 - `pino` - Logging
