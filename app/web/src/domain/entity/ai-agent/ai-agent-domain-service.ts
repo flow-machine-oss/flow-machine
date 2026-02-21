@@ -1,4 +1,17 @@
+import { format } from "date-fns";
 import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
+
+type MakeAiAgentDomainServiceInput = {
+  aiAgent: AiAgentDomain;
+};
+
+export const makeAiAgentDomainService = ({
+  aiAgent,
+}: MakeAiAgentDomainServiceInput) => ({
+  getModelDisplayName: () => modelToDisplayName[aiAgent.model],
+  getCreatedAt: () => format(aiAgent.createdAt, "MMM d, yyyy, h:mm a"),
+  getUpdatedAt: () => format(aiAgent.updatedAt, "MMM d, yyyy, h:mm a"),
+});
 
 const modelToDisplayName = {
   "anthropic/claude-haiku-4.5": "Claude Haiku 4.5",
@@ -8,7 +21,3 @@ const modelToDisplayName = {
   "x-ai/grok-code-fast-1": "Grok Code Fast 1",
   "z-ai/glm-4.7": "GLM 4.7",
 } as const satisfies Record<AiAgentDomain["model"], string>;
-
-export const makeAiAgentDomainService = (domain: AiAgentDomain) => ({
-  modelDisplayName: () => modelToDisplayName[domain.model],
-});

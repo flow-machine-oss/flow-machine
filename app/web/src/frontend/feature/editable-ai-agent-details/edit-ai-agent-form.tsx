@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import {
   Controller,
   type FieldErrors,
@@ -8,6 +7,7 @@ import {
   type AiAgentDomain,
   aiAgentDomainSchema,
 } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
+import { makeAiAgentDomainService } from "@/domain/entity/ai-agent/ai-agent-domain-service";
 import { Button } from "@/frontend/component/ui/button";
 import {
   Field,
@@ -45,6 +45,8 @@ export function EditAiAgentForm({
   onValidFormSubmit,
   onInvalidFormSubmit,
 }: EditAiAgentFormProps) {
+  const aiAgentDomainService = makeAiAgentDomainService({ aiAgent });
+
   return (
     <form
       className="space-y-6"
@@ -122,7 +124,7 @@ export function EditAiAgentForm({
             <FieldLabel>Created at</FieldLabel>
             <FieldContent>
               <span className="text-sm">
-                {format(aiAgent.createdAt, "MMM d, yyyy, h:mm a")}
+                {aiAgentDomainService.getCreatedAt()}
               </span>
             </FieldContent>
           </Field>
@@ -130,7 +132,7 @@ export function EditAiAgentForm({
             <FieldLabel>Updated at</FieldLabel>
             <FieldContent>
               <span className="text-sm">
-                {format(aiAgent.updatedAt, "MMM d, yyyy, h:mm a")}
+                {aiAgentDomainService.getUpdatedAt()}
               </span>
             </FieldContent>
           </Field>

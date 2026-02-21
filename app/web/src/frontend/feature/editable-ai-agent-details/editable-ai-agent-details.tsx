@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
 import { makeAiAgentDomainService } from "@/domain/entity/ai-agent/ai-agent-domain-service";
 import { Badge } from "@/frontend/component/ui/badge";
@@ -21,6 +20,8 @@ export function EditableAiAgentDetails({
   aiAgent,
   onEdit,
 }: EditableAiAgentDetailsProps) {
+  const aiAgentDomainService = makeAiAgentDomainService({ aiAgent });
+
   return (
     <>
       <FieldSet>
@@ -36,7 +37,7 @@ export function EditableAiAgentDetails({
             <FieldLabel>Model</FieldLabel>
             <FieldContent>
               <Badge variant="secondary" className="w-fit">
-                {makeAiAgentDomainService(aiAgent).modelDisplayName()}
+                {aiAgentDomainService.getModelDisplayName()}
               </Badge>
             </FieldContent>
           </Field>
@@ -44,7 +45,7 @@ export function EditableAiAgentDetails({
             <FieldLabel>Created at</FieldLabel>
             <FieldContent>
               <span className="text-sm">
-                {format(aiAgent.createdAt, "MMM d, yyyy, h:mm a")}
+                {aiAgentDomainService.getCreatedAt()}
               </span>
             </FieldContent>
           </Field>
@@ -52,7 +53,7 @@ export function EditableAiAgentDetails({
             <FieldLabel>Updated at</FieldLabel>
             <FieldContent>
               <span className="text-sm">
-                {format(aiAgent.updatedAt, "MMM d, yyyy, h:mm a")}
+                {aiAgentDomainService.getUpdatedAt()}
               </span>
             </FieldContent>
           </Field>
