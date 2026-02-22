@@ -42,6 +42,23 @@ export const makeCredentialsTableColumnDef = ({
 }: MakeCredentialsTableColumnDefInput) => {
   return [
     {
+      accessorKey: "name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Name" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <Link
+            href={`/platform/credential/${row.original.id}`}
+            className="hover:underline"
+          >
+            {row.original.name}
+          </Link>
+        );
+      },
+      enableSorting: false,
+    },
+    {
       accessorKey: "type",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Type" />
@@ -51,14 +68,9 @@ export const makeCredentialsTableColumnDef = ({
           credential: row.original,
         });
         return (
-          <Link
-            href={`/platform/credential/${row.original.id}`}
-            className="hover:underline"
-          >
-            <Badge variant="secondary">
-              {credentialDomainService.getTypeDisplayName()}
-            </Badge>
-          </Link>
+          <Badge variant="secondary">
+            {credentialDomainService.getTypeDisplayName()}
+          </Badge>
         );
       },
       enableSorting: false,

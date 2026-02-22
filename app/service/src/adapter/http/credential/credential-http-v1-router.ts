@@ -34,6 +34,7 @@ type Input = {
 const toResponseDto = (entity: CredentialEntity): CredentialResponseDto => {
   const base = {
     id: entity.id,
+    name: entity.props.name,
     createdAt: entity.createdAt,
     updatedAt: entity.updatedAt,
     tenant: entity.tenant,

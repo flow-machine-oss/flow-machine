@@ -28,11 +28,13 @@ export const listCredentialsUseCaseInputSchema = z.object({
 const credentialUpdateSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("apiKey"),
+    name: z.string().min(1).max(256).optional(),
     apiKey: z.string().min(1).max(256).optional(),
     expiredAt: z.date().optional(),
   }),
   z.object({
     type: z.literal("basic"),
+    name: z.string().min(1).max(256).optional(),
     username: z.string().min(1).max(256).optional(),
     password: z.string().min(1).max(256).optional(),
     expiredAt: z.date().optional(),

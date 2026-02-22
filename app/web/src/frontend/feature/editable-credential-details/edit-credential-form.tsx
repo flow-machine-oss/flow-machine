@@ -56,6 +56,30 @@ export function EditCredentialForm({
               </Badge>
             </FieldContent>
           </Field>
+          <Controller
+            name="name"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="name">Name</FieldLabel>
+                <FieldDescription>
+                  Update the credential name
+                </FieldDescription>
+                <Input
+                  {...field}
+                  value={field.value ?? ""}
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="off"
+                  disabled={form.formState.isSubmitting}
+                  id="name"
+                  placeholder="e.g. Production GitHub Token"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
           {credential.type === "apiKey" && (
             <Controller
               name="apiKey"

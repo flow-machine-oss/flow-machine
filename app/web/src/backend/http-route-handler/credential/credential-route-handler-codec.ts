@@ -10,6 +10,7 @@ export const credentialDomainCodec = z.codec(
     decode: (dto) => {
       const base = {
         id: dto.id,
+        name: dto.name,
         tenant: dto.tenant,
         createdAt: dto.createdAt,
         updatedAt: dto.updatedAt,

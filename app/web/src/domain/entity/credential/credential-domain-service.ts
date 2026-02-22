@@ -8,6 +8,7 @@ type MakeCredentialDomainServiceInput = {
 export const makeCredentialDomainService = ({
   credential,
 }: MakeCredentialDomainServiceInput) => ({
+  getName: () => credential.name,
   getTypeDisplayName: () => typeToDisplayName[credential.type],
   getCreatedAt: () => format(credential.createdAt, "MMM d, yyyy, h:mm a"),
   getUpdatedAt: () => format(credential.updatedAt, "MMM d, yyyy, h:mm a"),

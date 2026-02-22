@@ -28,6 +28,12 @@ export function EditableCredentialDetails({
         <FieldLegend>Basic</FieldLegend>
         <FieldGroup>
           <Field>
+            <FieldLabel>Name</FieldLabel>
+            <FieldContent>
+              <span className="text-sm">{credential.name}</span>
+            </FieldContent>
+          </Field>
+          <Field>
             <FieldLabel>Type</FieldLabel>
             <FieldContent>
               <Badge variant="secondary" className="w-fit">

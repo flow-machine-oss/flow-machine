@@ -34,12 +34,14 @@ export function EditableCredentialDetailsPage({
       if (data.type === "apiKey") {
         form.reset({
           type: "apiKey",
+          name: data.name,
           apiKey: data.apiKey,
           expiredAt: data.expiredAt,
         });
       } else {
         form.reset({
           type: "basic",
+          name: data.name,
           username: data.username,
           password: data.password,
           expiredAt: data.expiredAt,
@@ -69,7 +71,7 @@ export function EditableCredentialDetailsPage({
 
   if (isNil(data) || isError) {
     return (
-      <PlatformPageTemplate heading="Credential">
+      <PlatformPageTemplate heading={data?.name ?? "Credential"}>
         <PlatformPageNotFoundError />
       </PlatformPageTemplate>
     );
@@ -77,7 +79,7 @@ export function EditableCredentialDetailsPage({
 
   return (
     <PlatformPageTemplate
-      heading="Credential"
+      heading={data?.name ?? "Credential"}
       isPending={isPending}
     >
       <div className="max-w-2xl space-y-6">

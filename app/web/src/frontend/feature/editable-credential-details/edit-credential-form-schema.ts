@@ -3,11 +3,21 @@ import { z } from "zod/v4";
 export const editCredentialFormValuesSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("apiKey"),
+    name: z
+      .string()
+      .min(1, "Name is required")
+      .max(256, "Name must be 256 characters or less")
+      .optional(),
     apiKey: z.string().optional(),
     expiredAt: z.string().optional(),
   }),
   z.object({
     type: z.literal("basic"),
+    name: z
+      .string()
+      .min(1, "Name is required")
+      .max(256, "Name must be 256 characters or less")
+      .optional(),
     username: z.string().optional(),
     password: z.string().optional(),
     expiredAt: z.string().optional(),

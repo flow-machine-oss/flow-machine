@@ -10,12 +10,14 @@ export const credentialDocToProps = (
   if (doc.type === "apiKey") {
     return {
       type: "apiKey",
+      name: doc.name,
       apiKey: doc.apiKey,
       expiredAt: doc.expiredAt,
     };
   }
   return {
     type: "basic",
+    name: doc.name,
     username: doc.username,
     password: doc.password,
     expiredAt: doc.expiredAt,
@@ -27,6 +29,7 @@ export const credentialEntityToMongoModel = (
 ): CredentialMongoModel => {
   const base = {
     _id: entity.id,
+    name: entity.props.name,
     createdAt: entity.createdAt,
     updatedAt: entity.updatedAt,
     tenant: entity.tenant,

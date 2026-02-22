@@ -11,6 +11,7 @@ export const useNewCredentialForm = (
   return useForm<NewCredentialFormValues>({
     defaultValues: {
       type: "apiKey",
+      name: "",
       apiKey: "",
       expiredAt: "",
     },
