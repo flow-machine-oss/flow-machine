@@ -13,6 +13,7 @@ export const projectDomainCodec = z.codec(
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
       name: dto.name,
+      integration: dto.integration,
     }),
     encode: noop as () => never,
   },
