@@ -5,6 +5,7 @@ import { domainIdSchema } from "@/domain/entity/shared-schema";
 export const createProjectServicePortInSchema = z.object({
   body: z.object({
     name: projectDomainSchema.shape.name,
+    integration: projectDomainSchema.shape.integration,
   }),
 });
 export type CreateProjectServicePortIn = z.output<
@@ -35,6 +36,7 @@ export const updateProjectServicePortInSchema = z.object({
   }),
   body: z.object({
     name: projectDomainSchema.shape.name.optional(),
+    integration: projectDomainSchema.shape.integration,
   }),
 });
 export type UpdateProjectServicePortIn = z.output<
