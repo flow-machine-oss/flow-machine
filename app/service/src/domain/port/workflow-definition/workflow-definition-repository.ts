@@ -7,7 +7,7 @@ import { makeResultSchema } from "@/common/schema/result-schema";
 import {
   WorkflowDefinitionEntity,
   workflowDefinitionEntityProps,
-} from "@/domain/entity/workflow/workflow-definition-entity";
+} from "@/domain/entity/workflow-definition/workflow-definition-entity";
 
 const workflowDefinitionRepositoryCtxSchema = z.object({
   ...mongoCtxSchema.shape,

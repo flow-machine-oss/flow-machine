@@ -4,11 +4,11 @@ import {
   idParamsDtoSchema,
   patchWorkflowDefinitionRequestBodyDtoSchema,
   postWorkflowDefinitionRequestBodyDtoSchema,
-} from "@/adapter/http/workflow/definition/workflow-definition-http-v1-dto";
+} from "@/adapter/http/workflow-definition/workflow-definition-http-v1-dto";
 import { makeHttpAuthGuardPlugin } from "@/common/http/http-auth-guard-plugin";
 import { errEnvelope, okEnvelope } from "@/common/http/http-envelope";
 import { makeHttpMongoCtxPlugin } from "@/common/http/http-mongo-ctx-plugin";
-import type { WorkflowDefinitionEntity } from "@/domain/entity/workflow/workflow-definition-entity";
+import type { WorkflowDefinitionEntity } from "@/domain/entity/workflow-definition/workflow-definition-entity";
 import type {
   GetActiveMember,
   GetSession,
@@ -19,7 +19,7 @@ import type {
   GetWorkflowDefinitionUseCase,
   ListWorkflowDefinitionsUseCase,
   UpdateWorkflowDefinitionUseCase,
-} from "@/domain/port/workflow/workflow-definition-use-case";
+} from "@/domain/port/workflow-definition/workflow-definition-use-case";
 
 type Input = {
   getSession: GetSession;

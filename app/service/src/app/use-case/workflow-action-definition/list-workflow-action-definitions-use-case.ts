@@ -1,9 +1,9 @@
 import { err, ok } from "neverthrow";
-import type { FindWorkflowActionDefinitionsRepository } from "@/domain/port/workflow/workflow-action-definition-repository";
+import type { FindWorkflowActionDefinitionsRepository } from "@/domain/port/workflow-action-definition/workflow-action-definition-repository";
 import {
   type ListWorkflowActionDefinitionsUseCase,
   listWorkflowActionDefinitionsUseCaseSchema,
-} from "@/domain/port/workflow/workflow-action-definition-use-case";
+} from "@/domain/port/workflow-action-definition/workflow-action-definition-use-case";
 
 type Input = {
   findWorkflowActionDefinitionsRepository: FindWorkflowActionDefinitionsRepository;

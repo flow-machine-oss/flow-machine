@@ -1,10 +1,10 @@
 import { err, ok } from "neverthrow";
 import { Err } from "@/common/err/err";
-import type { FindWorkflowDefinitionByIdRepository } from "@/domain/port/workflow/workflow-definition-repository";
+import type { FindWorkflowDefinitionByIdRepository } from "@/domain/port/workflow-definition/workflow-definition-repository";
 import {
   type GetWorkflowDefinitionUseCase,
   getWorkflowDefinitionUseCaseSchema,
-} from "@/domain/port/workflow/workflow-definition-use-case";
+} from "@/domain/port/workflow-definition/workflow-definition-use-case";
 
 type Input = {
   findWorkflowDefinitionByIdRepository: FindWorkflowDefinitionByIdRepository;

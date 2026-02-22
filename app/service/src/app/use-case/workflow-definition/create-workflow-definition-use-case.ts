@@ -1,10 +1,10 @@
 import { err, ok } from "neverthrow";
-import { WorkflowDefinitionEntity } from "@/domain/entity/workflow/workflow-definition-entity";
-import type { InsertWorkflowDefinitionRepository } from "@/domain/port/workflow/workflow-definition-repository";
+import { WorkflowDefinitionEntity } from "@/domain/entity/workflow-definition/workflow-definition-entity";
+import type { InsertWorkflowDefinitionRepository } from "@/domain/port/workflow-definition/workflow-definition-repository";
 import {
   type CreateWorkflowDefinitionUseCase,
   createWorkflowDefinitionUseCaseSchema,
-} from "@/domain/port/workflow/workflow-definition-use-case";
+} from "@/domain/port/workflow-definition/workflow-definition-use-case";
 
 type Input = {
   insertWorkflowDefinitionRepository: InsertWorkflowDefinitionRepository;

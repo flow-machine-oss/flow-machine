@@ -1,6 +1,6 @@
 import z from "zod";
 import { entityIdSchema } from "@/common/domain/entity-id";
-import { workflowActionDefinitionEntityProps } from "@/domain/entity/workflow/workflow-action-definition-entity";
+import { workflowActionDefinitionEntityProps } from "@/domain/entity/workflow-action-definition/workflow-action-definition-entity";
 
 export const workflowActionDefinitionResponseDtoSchema = z.object({
   id: entityIdSchema,

@@ -1,6 +1,6 @@
 import z from "zod";
 import { baseTenantAwareMongoModelSchema } from "@/common/mongo/mongo-model";
-import { workflowDefinitionEntityProps } from "@/domain/entity/workflow/workflow-definition-entity";
+import { workflowDefinitionEntityProps } from "@/domain/entity/workflow-definition/workflow-definition-entity";
 
 export const workflowDefinitionMongoModelSchema = z.object({
   ...baseTenantAwareMongoModelSchema.shape,

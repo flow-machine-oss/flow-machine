@@ -1,9 +1,9 @@
 import { err, ok } from "neverthrow";
-import type { DeleteWorkflowDefinitionRepository } from "@/domain/port/workflow/workflow-definition-repository";
+import type { DeleteWorkflowDefinitionRepository } from "@/domain/port/workflow-definition/workflow-definition-repository";
 import {
   type DeleteWorkflowDefinitionUseCase,
   deleteWorkflowDefinitionUseCaseSchema,
-} from "@/domain/port/workflow/workflow-definition-use-case";
+} from "@/domain/port/workflow-definition/workflow-definition-use-case";
 
 type Input = {
   deleteWorkflowDefinitionRepository: DeleteWorkflowDefinitionRepository;

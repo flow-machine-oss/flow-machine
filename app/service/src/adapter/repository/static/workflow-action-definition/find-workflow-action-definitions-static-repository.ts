@@ -1,9 +1,9 @@
 import { ok } from "neverthrow";
-import { WorkflowActionDefinitionEntity } from "@/domain/entity/workflow/workflow-action-definition-entity";
+import { WorkflowActionDefinitionEntity } from "@/domain/entity/workflow-action-definition/workflow-action-definition-entity";
 import {
   type FindWorkflowActionDefinitionsRepository,
   findWorkflowActionDefinitionsRepositorySchema,
-} from "@/domain/port/workflow/workflow-action-definition-repository";
+} from "@/domain/port/workflow-action-definition/workflow-action-definition-repository";
 
 export const makeFindWorkflowActionDefinitionsStaticRepository =
   (): FindWorkflowActionDefinitionsRepository =>
