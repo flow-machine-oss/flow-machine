@@ -1,0 +1,13 @@
+import { format } from "date-fns";
+import type { ProjectDomain } from "@/domain/entity/project/project-domain-schema";
+
+type MakeProjectDomainServiceInput = {
+  project: ProjectDomain;
+};
+
+export const makeProjectDomainService = ({
+  project,
+}: MakeProjectDomainServiceInput) => ({
+  getCreatedAt: () => format(project.createdAt, "MMM d, yyyy, h:mm a"),
+  getUpdatedAt: () => format(project.updatedAt, "MMM d, yyyy, h:mm a"),
+});
