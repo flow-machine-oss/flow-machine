@@ -1,5 +1,10 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontalIcon, PencilIcon, TrashIcon } from "lucide-react";
+import {
+  CopyIcon,
+  MoreHorizontalIcon,
+  PencilIcon,
+  TrashIcon,
+} from "lucide-react";
 import Link from "next/link";
 import type { CredentialDomain } from "@/domain/entity/credential/credential-domain-schema";
 import { makeCredentialDomainService } from "@/domain/entity/credential/credential-domain-service";
@@ -28,6 +33,7 @@ import { Spinner } from "@/frontend/component/ui/spinner";
 type MakeCredentialsTableColumnDefInput = {
   isDeleteConfirmationAlertOpen: boolean;
   isDeleting: boolean;
+  onCopyAction: (text: string) => void;
   onDeleteActionCancel: () => void;
   onDeleteActionConfirm: (id: CredentialDomain["id"]) => void;
   onDeleteActionTrigger: () => void;
@@ -36,6 +42,7 @@ type MakeCredentialsTableColumnDefInput = {
 export const makeCredentialsTableColumnDef = ({
   isDeleteConfirmationAlertOpen,
   isDeleting,
+  onCopyAction,
   onDeleteActionCancel,
   onDeleteActionConfirm,
   onDeleteActionTrigger,
@@ -133,6 +140,10 @@ export const makeCredentialsTableColumnDef = ({
                 <MoreHorizontalIcon />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => onCopyAction(credential.id)}>
+                  <CopyIcon />
+                  Copy
+                </DropdownMenuItem>
                 <DropdownMenuItem
                   nativeButton={false}
                   render={

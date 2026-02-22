@@ -5,6 +5,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { PropsWithChildren } from "react";
+import { Toaster } from "@/frontend/component/ui/sonner";
 import { authClient } from "@/frontend/lib/auth/auth-client";
 import { queryClient } from "@/frontend/lib/query/query-client";
 
@@ -21,6 +22,7 @@ export function GlobalProvider({ children }: PropsWithChildren) {
       Link={Link}
     >
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <Toaster position="bottom-center" />
     </AuthUIProvider>
   );
 }

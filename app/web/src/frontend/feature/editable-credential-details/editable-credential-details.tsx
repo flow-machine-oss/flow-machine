@@ -1,3 +1,4 @@
+import { CopyIcon } from "lucide-react";
 import type { CredentialDomain } from "@/domain/entity/credential/credential-domain-schema";
 import { makeCredentialDomainService } from "@/domain/entity/credential/credential-domain-service";
 import { Badge } from "@/frontend/component/ui/badge";
@@ -13,11 +14,13 @@ import {
 
 type EditableCredentialDetailsProps = {
   credential: CredentialDomain;
+  onCopy: (text: string) => void;
   onEdit: () => void;
 };
 
 export function EditableCredentialDetails({
   credential,
+  onCopy,
   onEdit,
 }: EditableCredentialDetailsProps) {
   const credentialDomainService = makeCredentialDomainService({ credential });
@@ -27,6 +30,19 @@ export function EditableCredentialDetails({
       <FieldSet>
         <FieldLegend>Basic</FieldLegend>
         <FieldGroup>
+          <Field>
+            <FieldLabel>ID</FieldLabel>
+            <FieldContent className="flex-row items-center gap-x-1">
+              <span className="text-sm">{credential.id}</span>
+              <Button
+                size="icon-xs"
+                variant="ghost"
+                onClick={() => onCopy(credential.id)}
+              >
+                <CopyIcon />
+              </Button>
+            </FieldContent>
+          </Field>
           <Field>
             <FieldLabel>Name</FieldLabel>
             <FieldContent>
