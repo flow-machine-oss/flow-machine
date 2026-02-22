@@ -19,3 +19,7 @@ export const makeGetGitRepositoryQueryKey = (id: string) => [
   "git-repository",
   id,
 ];
+
+export const makeListCredentialsQueryKey = () => ["credential"];
+
+export const makeGetCredentialQueryKey = (id: string) => ["credential", id];
