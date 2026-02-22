@@ -1,14 +1,14 @@
 import Elysia from "elysia";
-import { type WorkflowActionDefinitionResponseDto } from "@/adapter/http/workflow/action-definition/workflow-action-definition-http-v1-dto";
+import { type WorkflowActionDefinitionResponseDto } from "@/adapter/http/workflow-action-definition/workflow-action-definition-http-v1-dto";
 import { makeHttpAuthGuardPlugin } from "@/common/http/http-auth-guard-plugin";
 import { errEnvelope, okEnvelope } from "@/common/http/http-envelope";
 import { makeHttpMongoCtxPlugin } from "@/common/http/http-mongo-ctx-plugin";
-import type { WorkflowActionDefinitionEntity } from "@/domain/entity/workflow/workflow-action-definition-entity";
+import type { WorkflowActionDefinitionEntity } from "@/domain/entity/workflow-action-definition/workflow-action-definition-entity";
 import type {
   GetActiveMember,
   GetSession,
 } from "@/domain/port/auth/auth-service";
-import type { ListWorkflowActionDefinitionsUseCase } from "@/domain/port/workflow/workflow-action-definition-use-case";
+import type { ListWorkflowActionDefinitionsUseCase } from "@/domain/port/workflow-action-definition/workflow-action-definition-use-case";
 
 type Input = {
   getSession: GetSession;

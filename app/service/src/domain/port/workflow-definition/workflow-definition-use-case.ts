@@ -1,14 +1,14 @@
 import z from "zod";
 import { Err } from "@/common/err/err";
 import { makeResultSchema } from "@/common/schema/result-schema";
-import { WorkflowDefinitionEntity } from "@/domain/entity/workflow/workflow-definition-entity";
+import { WorkflowDefinitionEntity } from "@/domain/entity/workflow-definition/workflow-definition-entity";
 import {
   createWorkflowDefinitionUseCaseInputSchema,
   deleteWorkflowDefinitionUseCaseInputSchema,
   getWorkflowDefinitionUseCaseInputSchema,
   listWorkflowDefinitionsUseCaseInputSchema,
   updateWorkflowDefinitionUseCaseInputSchema,
-} from "@/domain/port/workflow/workflow-definition-dto";
+} from "@/domain/port/workflow-definition/workflow-definition-dto";
 
 export const createWorkflowDefinitionUseCaseSchema = z.function({
   input: [createWorkflowDefinitionUseCaseInputSchema],

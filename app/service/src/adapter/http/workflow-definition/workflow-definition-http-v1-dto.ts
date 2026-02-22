@@ -5,8 +5,8 @@ import {
   workflowActionSchema,
   workflowDefinitionEntityProps,
   workflowEdgeSchema,
-} from "@/domain/entity/workflow/workflow-definition-entity";
-import { createWorkflowDefinitionUseCaseInputSchema } from "@/domain/port/workflow/workflow-definition-dto";
+} from "@/domain/entity/workflow-definition/workflow-definition-entity";
+import { createWorkflowDefinitionUseCaseInputSchema } from "@/domain/port/workflow-definition/workflow-definition-dto";
 
 export const postWorkflowDefinitionRequestBodyDtoSchema = z.object({
   name: createWorkflowDefinitionUseCaseInputSchema.shape.payload.shape.name,

@@ -1,4 +1,4 @@
-import { makeWorkflowDefinitionHttpV1Router } from "@/adapter/http/workflow/definition/workflow-definition-http-v1-router";
+import { makeWorkflowDefinitionHttpV1Router } from "@/adapter/http/workflow-definition/workflow-definition-http-v1-router";
 import { makeDeleteWorkflowDefinitionMongoRepository } from "@/adapter/repository/mongo/workflow-definition/delete-workflow-definition-mongo-repository";
 import { makeFindWorkflowDefinitionByIdMongoRepository } from "@/adapter/repository/mongo/workflow-definition/find-workflow-definition-by-id-mongo-repository";
 import { makeFindWorkflowDefinitionsMongoRepository } from "@/adapter/repository/mongo/workflow-definition/find-workflow-definitions-mongo-repository";
@@ -9,11 +9,11 @@ import {
   workflowDefinitionEntityToMongoModel,
   workflowDefinitionMongoModelToEntity,
 } from "@/adapter/repository/mongo/workflow-definition/workflow-definition-mongo-mapper";
-import { makeCreateWorkflowDefinitionUseCase } from "@/app/use-case/workflow/create-workflow-definition-use-case";
-import { makeDeleteWorkflowDefinitionUseCase } from "@/app/use-case/workflow/delete-workflow-definition-use-case";
-import { makeGetWorkflowDefinitionUseCase } from "@/app/use-case/workflow/get-workflow-definition-use-case";
-import { makeListWorkflowDefinitionsUseCase } from "@/app/use-case/workflow/list-workflows-definition-use-case";
-import { makeUpdateWorkflowDefinitionUseCase } from "@/app/use-case/workflow/update-workflow-definition-use-case";
+import { makeCreateWorkflowDefinitionUseCase } from "@/app/use-case/workflow-definition/create-workflow-definition-use-case";
+import { makeDeleteWorkflowDefinitionUseCase } from "@/app/use-case/workflow-definition/delete-workflow-definition-use-case";
+import { makeGetWorkflowDefinitionUseCase } from "@/app/use-case/workflow-definition/get-workflow-definition-use-case";
+import { makeListWorkflowDefinitionsUseCase } from "@/app/use-case/workflow-definition/list-workflows-definition-use-case";
+import { makeUpdateWorkflowDefinitionUseCase } from "@/app/use-case/workflow-definition/update-workflow-definition-use-case";
 import { getActiveMember, getSession } from "@/di/auth-di";
 
 // Repositories

@@ -5,7 +5,7 @@ import { Err } from "@/common/err/err";
 import {
   type DeleteWorkflowDefinitionRepository,
   deleteWorkflowDefinitionRepositorySchema,
-} from "@/domain/port/workflow/workflow-definition-repository";
+} from "@/domain/port/workflow-definition/workflow-definition-repository";
 
 type Input = {
   getWorkflowDefinitionMongoCollection: GetWorkflowDefinitionMongoCollection;

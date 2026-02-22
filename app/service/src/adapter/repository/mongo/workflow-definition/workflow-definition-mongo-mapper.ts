@@ -1,6 +1,6 @@
 import z from "zod";
 import { workflowDefinitionMongoModelSchema } from "@/adapter/repository/mongo/workflow-definition/workflow-definition-mongo-model";
-import { WorkflowDefinitionEntity } from "@/domain/entity/workflow/workflow-definition-entity";
+import { WorkflowDefinitionEntity } from "@/domain/entity/workflow-definition/workflow-definition-entity";
 
 export const workflowDefinitionMongoModelToEntitySchema = z.function({
   input: [workflowDefinitionMongoModelSchema],

@@ -2,7 +2,7 @@ import z from "zod";
 import { mongoCtxSchema } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
 import { makeResultSchema } from "@/common/schema/result-schema";
-import { WorkflowActionDefinitionEntity } from "@/domain/entity/workflow/workflow-action-definition-entity";
+import { WorkflowActionDefinitionEntity } from "@/domain/entity/workflow-action-definition/workflow-action-definition-entity";
 
 const workflowActionDefinitionRepositoryCtxSchema = z.object({
   ...mongoCtxSchema.shape,

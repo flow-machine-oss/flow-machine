@@ -3,7 +3,7 @@ import { workflowActions } from "@/adapter/inngest/workflow-actions";
 import { config } from "@/common/config/config";
 import type { Tenant } from "@/common/domain/tenant-aware-entity";
 import { mongoClient } from "@/common/mongo/mongo-client";
-import type { FindWorkflowDefinitionByIdRepository } from "@/domain/port/workflow/workflow-definition-repository";
+import type { FindWorkflowDefinitionByIdRepository } from "@/domain/port/workflow-definition/workflow-definition-repository";
 
 type Input = {
   findWorkflowDefinitionByIdRepository: FindWorkflowDefinitionByIdRepository;
