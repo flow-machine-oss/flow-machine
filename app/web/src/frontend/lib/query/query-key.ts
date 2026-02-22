@@ -13,6 +13,10 @@ export const makeGetWorkflowDefinitionQueryKey = (id: string) => [
   id,
 ];
 
+export const makeListProjectsQueryKey = () => ["project"];
+
+export const makeGetProjectQueryKey = (id: string) => ["project", id];
+
 export const makeListGitRepositoriesQueryKey = () => ["git-repository"];
 
 export const makeGetGitRepositoryQueryKey = (id: string) => [
