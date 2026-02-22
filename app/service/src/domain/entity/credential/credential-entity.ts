@@ -9,11 +9,13 @@ import {
 export const credentialEntityProps = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("apiKey"),
+    name: z.string().min(1).max(256),
     apiKey: z.string().min(1).max(256),
     expiredAt: z.date(),
   }),
   z.object({
     type: z.literal("basic"),
+    name: z.string().min(1).max(256),
     username: z.string().min(1).max(256),
     password: z.string().min(1).max(256),
     expiredAt: z.date(),

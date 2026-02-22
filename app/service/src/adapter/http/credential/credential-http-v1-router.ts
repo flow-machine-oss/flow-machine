@@ -34,6 +34,7 @@ type Input = {
 const toResponseDto = (entity: CredentialEntity): CredentialResponseDto => {
   const base = {
     id: entity.id,
+    name: entity.props.name,
     createdAt: entity.createdAt,
     updatedAt: entity.updatedAt,
     tenant: entity.tenant,
@@ -44,6 +45,7 @@ const toResponseDto = (entity: CredentialEntity): CredentialResponseDto => {
     return {
       ...base,
       type: "apiKey",
+      apiKey: entity.props.apiKey,
     };
   }
 
@@ -51,6 +53,7 @@ const toResponseDto = (entity: CredentialEntity): CredentialResponseDto => {
     ...base,
     type: "basic",
     username: entity.props.username,
+    password: entity.props.password,
   };
 };
 

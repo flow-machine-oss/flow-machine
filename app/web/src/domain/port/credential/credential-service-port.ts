@@ -5,11 +5,13 @@ export const createCredentialServicePortInSchema = z.object({
   body: z.discriminatedUnion("type", [
     z.object({
       type: z.literal("apiKey"),
+      name: z.string(),
       apiKey: z.string(),
       expiredAt: z.string(),
     }),
     z.object({
       type: z.literal("basic"),
+      name: z.string(),
       username: z.string(),
       password: z.string(),
       expiredAt: z.string(),
@@ -45,11 +47,13 @@ export const updateCredentialServicePortInSchema = z.object({
   body: z.discriminatedUnion("type", [
     z.object({
       type: z.literal("apiKey"),
+      name: z.string().optional(),
       apiKey: z.string().optional(),
       expiredAt: z.string().optional(),
     }),
     z.object({
       type: z.literal("basic"),
+      name: z.string().optional(),
       username: z.string().optional(),
       password: z.string().optional(),
       expiredAt: z.string().optional(),

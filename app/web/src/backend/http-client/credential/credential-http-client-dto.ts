@@ -8,12 +8,14 @@ export const credentialHttpResponseDtoSchema = z.discriminatedUnion("type", [
   z.object({
     ...tenantAwareBaseHttpClientResponseDtoSchema.shape,
     type: z.literal("apiKey"),
+    name: z.string(),
     apiKey: z.string(),
     expiredAt: z.iso.datetime(),
   }),
   z.object({
     ...tenantAwareBaseHttpClientResponseDtoSchema.shape,
     type: z.literal("basic"),
+    name: z.string(),
     username: z.string(),
     password: z.string(),
     expiredAt: z.iso.datetime(),
@@ -28,11 +30,13 @@ export const createCredentialHttpRequestBodyDtoSchema = z.discriminatedUnion(
   [
     z.object({
       type: z.literal("apiKey"),
+      name: z.string().min(1).max(256),
       apiKey: z.string().min(1).max(256),
       expiredAt: z.string(),
     }),
     z.object({
       type: z.literal("basic"),
+      name: z.string().min(1).max(256),
       username: z.string().min(1).max(256),
       password: z.string().min(1).max(256),
       expiredAt: z.string(),
@@ -69,11 +73,13 @@ export const updateCredentialHttpRequestBodyDtoSchema = z.discriminatedUnion(
   [
     z.object({
       type: z.literal("apiKey"),
+      name: z.string().min(1).max(256).optional(),
       apiKey: z.string().min(1).max(256).optional(),
       expiredAt: z.string().optional(),
     }),
     z.object({
       type: z.literal("basic"),
+      name: z.string().min(1).max(256).optional(),
       username: z.string().min(1).max(256).optional(),
       password: z.string().min(1).max(256).optional(),
       expiredAt: z.string().optional(),

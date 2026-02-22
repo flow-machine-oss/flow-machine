@@ -10,12 +10,14 @@ export const credentialDomainSchema = z.discriminatedUnion("type", [
   z.object({
     ...tenantAwareBaseDomainSchema.shape,
     type: z.literal("apiKey"),
+    name: z.string(),
     apiKey: z.string(),
     expiredAt: datetimeSchema,
   }),
   z.object({
     ...tenantAwareBaseDomainSchema.shape,
     type: z.literal("basic"),
+    name: z.string(),
     username: z.string(),
     password: z.string(),
     expiredAt: datetimeSchema,
