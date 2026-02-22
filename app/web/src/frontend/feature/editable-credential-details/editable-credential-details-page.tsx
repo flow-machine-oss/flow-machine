@@ -12,6 +12,7 @@ import { EditableCredentialDetails } from "@/frontend/feature/editable-credentia
 import { useEditCredentialForm } from "@/frontend/feature/editable-credential-details/use-edit-credential-form";
 import { useGetCredential } from "@/frontend/hook/credential/use-get-credential";
 import { useUpdateCredential } from "@/frontend/hook/credential/use-update-credential";
+import { useCopyToClipboard } from "@/frontend/hook/use-copy-to-clipboard";
 import { makeGetCredentialQueryKey } from "@/frontend/lib/query/query-key";
 
 type EditableCredentialDetailsPageProps = {
@@ -22,12 +23,18 @@ export function EditableCredentialDetailsPage({
   id,
 }: EditableCredentialDetailsPageProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [_, copyToClipboard] = useCopyToClipboard();
 
   const queryClient = useQueryClient();
   const { data, isPending, isError } = useGetCredential(id);
   const { mutateAsync } = useUpdateCredential();
 
   const form = useEditCredentialForm();
+
+  const handleCopy = async (text: string) => {
+    await copyToClipboard(text);
+    toast.success("Copied to clipboard");
+  };
 
   const handleEdit = () => {
     if (data) {
@@ -95,6 +102,7 @@ export function EditableCredentialDetailsPage({
           <EditableCredentialDetails
             credential={data}
             onEdit={handleEdit}
+            onCopy={handleCopy}
           />
         )}
       </div>
