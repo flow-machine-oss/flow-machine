@@ -25,7 +25,7 @@ export const listCredentialsUseCaseInputSchema = z.object({
   ctx: credentialCtxSchema,
 });
 
-const credentialUpdateSchema = z.discriminatedUnion("type", [
+export const credentialUpdateSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("apiKey"),
     name: z.string().min(1).max(256).optional(),

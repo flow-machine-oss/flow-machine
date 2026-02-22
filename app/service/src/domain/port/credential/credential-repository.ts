@@ -5,6 +5,7 @@ import { entityIdSchema } from "@/common/domain/entity-id";
 import { Err } from "@/common/err/err";
 import { makeResultSchema } from "@/common/schema/result-schema";
 import { CredentialEntity } from "@/domain/entity/credential/credential-entity";
+import { credentialUpdateSchema } from "@/domain/port/credential/credential-dto";
 
 const repositoryCtxSchema = z.object({
   ...mongoCtxSchema.shape,
@@ -58,22 +59,6 @@ export const findCredentialsRepositorySchema = z.function({
 export type FindCredentialsRepository = z.output<
   typeof findCredentialsRepositorySchema
 >;
-
-const credentialUpdateSchema = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("apiKey"),
-    name: z.string().min(1).max(256).optional(),
-    apiKey: z.string().min(1).max(256).optional(),
-    expiredAt: z.date().optional(),
-  }),
-  z.object({
-    type: z.literal("basic"),
-    name: z.string().min(1).max(256).optional(),
-    username: z.string().min(1).max(256).optional(),
-    password: z.string().min(1).max(256).optional(),
-    expiredAt: z.date().optional(),
-  }),
-]);
 
 export const updateCredentialRepositorySchema = z.function({
   input: [

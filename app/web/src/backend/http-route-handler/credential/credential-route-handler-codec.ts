@@ -3,6 +3,11 @@ import { z } from "zod/v4";
 import { credentialHttpResponseDtoSchema } from "@/backend/http-client/credential/credential-http-client-dto";
 import { credentialDomainSchema } from "@/domain/entity/credential/credential-domain-schema";
 
+const maskSecret = (value: string): string => {
+  if (value.length <= 8) return "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
+  return `${value.slice(0, 4)}${"\u2022".repeat(value.length - 8)}${value.slice(-4)}`;
+};
+
 export const credentialDomainCodec = z.codec(
   credentialHttpResponseDtoSchema,
   credentialDomainSchema,
@@ -18,14 +23,18 @@ export const credentialDomainCodec = z.codec(
       };
 
       if (dto.type === "apiKey") {
-        return { ...base, type: "apiKey" as const, apiKey: dto.apiKey };
+        return {
+          ...base,
+          type: "apiKey" as const,
+          apiKey: maskSecret(dto.apiKey),
+        };
       }
 
       return {
         ...base,
         type: "basic" as const,
         username: dto.username,
-        password: dto.password,
+        password: maskSecret(dto.password),
       };
     },
     encode: noop as () => never,

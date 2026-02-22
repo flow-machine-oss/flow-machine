@@ -44,7 +44,7 @@ export const idParamsDtoSchema = z.object({
 
 const credentialResponseDtoBaseSchema = z.object({
   id: entityIdSchema,
-  name: z.string(),
+  name: z.string().min(1).max(256),
   createdAt: z.date(),
   updatedAt: z.date(),
   tenant: tenantSchema,
@@ -54,12 +54,14 @@ const credentialResponseDtoBaseSchema = z.object({
 export const apiKeyCredentialResponseDtoSchema =
   credentialResponseDtoBaseSchema.extend({
     type: z.literal("apiKey"),
+    apiKey: z.string(),
   });
 
 export const basicCredentialResponseDtoSchema =
   credentialResponseDtoBaseSchema.extend({
     type: z.literal("basic"),
     username: z.string(),
+    password: z.string(),
   });
 
 export const credentialResponseDtoSchema = z.discriminatedUnion("type", [

@@ -36,7 +36,7 @@ export function EditableCredentialDetailsPage({
           type: "apiKey",
           name: data.name,
           apiKey: data.apiKey,
-          expiredAt: data.expiredAt,
+          expiredAt: data.expiredAt.slice(0, 16),
         });
       } else {
         form.reset({
@@ -44,7 +44,7 @@ export function EditableCredentialDetailsPage({
           name: data.name,
           username: data.username,
           password: data.password,
-          expiredAt: data.expiredAt,
+          expiredAt: data.expiredAt.slice(0, 16),
         });
       }
     }
