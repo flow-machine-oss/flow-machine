@@ -7,11 +7,13 @@ import { createAiAgentUseCaseInputSchema } from "@/domain/port/ai-agent/ai-agent
 export const postAiAgentRequestBodyDtoSchema = z.object({
   name: createAiAgentUseCaseInputSchema.shape.payload.shape.name,
   model: createAiAgentUseCaseInputSchema.shape.payload.shape.model,
+  projects: createAiAgentUseCaseInputSchema.shape.payload.shape.projects,
 });
 
 export const patchAiAgentRequestBodyDtoSchema = z.object({
   name: aiAgentEntityProps.shape.name.optional(),
   model: aiAgentEntityProps.shape.model.optional(),
+  projects: aiAgentEntityProps.shape.projects.optional(),
 });
 
 export const idParamsDtoSchema = z.object({
@@ -25,6 +27,7 @@ export const aiAgentResponseDtoSchema = z.object({
   tenant: tenantSchema,
   name: aiAgentEntityProps.shape.name,
   model: aiAgentEntityProps.shape.model,
+  projects: aiAgentEntityProps.shape.projects,
 });
 
 export type AiAgentResponseDto = z.output<typeof aiAgentResponseDtoSchema>;

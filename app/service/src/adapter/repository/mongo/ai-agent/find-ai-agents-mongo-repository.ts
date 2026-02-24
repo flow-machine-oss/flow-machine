@@ -39,6 +39,7 @@ export const makeFindAiAgentsMongoRepository = ({
         {
           name: doc.name,
           model: doc.model,
+          projects: doc.projects,
         },
       );
 

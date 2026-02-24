@@ -19,6 +19,7 @@ export const makeUpdateAiAgentUseCase = ({
       data: {
         name: payload.name,
         model: payload.model,
+        projects: payload.projects,
       },
     });
 

@@ -100,6 +100,7 @@ export const makeAiAgentHttpV1Router = ({
                 id: params.id,
                 name: body.name,
                 model: body.model,
+                projects: body.projects,
               },
             });
             if (result.isErr()) {

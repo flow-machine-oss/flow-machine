@@ -19,4 +19,5 @@ export const aiAgentEntityToResponseDto =
 
     name: entity.props.name,
     model: entity.props.model,
+    projects: entity.props.projects,
   }));
