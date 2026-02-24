@@ -1,3 +1,4 @@
+import { aiAgentEntityToResponseDto } from "@/adapter/http/ai-agent/ai-agent-http-v1-mapper";
 import { makeAiAgentHttpV1Router } from "@/adapter/http/ai-agent/ai-agent-http-v1-router";
 import { getAiAgentMongoCollection } from "@/adapter/repository/mongo/ai-agent/ai-agent-mongo-collection";
 import { makeDeleteAiAgentMongoRepository } from "@/adapter/repository/mongo/ai-agent/delete-ai-agent-mongo-repository";
@@ -47,6 +48,7 @@ export const deleteAiAgentUseCase = makeDeleteAiAgentUseCase({
 });
 
 export const aiAgentHttpV1Router = makeAiAgentHttpV1Router({
+  aiAgentEntityToResponseDto,
   getSession,
   getActiveMember,
   createAiAgentUseCase,
