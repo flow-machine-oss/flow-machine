@@ -14,6 +14,7 @@ export const createAiAgentUseCaseInputSchema = z.object({
   payload: z.object({
     name: aiAgentEntityProps.shape.name,
     model: aiAgentEntityProps.shape.model,
+    projects: aiAgentEntityProps.shape.projects,
   }),
 });
 
@@ -34,6 +35,7 @@ export const updateAiAgentUseCaseInputSchema = z.object({
     id: entityIdSchema,
     name: aiAgentEntityProps.shape.name.optional(),
     model: aiAgentEntityProps.shape.model.optional(),
+    projects: aiAgentEntityProps.shape.projects.optional(),
   }),
 });
 

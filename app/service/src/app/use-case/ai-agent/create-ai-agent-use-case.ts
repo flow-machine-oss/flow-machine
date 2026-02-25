@@ -17,6 +17,7 @@ export const makeCreateAiAgentUseCase = ({
     const makeNewEntityResult = AiAgentEntity.makeNew(ctx.tenant, {
       name: payload.name,
       model: payload.model,
+      projects: payload.projects,
     });
 
     if (makeNewEntityResult.isErr()) {

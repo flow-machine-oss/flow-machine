@@ -64,6 +64,7 @@ export const updateAiAgentRepositorySchema = z.function({
       data: z.object({
         name: aiAgentEntityProps.shape.name.optional(),
         model: aiAgentEntityProps.shape.model.optional(),
+        projects: aiAgentEntityProps.shape.projects.optional(),
       }),
     }),
   ],

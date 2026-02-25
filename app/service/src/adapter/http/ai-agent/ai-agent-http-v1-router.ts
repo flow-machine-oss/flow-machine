@@ -1,18 +1,13 @@
 import Elysia from "elysia";
 import {
-  type AiAgentResponseDto,
   idParamsDtoSchema,
   patchAiAgentRequestBodyDtoSchema,
   postAiAgentRequestBodyDtoSchema,
 } from "@/adapter/http/ai-agent/ai-agent-http-v1-dto";
+import type { AiAgentEntityToResponseDto } from "@/adapter/http/ai-agent/ai-agent-http-v1-mapper";
 import { makeHttpAuthGuardPlugin } from "@/common/http/http-auth-guard-plugin";
 import { errEnvelope, okEnvelope } from "@/common/http/http-envelope";
 import { makeHttpMongoCtxPlugin } from "@/common/http/http-mongo-ctx-plugin";
-import type { AiAgentEntity } from "@/domain/entity/ai-agent/ai-agent-entity";
-import type {
-  GetActiveMember,
-  GetSession,
-} from "@/domain/port/auth/auth-service";
 import type {
   CreateAiAgentUseCase,
   DeleteAiAgentUseCase,
@@ -20,8 +15,13 @@ import type {
   ListAiAgentsUseCase,
   UpdateAiAgentUseCase,
 } from "@/domain/port/ai-agent/ai-agent-use-case";
+import type {
+  GetActiveMember,
+  GetSession,
+} from "@/domain/port/auth/auth-service";
 
 type Input = {
+  aiAgentEntityToResponseDto: AiAgentEntityToResponseDto;
   getSession: GetSession;
   getActiveMember: GetActiveMember;
   createAiAgentUseCase: CreateAiAgentUseCase;
@@ -31,16 +31,8 @@ type Input = {
   updateAiAgentUseCase: UpdateAiAgentUseCase;
 };
 
-const toResponseDto = (entity: AiAgentEntity): AiAgentResponseDto => ({
-  id: entity.id,
-  createdAt: entity.createdAt,
-  updatedAt: entity.updatedAt,
-  tenant: entity.tenant,
-  name: entity.props.name,
-  model: entity.props.model,
-});
-
 export const makeAiAgentHttpV1Router = ({
+  aiAgentEntityToResponseDto,
   getSession,
   getActiveMember,
   createAiAgentUseCase,
@@ -77,7 +69,9 @@ export const makeAiAgentHttpV1Router = ({
           if (result.isErr()) {
             return errEnvelope(result.error);
           }
-          return okEnvelope({ data: result.value.map(toResponseDto) });
+          return okEnvelope({
+            data: result.value.map((i) => aiAgentEntityToResponseDto(i)),
+          });
         })
         .get(
           "/:id",
@@ -89,7 +83,9 @@ export const makeAiAgentHttpV1Router = ({
             if (result.isErr()) {
               return errEnvelope(result.error);
             }
-            return okEnvelope({ data: toResponseDto(result.value) });
+            return okEnvelope({
+              data: aiAgentEntityToResponseDto(result.value),
+            });
           },
           {
             params: idParamsDtoSchema,
@@ -104,6 +100,7 @@ export const makeAiAgentHttpV1Router = ({
                 id: params.id,
                 name: body.name,
                 model: body.model,
+                projects: body.projects,
               },
             });
             if (result.isErr()) {

@@ -1,6 +1,7 @@
 import { ok } from "neverthrow";
 import z from "zod";
-import { newEntityId } from "@/common/domain/entity-id";
+import { entityIdSchema, newEntityId } from "@/common/domain/entity-id";
+import { syncSchema } from "@/common/domain/sync";
 import {
   type Tenant,
   TenantAwareEntity,
@@ -18,6 +19,7 @@ const aiModels = [
 export const aiAgentEntityProps = z.object({
   name: z.string().min(1).max(256),
   model: z.enum(aiModels),
+  projects: z.object({ id: entityIdSchema, ...syncSchema.shape }).array(),
 });
 export type AiAgentEntityProps = z.output<typeof aiAgentEntityProps>;
 
