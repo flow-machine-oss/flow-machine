@@ -1,7 +1,5 @@
-import { ClientSession, Db } from "mongodb";
+import { ClientSession, Db, MongoClient } from "mongodb";
 import z from "zod";
-import { config } from "@/common/config/config";
-import { mongoClient } from "@/infra/mongo/client";
 
 export const mongoCtxSchema = z.object({
   mongoClientSession: z.instanceof(ClientSession).optional(),
@@ -10,8 +8,8 @@ export const mongoCtxSchema = z.object({
 
 export type MongoCtx = z.output<typeof mongoCtxSchema>;
 
-export const makeMongoCtx = () =>
+export const makeMongoCtx = (mongoClient: MongoClient, databaseName: string) =>
   mongoCtxSchema.decode({
     mongoClientSession: mongoClient.startSession(),
-    mongoDb: mongoClient.db(config.database.name),
+    mongoDb: mongoClient.db(databaseName),
   });
