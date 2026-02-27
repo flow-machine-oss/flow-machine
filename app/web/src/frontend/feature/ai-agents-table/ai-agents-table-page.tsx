@@ -17,9 +17,6 @@ export default function AiAgentsTablePage() {
   const { data, isPending } = useListAiAgents();
   const { mutateAsync, isPending: isDeleteAiAgentPending } = useDeleteAiAgent();
 
-  console.log("deleteAction", deleteAction);
-  console.log("isDeleteAiAgentPending", isDeleteAiAgentPending);
-
   const handleDeleteAiAgentActionTrigger = deleteAction.triggerAction;
   const handleDeleteAiAgentActionCancel = deleteAction.resetAction;
   const handleDeleteAiAgentActionConfirm = deleteAction.withConfirmableAction(

@@ -45,7 +45,7 @@ export const tenantAwareEntityToMongoModel = <
   K extends TenantAwareEntity<T>,
 >(
   entity: K,
-): TenantAwareMongoModel<T> => ({
+): TenantAwareMongoModel<K["props"]> => ({
   _id: entity.id,
   tenant: entity.tenant,
 

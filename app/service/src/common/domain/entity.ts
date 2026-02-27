@@ -1,8 +1,9 @@
 import { UTCDate } from "@date-fns/utc";
-import type { EmptyObject, UnknownRecord } from "type-fest";
+import { merge } from "es-toolkit";
+import type { EmptyObject, PartialDeep, UnknownRecord } from "type-fest";
 import type { EntityId } from "@/common/domain/entity-id";
 
-export class Entity<T extends UnknownRecord = EmptyObject> {
+class Entity<T extends UnknownRecord = EmptyObject> {
   id: EntityId;
 
   props: T;
@@ -22,4 +23,11 @@ export class Entity<T extends UnknownRecord = EmptyObject> {
     this.createdAt = optionalProps?.createdAt ?? new UTCDate();
     this.updatedAt = optionalProps?.updatedAt ?? new UTCDate();
   }
+
+  update(partialProps: PartialDeep<T>) {
+    this.props = merge(this.props, partialProps);
+    this.updatedAt = new UTCDate();
+  }
 }
+
+export { Entity };

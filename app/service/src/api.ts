@@ -4,7 +4,6 @@ import Elysia from "elysia";
 import z from "zod";
 import { config } from "@/common/config/config";
 import { makeHttpErrorHandlerPlugin } from "@/common/http/http-error-handler.plugin";
-import { aiAgentHttpV1Router } from "@/di/ai-agent-di";
 import { authHttpRouter } from "@/di/auth-di";
 import { billingHttpV1Router } from "@/di/billing-di";
 import { credentialHttpV1Router } from "@/di/credential-di";
@@ -15,6 +14,7 @@ import { inngestHttpRouter } from "@/di/inngest-di";
 import { projectHttpV1Router } from "@/di/project-di";
 import { workflowActionDefinitionHttpV1Router } from "@/di/workflow-action-definition-di";
 import { workflowDefinitionHttpV1Router } from "@/di/workflow-definition-di";
+import { aiAgentV1HttpRouterFactory } from "@/v2/di/ai-agent-api";
 
 const app = new Elysia();
 
@@ -29,7 +29,7 @@ app
     }),
   )
   .use(makeHttpErrorHandlerPlugin())
-  .use(aiAgentHttpV1Router)
+  .use(aiAgentV1HttpRouterFactory.make())
   .use(authHttpRouter)
   .use(billingHttpV1Router)
   .use(credentialHttpV1Router)
