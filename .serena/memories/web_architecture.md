@@ -76,6 +76,7 @@ src/
 Uses **Better Auth** with `better-auth` and `@daveyplate/better-auth-ui`.
 
 **Auth Client** (`frontend/lib/auth/auth-client.ts`):
+
 ```typescript
 export const authClient = createAuthClient({
   baseURL: config.service.baseUrl + "/api/auth",
@@ -84,15 +85,18 @@ export const authClient = createAuthClient({
 ```
 
 **Auth Routes:**
+
 - `/auth/[path]` - Sign in, sign up, forgot password (dynamic routes)
 - `/account/[path]` - Account settings, profile management
 - `/organization/[path]` - Create org, invite members, manage roles
 - `/api/auth/[...all]` - Auth API proxy to backend service
 
 **Protected Routes:**
+
 - `/platform/*` - Wrapped in `<SignedIn>` component via `PlatformLayout`
 
 **UI Components:**
+
 - `<SignedIn>` - Only renders children if authenticated
 - `<SignedOut>` - Only renders if not authenticated
 - `<UserButton>` - User profile dropdown
@@ -103,6 +107,7 @@ export const authClient = createAuthClient({
 Four-layer architecture for API features. Using `ai-agent` as the convention example:
 
 **1. Domain Schemas & Ports** (`domain/`)
+
 ```typescript
 // domain/entity/ai-agent/ai-agent-domain-schema.ts
 export const aiAgentDomainSchema = z.object({
@@ -121,9 +126,14 @@ export const createAiAgentServicePortInSchema = z.object({
 ```
 
 **2. Frontend HTTP Client** (`frontend/http-client/`)
+
 ```typescript
 // frontend/http-client/ai-agent/ai-agent-http-client.ts
-export const makeAiAgentHttpClient = ({ httpClient }: { httpClient: HttpClient }) => ({
+export const makeAiAgentHttpClient = ({
+  httpClient,
+}: {
+  httpClient: HttpClient;
+}) => ({
   list: async () => {
     const response = await httpClient.get(BASE_PATH);
     const schema = withHttpEnvelopeSchema(aiAgentDomainSchema.array());
@@ -134,6 +144,7 @@ export const makeAiAgentHttpClient = ({ httpClient }: { httpClient: HttpClient }
 ```
 
 **3. React Hooks** (`frontend/hook/`)
+
 ```typescript
 // frontend/hook/ai-agent/use-list-ai-agents.ts
 export const useListAiAgents = (options?: UseListAiAgentsOptions) => {
@@ -148,6 +159,7 @@ export const useListAiAgents = (options?: UseListAiAgentsOptions) => {
 ```
 
 **4. Feature Components** (`frontend/feature/`)
+
 ```
 frontend/feature/ai-agents-table/
 ├── ai-agents-table-column-def.tsx   # Column definitions with domain service
@@ -168,6 +180,7 @@ frontend/feature/editable-ai-agent-details/
 ```
 
 **HTTP Clients:**
+
 - `useProtectedHttpClient()` - axios with `withCredentials: true` for authenticated requests
 - `useUnprotectedHttpClient()` - axios without credentials for public endpoints
 
@@ -180,6 +193,7 @@ The `backend/` layer handles server-side proxying from Next.js API routes to the
 **Route Handlers** (`backend/http-route-handler/`): Next.js API route handlers that validate input with port schemas, call backend HTTP clients, and transform responses using Zod codecs.
 
 **Codecs** (`*-route-handler-codec.ts`): Transform between backend DTOs and domain models using `z.codec()`:
+
 ```typescript
 export const aiAgentDomainCodec = z.codec(
   aiAgentHttpResponseDtoSchema,
@@ -189,9 +203,11 @@ export const aiAgentDomainCodec = z.codec(
 ```
 
 **DI** (`backend/di.ts`): Wires backend HTTP clients (with `defaultHttpClient`) into route handlers. API routes import from `di.ts`:
+
 ```typescript
 // app/api/v1/ai-agent/route.ts
 import { aiAgentRouteHandler } from "@/backend/di";
+
 export const GET = aiAgentRouteHandler.list;
 export const POST = aiAgentRouteHandler.create;
 ```
@@ -202,7 +218,11 @@ Domain services encapsulate formatting and display logic. They are factory funct
 
 ```typescript
 // domain/entity/ai-agent/ai-agent-domain-service.ts
-export const makeAiAgentDomainService = ({ aiAgent }: { aiAgent: AiAgentDomain }) => ({
+export const makeAiAgentDomainService = ({
+  aiAgent,
+}: {
+  aiAgent: AiAgentDomain;
+}) => ({
   getModelDisplayName: () => modelToDisplayName[aiAgent.model],
   getCreatedAt: () => format(aiAgent.createdAt, "MMM d, yyyy, h:mm a"),
 });
@@ -215,7 +235,9 @@ Used in table column definitions and detail views to keep presentation logic out
 Forms use `react-hook-form` with `@hookform/resolvers/standard-schema` and Zod schemas:
 
 ```typescript
-export const useNewAiAgentForm = (props?: UseFormProps<NewAiAgentFormValues>) => {
+export const useNewAiAgentForm = (
+  props?: UseFormProps<NewAiAgentFormValues>,
+) => {
   return useForm<NewAiAgentFormValues>({
     defaultValues: { name: "", model: "anthropic/claude-opus-4.5" },
     resolver: standardSchemaResolver(newAiAgentFormValuesSchema),
@@ -244,14 +266,15 @@ Mutation hooks invalidate related queries via these factories on success.
 Config accessed via `config` from `@/lib/config.ts`:
 
 ```typescript
-config.app.env       // Environment (production/staging)
-config.app.version   // App version
-config.service.baseUrl // Backend API URL
+config.app.env; // Environment (production/staging)
+config.app.version; // App version
+config.service.baseUrl; // Backend API URL
 ```
 
 ## Platform Sidebar Navigation
 
 Navigation organized into sections:
+
 - **Personal:** Inbox
 - **Platform:** Project, Issue, Workflow, Execution, Document
 - **Integration:** AI Agent, Git Repository, Credential

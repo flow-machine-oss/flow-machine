@@ -1,5 +1,5 @@
-import { workflowActionDefinitionHttpResponseDtoSchema } from "@/backend/http-client/workflow-action-definition/workflow-action-definition-http-client-dto";
 import { withHttpEnvelopeSchema } from "@/backend/http-client/shared-http-client-schema";
+import { workflowActionDefinitionHttpResponseDtoSchema } from "@/backend/http-client/workflow-action-definition/workflow-action-definition-http-client-dto";
 import type { HttpClient } from "@/lib/http/http-client";
 
 const BASE_PATH = "/api/v1/workflow-action-definition";

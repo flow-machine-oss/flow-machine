@@ -1,3 +1,6 @@
+import { addYears, format } from "date-fns";
+import { isNil } from "es-toolkit";
+import { CalendarIcon } from "lucide-react";
 import {
   Controller,
   type FieldErrors,
@@ -7,6 +10,7 @@ import type { CredentialDomain } from "@/domain/entity/credential/credential-dom
 import { makeCredentialDomainService } from "@/domain/entity/credential/credential-domain-service";
 import { Badge } from "@/frontend/component/ui/badge";
 import { Button } from "@/frontend/component/ui/button";
+import { Calendar } from "@/frontend/component/ui/calendar";
 import {
   Field,
   FieldContent,
@@ -18,17 +22,21 @@ import {
   FieldSet,
 } from "@/frontend/component/ui/field";
 import { Input } from "@/frontend/component/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/frontend/component/ui/popover";
 import { Spinner } from "@/frontend/component/ui/spinner";
 import type { EditCredentialFormValues } from "@/frontend/feature/editable-credential-details/edit-credential-form-schema";
+import { cn } from "@/frontend/lib/util";
 
 type EditCredentialFormProps = {
   credential: CredentialDomain;
   form: UseFormReturn<EditCredentialFormValues>;
   onCancel: () => void;
   onValidFormSubmit: (values: EditCredentialFormValues) => Promise<void>;
-  onInvalidFormSubmit: (
-    values: FieldErrors<EditCredentialFormValues>,
-  ) => void;
+  onInvalidFormSubmit: (values: FieldErrors<EditCredentialFormValues>) => void;
 };
 
 export function EditCredentialForm({
@@ -62,9 +70,7 @@ export function EditCredentialForm({
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="name">Name</FieldLabel>
-                <FieldDescription>
-                  Update the credential name
-                </FieldDescription>
+                <FieldDescription>Update the credential name</FieldDescription>
                 <Input
                   {...field}
                   value={field.value ?? ""}
@@ -114,9 +120,7 @@ export function EditCredentialForm({
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="username">Username</FieldLabel>
-                    <FieldDescription>
-                      Update the username
-                    </FieldDescription>
+                    <FieldDescription>Update the username</FieldDescription>
                     <Input
                       {...field}
                       value={field.value ?? ""}
@@ -163,23 +167,53 @@ export function EditCredentialForm({
             name="expiredAt"
             control={form.control}
             render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="expiredAt">Expired At</FieldLabel>
-                <FieldDescription>
-                  Update the expiration date
-                </FieldDescription>
-                <Input
-                  {...field}
-                  value={field.value ?? ""}
-                  aria-invalid={fieldState.invalid}
-                  autoComplete="off"
-                  disabled={form.formState.isSubmitting}
-                  id="expiredAt"
-                  type="datetime-local"
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+              <Field orientation="responsive" data-invalid={fieldState.invalid}>
+                <FieldContent>
+                  <FieldLabel htmlFor="expiredAt">Expired At</FieldLabel>
+                  <FieldDescription>
+                    The expiration date of this credential
+                  </FieldDescription>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </FieldContent>
+                <Popover>
+                  <PopoverTrigger
+                    render={(props) => (
+                      <Button
+                        {...props}
+                        className={cn(
+                          "min-w-32 justify-between gap-x-2.5",
+                          !field.value && "text-muted-foreground",
+                        )}
+                        variant="outline"
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon />
+                      </Button>
+                    )}
+                  />
+                  <PopoverContent className="w-auto" align="end">
+                    <Calendar
+                      captionLayout="dropdown"
+                      disabled={(date) => date < new Date()}
+                      endMonth={addYears(new Date(), 1)}
+                      mode="single"
+                      onSelect={(date) =>
+                        field.onChange(
+                          isNil(date) ? undefined : date.toISOString(),
+                        )
+                      }
+                      selected={
+                        isNil(field.value) ? undefined : new Date(field.value)
+                      }
+                    />
+                  </PopoverContent>
+                </Popover>
               </Field>
             )}
           />

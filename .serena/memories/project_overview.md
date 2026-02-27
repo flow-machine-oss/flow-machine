@@ -18,27 +18,32 @@ Both apps use `@/` as the import alias for their `src/` directory.
 All environment variables must be defined in `turbo.json` globalEnv:
 
 **Application:**
+
 - `APP_ENV` - Environment (production/staging)
 - `APP_VERSION` - Version string
 
 **Authentication (Better Auth):**
+
 - `BETTER_AUTH_SECRET` - Secret for JWT signing
 - `BETTER_AUTH_URL` - Backend URL (http://localhost:8000)
 - `BETTER_AUTH_TRUSTED_ORIGINS` - Comma-separated trusted origins
 
 **Database (MongoDB):**
+
 - `DATABASE_URL` - MongoDB connection string
 - `DATABASE_NAME` - Database name
 
 **Third-party Services:**
+
 - `DAYTONA_API_KEY` - Daytona SDK key
 - `INNGEST_DEV`, `INNGEST_BASE_URL` - Inngest configuration
-- `POLAR_ACCESS_TOKEN`, `POLAR_ENVIRONMENT` - Polar billing
+- `AUTUMN_SECRET_KEY` - Autumn billing
 - `RESEND_API_KEY`, `EMAIL_FROM_ADDRESS` - Email service
 
 ## Authentication
 
 Uses **Better Auth** (migrated from Clerk) with:
+
 - Email OTP authentication (passwordless)
 - Organization management for multi-tenancy
 - Cookie-based sessions (HttpOnly, cross-origin supported)

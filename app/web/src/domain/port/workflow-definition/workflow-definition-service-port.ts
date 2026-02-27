@@ -1,6 +1,6 @@
 import { z } from "zod/v4";
-import { workflowDefinitionDomainSchema } from "@/domain/entity/workflow-definition/workflow-definition-domain-schema";
 import { domainIdSchema } from "@/domain/entity/shared-schema";
+import { workflowDefinitionDomainSchema } from "@/domain/entity/workflow-definition/workflow-definition-domain-schema";
 
 export const createWorkflowDefinitionServicePortInSchema = z.object({
   body: z.object({

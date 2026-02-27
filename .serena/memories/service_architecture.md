@@ -1,206 +1,236 @@
 # Service (Backend) Architecture
 
-Backend API service using Elysia framework with Bun runtime.
+Elysia backend API on Bun runtime (port 8000). Follows Hexagonal / Ports and Adapters architecture.
 
 ## Commands
 
 ```bash
 bun run dev              # Start dev server (port 8000)
-bun run dev:worker       # Start worker process
 bun run build            # Build for production
 bun run start            # Start production server
 bun run test             # Run tests
 bun run check-types      # Type check
 ```
 
-## Architecture
-
-The service follows Clean Architecture / Hexagonal Architecture principles.
-
-## Directory Structure
+## Directory Structure (Refactored)
 
 ```
 src/
-├── adapter/              # Infrastructure adapters (outside-in)
-│   ├── auth/             # Better Auth configuration and adapters
-│   ├── billing/          # Polar billing adapter
-│   ├── email/            # Resend email adapter
-│   ├── http/             # HTTP routers (Elysia routes)
-│   ├── inngest/          # Workflow engine (actions, client, functions)
-│   └── repository/       # Database repositories (MongoDB implementations)
-├── app/                  # Application layer
-│   └── use-case/         # Business use cases
-├── common/               # Shared utilities
-│   ├── config/           # Application configuration
-│   ├── ctx/              # Context types (MongoCtx, TenantCtx)
-│   ├── domain/           # Base domain primitives (Entity, EntityId)
-│   ├── err/              # Error handling (Err class, error codes)
-│   ├── http/             # HTTP plugins (auth guard, envelope, error handler)
-│   ├── mongo/            # MongoDB client and model utilities
-│   └── schema/           # Shared schema utilities (codecs, Result schema)
-├── di/                   # Dependency injection wiring
-└── domain/               # Domain layer
-    ├── entity/           # Domain entities
-    └── port/             # Ports/interfaces (repository & use case contracts)
+├── api.ts                # Elysia app entry point, mounts all routers
+├── worker.ts             # Background worker entry point (currently a stub)
+├── reset.d.ts            # @total-typescript/ts-reset global type augmentation
+├── common/               # Shared primitives (no deps on other layers)
+│   ├── config/config.ts  # Zod-validated config singleton from process.env
+│   ├── ctx/              # MongoCtx + TenantCtx schemas and factories
+│   ├── domain/           # Entity, TenantAwareEntity, EntityId, Tenant, syncSchema
+│   ├── err/              # Err class + errDetails registry (6 codes)
+│   ├── http/             # httpEnvelope, httpErrorHandler plugin
+│   ├── log/log.ts        # Pino logger singleton
+│   ├── mongo/            # mongoClient singleton, mongoModel utilities, mongoIndex
+│   └── schema/codec.ts   # stringToDateCodec (Zod v4 codec)
+├── core/                 # Domain layer (depends only on common/)
+│   ├── domain/           # Entities + port interfaces (per-aggregate)
+│   │   ├── iam/          # user/, member/, session/ (Better Auth managed)
+│   │   ├── ai-agent/     # entity, crud-service, crud-repository
+│   │   ├── credential/   # entity, crud-service, crud-repository
+│   │   ├── document/     # entity, crud-service, crud-repository
+│   │   ├── git-repository/
+│   │   ├── project/
+│   │   └── workflow/     # definition/, definition/action/, engine/, function/
+│   └── feature/          # Cross-cutting service interfaces
+│       ├── auth/service.ts    # AuthService interface
+│       ├── email/service.ts   # EmailService interface
+│       └── workflow/const.ts  # SDLC_WORKFLOW_FUNCTION_ID, SDLC_WORKFLOW_INIT_EVENT
+├── app/                  # Application layer (implements core service interfaces)
+│   ├── domain/           # BasicCrudService implementations (6 aggregates)
+│   │   ├── ai-agent/basic-crud-service.ts
+│   │   ├── credential/basic-crud-service.ts
+│   │   ├── document/basic-crud-service.ts
+│   │   ├── git-repository/basic-crud-service.ts
+│   │   ├── project/basic-crud-service.ts
+│   │   └── workflow/definition/basic-crud-service.ts
+│   └── feature/
+│       └── workflow/sdlc/
+│           ├── action-definition-service.ts  # Stub: Research/Plan/Code actions
+│           └── function-factory.ts           # Orchestrates Inngest workflow
+├── infra/                # Infrastructure adapters (implements core repo/service interfaces)
+│   ├── better-auth/      # BetterAuthClientFactory, BetterAuthService
+│   ├── inngest/          # InngestClientFactory, InngestFunctionFactory, workflow/engine-factory
+│   ├── mongo/            # 6 MongoDB crud repositories (per-aggregate)
+│   │   ├── ai-agent/, credential/, document/
+│   │   ├── git-repository/, project/, workflow/definition/
+│   └── resend/           # ResendEmailService
+├── api/                  # HTTP layer (Elysia routers + plugins)
+│   ├── plugin/
+│   │   ├── http-auth-guard-factory.ts   # Resolves tenant from session
+│   │   └── http-request-ctx-factory.ts  # MongoDB ctx + transaction lifecycle
+│   └── module/           # Per-resource routers
+│       ├── health/
+│       ├── auth/
+│       ├── inngest/
+│       ├── ai-agent/v1/
+│       ├── credential/v1/
+│       ├── document/v1/
+│       ├── git-repository/v1/
+│       ├── project/v1/
+│       ├── workflow/definition/v1/
+│       └── workflow/action/v1/
+└── di/                   # Dependency injection (manual constructor injection)
+    ├── shared.ts         # Root: ResendEmailService → BetterAuthClientFactory → BetterAuthService → HttpAuthGuardFactory
+    ├── ai-agent-api.ts
+    ├── credential-api.ts
+    ├── document-api.ts
+    ├── git-repository-api.ts
+    ├── project-api.ts
+    ├── workflow-definition-api.ts
+    ├── workflow-definition-action-api.ts
+    ├── auth-api.ts
+    └── inngest-api.ts
 ```
 
-## Layer Responsibilities
+## Layer Dependency Rules
 
-**Domain Layer** (`domain/`)
-- Entities: Rich domain objects extending `Entity` or `TenantAwareEntity`
-- Ports: Zod function schemas defining contracts for repositories and use cases
-
-**Application Layer** (`app/`)
-- Use cases: Business logic orchestrating domain entities and repositories
-- Factory functions (`make*UseCase`) accept repository dependencies
-
-**Adapter Layer** (`adapter/`)
-- HTTP: Elysia routers with DTOs, receive use cases as dependencies
-- Repository: MongoDB implementations of port interfaces
-- Auth: Better Auth configuration and session adapters
-- Email: Resend email service for OTP and invitations
-- Billing: Polar.sh subscription management
-
-**DI Layer** (`di/`)
-- Wires together repositories → use cases → routers
+```
+di/     → api/ + app/ + infra/ + core/ + common/
+api/    → core/ + common/  (never infra/ or app/)
+app/    → core/ + common/  (never infra/ or api/)
+infra/  → core/ + common/  (never app/ or api/)
+core/   → common/ only
+common/ → (no internal deps)
+```
 
 ## Entity Pattern
 
-Entities extend base classes from `common/domain/`:
+Base classes in `common/domain/`:
+- `Entity<T>` — id (UUIDv7), props: T, createdAt, updatedAt, update(partial) via es-toolkit merge
+- `TenantAwareEntity<T>` extends Entity — adds tenant: { id: EntityId, type: "organization" | "user" }
 
+Factory methods:
+- `Entity.makeNew(tenant, props)` — generates new UUIDv7 id
+- `Entity.makeExisting(id, createdAt, updatedAt, tenant, props)` — rehydration from DB
+
+IAM entities (User, Member, Session) only have `makeExisting` — managed by Better Auth.
+
+## Port/Contract Pattern
+
+Every service and repository in `core/` defined as:
+1. A companion Zod input schema object (e.g., `documentCrudServiceInputSchema`)
+2. A TypeScript interface using `z.infer<>` for parameter types
+3. All methods return `Promise<Result<T, Err>>` via neverthrow
+
+Context composed from mongo + tenant schemas:
 ```typescript
-import { TenantAwareEntity } from "@/common/domain/tenant-aware-entity";
-import { newEntityId } from "@/common/domain/entity-id";
-
-export class DocumentEntity extends TenantAwareEntity<DocumentEntityProps> {
-  static makeNew(tenantId: string, props: DocumentEntityProps) {
-    return ok(new DocumentEntity(newEntityId(), tenantId, props));
-  }
-
-  static makeExisting(id, createdAt, updatedAt, tenantId, props) {
-    return ok(new DocumentEntity(id, tenantId, props, { createdAt, updatedAt }));
-  }
-}
+const ctxSchema = z.object({
+  ...mongoCtxSchema.shape,   // { mongoDb: Db, mongoClientSession?: ClientSession }
+  ...tenantCtxSchema.shape,  // { tenant: { id: EntityId, type: "organization"|"user" } }
+});
 ```
 
-## Port Pattern (Contracts)
+## Port-to-Adapter Mapping
 
-Use Zod function schemas to define typed contracts:
+| Core Interface (Port) | Infra Implementation (Adapter) |
+|---|---|
+| DocumentCrudRepository | DocumentMongoCrudRepository |
+| ProjectCrudRepository | ProjectMongoCrudRepository |
+| AiAgentCrudRepository | AiAgentMongoCrudRepository |
+| CredentialCrudRepository | CredentialMongoCrudRepository |
+| GitRepositoryCrudRepository | GitRepositoryMongoCrudRepository |
+| WorkflowDefinitionCrudRepository | WorkflowDefinitionMongoCrudRepository |
+| AuthService | BetterAuthService |
+| EmailService | ResendEmailService |
+| WorkflowFunctionFactory | InngestFunctionFactory |
+| WorkflowEngineFactory | InngestWorkflowEngineFactory |
 
-```typescript
-import z from "zod";
-import { makeResultSchema } from "@/common/schema/result-schema";
+## App Layer Pattern (BasicCrudService)
 
-export const insertDocumentRepositorySchema = z.function({
-  input: [z.object({ ctx: repositoryCtxSchema, data: z.instanceof(DocumentEntity) })],
-  output: z.promise(makeResultSchema(z.void(), z.instanceof(Err))),
-});
-export type InsertDocumentRepository = z.output<typeof insertDocumentRepositorySchema>;
+All 6 domain services follow identical template:
+- `create`: Entity.makeNew() → repository.insert()
+- `get`: repository.findOne() → null check → ok(entity)
+- `update`: repository.findOne() → entity.update(partial) → repository.update()
+- `delete`: pass-through to repository
+- `list`: pass-through to repository.findMany()
+
+Constructor receives repository interface (core port), not concrete implementation.
+
+## HTTP Layer Pattern
+
+Each resource module has:
+- `http-router-factory.ts` — Elysia router with CRUD routes
+- `http-dto.ts` — Zod schemas for request body/params/response (derived from core schemas)
+
+Routes use two scoped plugins:
+1. `HttpRequestCtxFactory.make()` — creates MongoCtx, manages transaction (derive/onBeforeHandle/onAfterHandle/onError/onAfterResponse)
+2. `HttpAuthGuardFactory.make()` — resolves tenant from Better Auth session cookie
+
+All routes versioned at `/api/v1/<resource>`.
+
+Response envelope: `{ status, code, message, data? }` via `okEnvelope()` / `errEnvelope()`.
+
+## DI Pattern
+
+Manual constructor injection, no IoC container:
 ```
-
-## Context Pattern
-
-Contexts are passed through layers:
-
-- `MongoCtx`: Contains `mongoDb` and `mongoClientSession`
-- `TenantCtx`: Contains `tenantId` for multi-tenant isolation
-
-```typescript
-const repositoryCtxSchema = z.object({
-  ...mongoCtxSchema.shape,
-  ...tenantCtxSchema.shape,
-});
+di/shared.ts:     ResendEmailService → BetterAuthClientFactory → BetterAuthService → HttpAuthGuardFactory
+di/<domain>.ts:   MongoCrudRepository → BasicCrudService → V1HttpRouterFactory(authGuard, ctxFactory, service)
 ```
 
 ## Error Handling
 
-Use `Err` class with predefined codes:
+- `Err` class (extends Error) with typed codes: unknown(500), unauthorized(401), forbidden(403), notFound(404), conflict(409), badRequest(400)
+- `Err.code("notFound")` — create from known code
+- `Err.from(error)` — normalize any thrown value
+- All service/repo methods return `Result<T, Err>` — no exceptions in domain/app layers
+- Auth guard throws `Err` at HTTP boundary — caught by global error handler plugin
+- Result propagation uses imperative style: `if (result.isErr()) return err(result.error)`
 
-```typescript
-import { Err } from "@/common/err/err";
-return err(Err.code("notFound"));
-return err(Err.code("unauthorized", { message: "Custom message" }));
-```
+## MongoDB Patterns
 
-Available codes: `unknown`, `unauthorized`, `forbidden`, `notFound`, `conflict`, `badRequest`, `selfVote`, `promptArchived`
-
-## HTTP Responses
-
-Wrap responses in envelope format:
-
-```typescript
-import { okEnvelope, errEnvelope } from "@/common/http/http-envelope";
-return okEnvelope({ data: result });
-return errEnvelope(Err.code("notFound"));
-```
+- Global singleton: `mongoClient = new MongoClient(config.database.url)`
+- Per-request context: `makeMongoCtx()` creates Db + ClientSession
+- Transaction lifecycle managed by HttpRequestCtxFactory (start/commit/abort/end)
+- Full document replacement on update (`replaceOne`, not `$set`)
+- All queries filter by `{ tenant: ctx.tenant }` for multi-tenant isolation
+- Model ↔ Entity: `tenantAwareEntityToMongoModel()` / `#toDomain()` per repository
+- Shared compound index: `{ "tenant.id": 1, "tenant.type": 1 }` on all tenant-aware collections
 
 ## Authentication (Better Auth)
 
-Uses **Better Auth** with email OTP and organization plugins. Configuration at `adapter/auth/better-auth.ts`.
-
-**Auth Guard Plugin** (`makeHttpAuthGuardPlugin()`) provides:
-- `organizationId`: Tenant identifier from session (used as `tenantId`)
-- `user`: Current user object with `id`, `email`, `firstName`, `lastName`, `organizationRole`
-
-**Organization Roles:**
-- `org:admin` - Maps from Better Auth `owner` or `admin` roles
-- `org:member` - Maps from Better Auth `member` role
-
-**Session Flow:**
-1. User signs in via email OTP
-2. Better Auth creates session, sets HttpOnly cookie
-3. Auth guard extracts session from request headers
-4. `getSession()` validates session with Better Auth
-5. `getActiveMember()` fetches organization membership
-6. User and organizationId injected into route context
-
-**Key Files:**
-- `adapter/auth/better-auth.ts` - Better Auth configuration
-- `adapter/auth/better-auth-adapter.ts` - Session/member adapters
-- `common/http/http-auth-guard-plugin.ts` - Auth middleware
-- `adapter/email/resend-email-adapter.ts` - OTP email sending
-
-## Database (MongoDB)
-
-Uses MongoDB 8 with native driver. Collections:
-
-**Domain Entities:**
-- ai-agent, credential, document, git-repository, issue, project, provider, workflow
-
-**Application Collections:**
-- `ai-agent`, `credential`, `document`, `git-repository`, `project`, `workflow-definition`
-
-**Better Auth Collections (auto-managed):**
-- `user`, `session`, `account`, `verification`
-- `organization`, `member`, `invitation`
-
-**Patterns:**
-- Collections accessed via factory functions in `adapter/repository/*/`
-- Models convert between entities and MongoDB documents using `tenantAwareEntityToMongoModel()`
-- IDs are UUIDv7 generated via `newEntityId()` (uses `randomUUIDv7()` from Bun) from `@/common/domain/entity-id`
-- All queries filter by `tenantId` for multi-tenant isolation
-- HTTP requests wrapped in MongoDB transactions via `makeHttpMongoCtxPlugin()`
+- Email OTP authentication (passwordless)
+- Organization management for multi-tenancy
+- Cookie-based sessions (HttpOnly)
+- Auth guard resolves two tenant modes:
+  - `type: "user"` (individual, id = userId)
+  - `type: "organization"` (org context, id = organizationId)
+- No fine-grained RBAC at API layer — authorization is purely tenant-scoped
 
 ## External Services
 
-**Email (Resend):**
-- `makeSendOTPEmail()` - Send OTP codes for sign-in, verification
-- `makeSendInvitationEmail()` - Send organization invitations
+| Service | Infra Class | Purpose |
+|---|---|---|
+| MongoDB 8 | native driver | Primary database |
+| Better Auth | BetterAuthService | Authentication + organizations |
+| Inngest | InngestFunctionFactory + InngestWorkflowEngineFactory | Workflow engine (DAG execution via @inngest/workflow-kit) |
+| Resend | ResendEmailService | Email (OTP, invitations) |
+| Daytona | (not yet implemented) | SDK sandboxes |
 
-**Billing (Polar):**
-- `makeCreateCheckoutSession()` - Create payment checkout
-- `makeGetUserSubscription()` - Get active subscription
-- `makeCancelSubscription()` - Cancel subscription
+## Workflow Sub-Domain
+
+- `WorkflowDefinitionEntity`: DAG blueprint with actions[] (id, kind, name, inputs?) + edges[] (from, to)
+- `WorkflowActionDefinitionEntity`: Runtime handler per action kind (global, not tenant-scoped)
+- `WorkflowSdlcActionDefinitionCrudService`: Static stub with Research/Plan/Code actions (empty handlers)
+- `WorkflowSdlcFunctionFactory`: Orchestrates Inngest function creation from engine + action definitions
+- Engine loader fetches workflow definition from MongoDB at runtime
 
 ## Key Libraries
 
-- `elysia` - Web framework
-- `better-auth` - Authentication with email OTP and organizations
-- `mongodb` - MongoDB native driver
-- `zod/v4` - Schema validation (note the `/v4` import)
-- `neverthrow` - Result types for error handling (`ok`, `err`, `Result`, `ResultAsync`)
-- `resend` - Email service
-- `@polar-sh/sdk` - Billing/subscriptions
-- `inngest` - Background job processing
-- `es-toolkit` - Utility functions
-- `pino` - Logging
+- `elysia` 1.4.x — Web framework
+- `better-auth` — Authentication
+- `mongodb` — Native driver
+- `zod/v4` — Schema validation (note: config.ts uses `zod/v4`, others use `zod`)
+- `neverthrow` — Result types
+- `resend` — Email
+- `inngest` + `@inngest/workflow-kit` — Background job + workflow engine
+- `es-toolkit` — Utilities
+- `pino` — Logging
+- `@date-fns/utc` — UTC date handling (UTCDate)
+- `@total-typescript/ts-reset` — TypeScript type improvements (via reset.d.ts)

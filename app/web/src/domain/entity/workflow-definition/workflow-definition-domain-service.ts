@@ -12,6 +12,5 @@ export const makeWorkflowDefinitionDomainService = ({
     format(workflowDefinition.createdAt, "MMM d, yyyy, h:mm a"),
   getUpdatedAt: () =>
     format(workflowDefinition.updatedAt, "MMM d, yyyy, h:mm a"),
-  getStatusLabel: () =>
-    workflowDefinition.isActive ? "Active" : "Inactive",
+  getStatusLabel: () => (workflowDefinition.isActive ? "Active" : "Inactive"),
 });
