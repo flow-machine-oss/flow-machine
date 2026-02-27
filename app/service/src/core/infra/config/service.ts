@@ -32,10 +32,10 @@ const configPropsSchema = z.object({
   }),
 
   inngest: z.object({
-    eventKey: z.string(),
-    signingKey: z.string(),
+    eventKey: z.string().optional(),
+    signingKey: z.string().optional(),
     isDev: z.boolean().default(true),
-    baseUrl: z.url(),
+    baseUrl: z.url().optional(),
   }),
 });
 
