@@ -1,0 +1,113 @@
+import { err, ok } from "neverthrow";
+import type z from "zod";
+import type { MongoCtx } from "@/common/ctx/mongo-ctx";
+import { Err } from "@/common/err/err";
+import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";
+import { tenantAwareEntityToMongoModel } from "@/common/mongo/mongo-model";
+import type {
+  AiAgentCrudRepository,
+  aiAgentCrudRepositoryInputSchema,
+} from "@/core/domain/ai-agent/crud-repository";
+import { AiAgentEntity } from "@/core/domain/ai-agent/entity";
+import type { AiAgentMongoModel } from "@/infra/mongo/ai-agent/model";
+
+class AiAgentMongoCrudRepository implements AiAgentCrudRepository {
+  async findMany(
+    input: z.infer<typeof aiAgentCrudRepositoryInputSchema.findOne>,
+  ) {
+    const { ctx } = input;
+
+    try {
+      const collection = await this.#getCollection(ctx);
+      const result = await collection
+        .find({ tenant: ctx.tenant }, { session: ctx.mongoClientSession })
+        .toArray();
+      return ok(result.map(this.#toDomain));
+    } catch (error) {
+      console.error(error);
+      return err(Err.from(error));
+    }
+  }
+
+  async findOne(
+    input: z.infer<typeof aiAgentCrudRepositoryInputSchema.findOne>,
+  ) {
+    const { ctx, id } = input;
+
+    try {
+      const collection = await this.#getCollection(ctx);
+      const result = await collection.findOne(
+        { _id: id, tenant: ctx.tenant },
+        { session: ctx.mongoClientSession },
+      );
+      return ok(result ? this.#toDomain(result) : null);
+    } catch (error) {
+      return err(Err.from(error));
+    }
+  }
+
+  async insert(input: z.infer<typeof aiAgentCrudRepositoryInputSchema.insert>) {
+    const { ctx, data } = input;
+
+    try {
+      const collection = await this.#getCollection(ctx);
+      const model = tenantAwareEntityToMongoModel(data);
+      await collection.insertOne(model, { session: ctx.mongoClientSession });
+      return ok();
+    } catch (error) {
+      return err(Err.from(error));
+    }
+  }
+
+  async update(input: z.infer<typeof aiAgentCrudRepositoryInputSchema.update>) {
+    const { ctx, id, data } = input;
+
+    try {
+      const collection = await this.#getCollection(ctx);
+      const model = tenantAwareEntityToMongoModel(data);
+      await collection.replaceOne({ _id: id, tenant: ctx.tenant }, model, {
+        session: ctx.mongoClientSession,
+      });
+      return ok();
+    } catch (error) {
+      return err(Err.from(error));
+    }
+  }
+
+  async delete(input: z.infer<typeof aiAgentCrudRepositoryInputSchema.delete>) {
+    const { ctx, id } = input;
+
+    try {
+      const collection = await this.#getCollection(ctx);
+      await collection.deleteOne(
+        { _id: id, tenant: ctx.tenant },
+        { session: ctx.mongoClientSession },
+      );
+      return ok();
+    } catch (error) {
+      return err(Err.from(error));
+    }
+  }
+
+  async #getCollection({ mongoDb }: MongoCtx) {
+    const collection = mongoDb.collection<AiAgentMongoModel>("ai-agent");
+    await collection.createIndexes(tenantAwareCollectionIndexes);
+    return collection;
+  }
+
+  #toDomain(model: AiAgentMongoModel) {
+    return AiAgentEntity.makeExisting(
+      model._id,
+      model.createdAt,
+      model.updatedAt,
+      model.tenant,
+      {
+        name: model.name,
+        model: model.model,
+        projects: model.projects,
+      },
+    );
+  }
+}
+
+export { AiAgentMongoCrudRepository };

@@ -4,16 +4,16 @@ import Elysia from "elysia";
 import z from "zod";
 import { config } from "@/common/config/config";
 import { makeHttpErrorHandlerPlugin } from "@/common/http/http-error-handler.plugin";
-import { aiAgentV1HttpRouterFactory } from "@/v2/di/ai-agent-api";
-import { betterAuthHttpRouterFactory } from "@/v2/di/auth-api";
-import { credentialV1HttpRouterFactory } from "@/v2/di/credential-api";
-import { documentV1HttpRouterFactory } from "@/v2/di/document-api";
-import { gitRepositoryV1HttpRouterFactory } from "@/v2/di/git-repository-api";
-import { healthHttpRouterFactory } from "@/v2/di/health-api";
-import { inngestHttpRouterFactory } from "@/v2/di/inngest-api";
-import { projectV1HttpRouterFactory } from "@/v2/di/project-api";
-import { workflowDefinitionActionV1HttpRouterFactory } from "@/v2/di/workflow-definition-action-api";
-import { workflowDefinitionV1HttpRouterFactory } from "@/v2/di/workflow-definition-api";
+import { aiAgentV1HttpRouterFactory } from "@/di/ai-agent-api";
+import { betterAuthHttpRouterFactory } from "@/di/auth-api";
+import { credentialV1HttpRouterFactory } from "@/di/credential-api";
+import { documentV1HttpRouterFactory } from "@/di/document-api";
+import { gitRepositoryV1HttpRouterFactory } from "@/di/git-repository-api";
+import { healthHttpRouterFactory } from "@/di/health-api";
+import { inngestHttpRouterFactory } from "@/di/inngest-api";
+import { projectV1HttpRouterFactory } from "@/di/project-api";
+import { workflowDefinitionActionV1HttpRouterFactory } from "@/di/workflow-definition-action-api";
+import { workflowDefinitionV1HttpRouterFactory } from "@/di/workflow-definition-api";
 
 const app = new Elysia();
 
