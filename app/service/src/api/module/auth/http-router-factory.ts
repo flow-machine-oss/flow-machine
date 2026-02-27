@@ -1,16 +1,16 @@
+import type { Auth } from "better-auth/types";
 import Elysia from "elysia";
-import type { BetterAuthClientFactory } from "@/infra/better-auth/client-factory";
 
 class BetterAuthHttpRouterFactory {
-  #betterAuthClientFactory: BetterAuthClientFactory;
+  #betterAuthClient: Auth;
 
-  constructor(betterAuthClientFactory: BetterAuthClientFactory) {
-    this.#betterAuthClientFactory = betterAuthClientFactory;
+  constructor(betterAuthClient: Auth) {
+    this.#betterAuthClient = betterAuthClient;
   }
 
   make() {
     return new Elysia({ name: BetterAuthHttpRouterFactory.name }).mount(
-      this.#betterAuthClientFactory.make().handler,
+      this.#betterAuthClient.handler,
     );
   }
 }

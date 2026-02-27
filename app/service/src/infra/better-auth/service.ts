@@ -14,8 +14,8 @@ import type { BetterAuthClientFactory } from "@/infra/better-auth/client-factory
 class BetterAuthService implements AuthService {
   #betterAuthClient: ReturnType<BetterAuthClientFactory["make"]>;
 
-  constructor(betterAuthClientFactory: BetterAuthClientFactory) {
-    this.#betterAuthClient = betterAuthClientFactory.make();
+  constructor(betterAuthClient: ReturnType<BetterAuthClientFactory["make"]>) {
+    this.#betterAuthClient = betterAuthClient;
   }
 
   async getActiveSession(

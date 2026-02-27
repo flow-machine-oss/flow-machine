@@ -1,12 +1,12 @@
 import Elysia from "elysia";
-import type pino from "pino";
 import { errEnvelope } from "@/api/http-envelope";
 import { Err } from "@/common/err/err";
+import type { LoggerService } from "@/core/infra/logger/service";
 
 class HttpErrorHandlerFactory {
-  #logger: pino.Logger;
+  #logger: LoggerService;
 
-  constructor(logger: pino.Logger) {
+  constructor(logger: LoggerService) {
     this.#logger = logger;
   }
 

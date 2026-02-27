@@ -1,14 +1,13 @@
 import { err, ok } from "neverthrow";
 import { Resend } from "resend";
-import { config } from "@/common/config/config";
 import { Err } from "@/common/err/err";
 import type { EmailService } from "@/core/feature/email/service";
 
 class ResendEmailService implements EmailService {
-  #client: Resend;
+  #resendClient: Resend;
 
-  constructor() {
-    this.#client = new Resend(config.email.apiKey);
+  constructor(resendClient: Resend) {
+    this.#resendClient = resendClient;
   }
 
   async send(input: Parameters<EmailService["send"]>[0]) {
@@ -16,7 +15,7 @@ class ResendEmailService implements EmailService {
     const { from, to, subject, bodyHtml } = payload;
 
     try {
-      await this.#client.emails.send({
+      await this.#resendClient.emails.send({
         from,
         to,
         subject,
