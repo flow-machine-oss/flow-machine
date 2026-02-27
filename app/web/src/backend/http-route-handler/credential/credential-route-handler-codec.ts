@@ -4,7 +4,8 @@ import { credentialHttpResponseDtoSchema } from "@/backend/http-client/credentia
 import { credentialDomainSchema } from "@/domain/entity/credential/credential-domain-schema";
 
 const maskSecret = (value: string): string => {
-  if (value.length <= 8) return "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
+  if (value.length <= 8)
+    return "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
   return `${value.slice(0, 4)}${"\u2022".repeat(value.length - 8)}${value.slice(-4)}`;
 };
 

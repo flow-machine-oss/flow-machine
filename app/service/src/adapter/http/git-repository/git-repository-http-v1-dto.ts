@@ -1,16 +1,15 @@
 import z from "zod";
 import { entityIdSchema } from "@/common/domain/entity-id";
 import { tenantSchema } from "@/common/domain/tenant-aware-entity";
-import {
-  gitRepositoryEntityProps,
-} from "@/domain/entity/git-repository/git-repository-entity";
+import { gitRepositoryEntityProps } from "@/domain/entity/git-repository/git-repository-entity";
 import { createGitRepositoryUseCaseInputSchema } from "@/domain/port/git-repository/git-repository-dto";
 
 export const postGitRepositoryRequestBodyDtoSchema = z.object({
   name: createGitRepositoryUseCaseInputSchema.shape.payload.shape.name,
   url: createGitRepositoryUseCaseInputSchema.shape.payload.shape.url,
   config: createGitRepositoryUseCaseInputSchema.shape.payload.shape.config,
-  integration: createGitRepositoryUseCaseInputSchema.shape.payload.shape.integration,
+  integration:
+    createGitRepositoryUseCaseInputSchema.shape.payload.shape.integration,
 });
 
 export const patchGitRepositoryRequestBodyDtoSchema = z.object({

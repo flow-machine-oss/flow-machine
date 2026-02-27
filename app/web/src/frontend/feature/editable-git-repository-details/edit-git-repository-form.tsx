@@ -192,17 +192,12 @@ export function EditGitRepositoryForm({
             name="integration.provider"
             control={form.control}
             render={({ field, fieldState }) => (
-              <Field
-                orientation="responsive"
-                data-invalid={fieldState.invalid}
-              >
+              <Field orientation="responsive" data-invalid={fieldState.invalid}>
                 <FieldContent>
                   <FieldLabel htmlFor="integration.provider">
                     Provider
                   </FieldLabel>
-                  <FieldDescription>
-                    The git hosting provider
-                  </FieldDescription>
+                  <FieldDescription>The git hosting provider</FieldDescription>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}

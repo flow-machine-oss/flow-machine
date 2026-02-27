@@ -15,8 +15,7 @@ export default function ProjectsTablePage() {
   const deleteAction = useConfirmableAction();
 
   const { data, isPending } = useListProjects();
-  const { mutateAsync, isPending: isDeleteProjectPending } =
-    useDeleteProject();
+  const { mutateAsync, isPending: isDeleteProjectPending } = useDeleteProject();
 
   const handleDeleteProjectActionTrigger = deleteAction.triggerAction;
   const handleDeleteProjectActionCancel = deleteAction.resetAction;
@@ -32,9 +31,7 @@ export default function ProjectsTablePage() {
         <div className="flex w-full justify-end">
           <Button
             nativeButton={false}
-            render={(props) => (
-              <Link href="/platform/project/new" {...props} />
-            )}
+            render={(props) => <Link href="/platform/project/new" {...props} />}
           >
             <PlusIcon />
             New Project

@@ -25,8 +25,6 @@ export class DocumentEntity extends TenantAwareEntity<DocumentEntityProps> {
     tenant: Tenant,
     props: DocumentEntityProps,
   ) {
-    return ok(
-      new DocumentEntity(id, tenant, props, { createdAt, updatedAt }),
-    );
+    return ok(new DocumentEntity(id, tenant, props, { createdAt, updatedAt }));
   }
 }

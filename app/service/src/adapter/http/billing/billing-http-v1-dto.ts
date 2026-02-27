@@ -40,7 +40,9 @@ export const trackUsageRequestBodySchema = z.object({
   entityId: z.string().optional(),
   overageBehavior: z.enum(["cap", "allow"]).optional(),
 });
-export type TrackUsageRequestBody = z.output<typeof trackUsageRequestBodySchema>;
+export type TrackUsageRequestBody = z.output<
+  typeof trackUsageRequestBodySchema
+>;
 
 export const trackUsageResponseSchema = trackUsageResultSchema;
 export type TrackUsageResponse = z.output<typeof trackUsageResponseSchema>;
@@ -70,7 +72,9 @@ export type AttachProductRequestBody = z.output<
 >;
 
 export const attachProductResponseSchema = attachProductResultSchema;
-export type AttachProductResponse = z.output<typeof attachProductResponseSchema>;
+export type AttachProductResponse = z.output<
+  typeof attachProductResponseSchema
+>;
 
 // Cancel product
 export const cancelProductRequestBodySchema = z.object({
@@ -83,7 +87,9 @@ export type CancelProductRequestBody = z.output<
 >;
 
 export const cancelProductResponseSchema = cancelProductResultSchema;
-export type CancelProductResponse = z.output<typeof cancelProductResponseSchema>;
+export type CancelProductResponse = z.output<
+  typeof cancelProductResponseSchema
+>;
 
 // Get billing portal
 export const getBillingPortalResponseSchema = getBillingPortalResultSchema;

@@ -13,19 +13,17 @@ type Input = {
 export const makeGetGitRepositoryUseCase = ({
   findGitRepositoryByIdRepository,
 }: Input): GetGitRepositoryUseCase =>
-  getGitRepositoryUseCaseSchema.implementAsync(
-    async ({ ctx, payload }) => {
-      const findResult = await findGitRepositoryByIdRepository({
-        ctx,
-        id: payload.id,
-      });
+  getGitRepositoryUseCaseSchema.implementAsync(async ({ ctx, payload }) => {
+    const findResult = await findGitRepositoryByIdRepository({
+      ctx,
+      id: payload.id,
+    });
 
-      if (findResult.isErr()) {
-        return err(findResult.error);
-      }
-      if (findResult.value === null) {
-        return err(Err.code("notFound"));
-      }
-      return ok(findResult.value);
-    },
-  );
+    if (findResult.isErr()) {
+      return err(findResult.error);
+    }
+    if (findResult.value === null) {
+      return err(Err.code("notFound"));
+    }
+    return ok(findResult.value);
+  });

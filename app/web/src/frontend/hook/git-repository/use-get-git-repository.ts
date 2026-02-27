@@ -6,7 +6,11 @@ import { makeGetGitRepositoryQueryKey } from "@/frontend/lib/query/query-key";
 import type { HttpEnvelope } from "@/lib/http/http-schema";
 
 type UseGetGitRepositoryOptions = Omit<
-  UseQueryOptions<HttpEnvelope<GitRepositoryDomain>, Error, GitRepositoryDomain>,
+  UseQueryOptions<
+    HttpEnvelope<GitRepositoryDomain>,
+    Error,
+    GitRepositoryDomain
+  >,
   "queryKey" | "queryFn"
 >;
 

@@ -29,7 +29,8 @@ export type GetCredentialMongoCollection = z.infer<
 
 export const getCredentialMongoCollection =
   getCredentialMongoCollectionSchema.implementAsync(async ({ ctx }) => {
-    const collection = ctx.mongoDb.collection<CredentialMongoModel>("credential");
+    const collection =
+      ctx.mongoDb.collection<CredentialMongoModel>("credential");
     await collection.createIndexes(tenantAwareCollectionIndexes);
     return ok(collection);
   });

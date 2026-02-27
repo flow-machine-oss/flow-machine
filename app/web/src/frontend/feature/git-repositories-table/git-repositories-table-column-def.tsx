@@ -132,9 +132,7 @@ export const makeGitRepositoriesTableColumnDef = ({
                 <DropdownMenuItem
                   nativeButton={false}
                   render={
-                    <Link
-                      href={`/platform/git-repository/${repository.id}`}
-                    />
+                    <Link href={`/platform/git-repository/${repository.id}`} />
                   }
                 >
                   <PencilIcon />

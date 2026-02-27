@@ -17,20 +17,18 @@ export const makeInsertGitRepositoryMongoRepository = ({
   getGitRepositoryMongoCollection,
   gitRepositoryEntityToMongoModel,
 }: Input): InsertGitRepositoryRepository =>
-  insertGitRepositoryRepositorySchema.implementAsync(
-    async ({ ctx, data }) => {
-      const result = await getGitRepositoryMongoCollection({ ctx });
+  insertGitRepositoryRepositorySchema.implementAsync(async ({ ctx, data }) => {
+    const result = await getGitRepositoryMongoCollection({ ctx });
 
-      if (result.isErr()) {
-        return err(result.error);
-      }
-      const [error] = await attemptAsync(() =>
-        result.value.insertOne(gitRepositoryEntityToMongoModel(data)),
-      );
+    if (result.isErr()) {
+      return err(result.error);
+    }
+    const [error] = await attemptAsync(() =>
+      result.value.insertOne(gitRepositoryEntityToMongoModel(data)),
+    );
 
-      if (isNotNil(error)) {
-        return err(Err.from(error));
-      }
-      return ok();
-    },
-  );
+    if (isNotNil(error)) {
+      return err(Err.from(error));
+    }
+    return ok();
+  });

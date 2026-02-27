@@ -46,14 +46,17 @@ src/
 ### Layer Responsibilities
 
 **Domain Layer** (`domain/`)
+
 - Entities: Rich domain objects extending `Entity` or `TenantAwareEntity`
 - Ports: Zod function schemas defining contracts for repositories and use cases
 
 **Application Layer** (`app/`)
+
 - Use cases: Business logic orchestrating domain entities and repositories
 - Factory functions (`make*UseCase`) accept repository dependencies
 
 **Adapter Layer** (`adapter/`)
+
 - HTTP: Elysia routers with DTOs, receive use cases as dependencies
 - Repository: MongoDB implementations of port interfaces
 - Auth: Better Auth configuration and session adapters
@@ -61,6 +64,7 @@ src/
 - Billing: Polar.sh subscription management
 
 **DI Layer** (`di/`)
+
 - Wires together repositories → use cases → routers
 
 ### Entity Pattern
@@ -68,8 +72,8 @@ src/
 Entities extend base classes from `common/domain/`:
 
 ```typescript
-import { TenantAwareEntity } from "@/common/domain/tenant-aware-entity";
 import { newEntityId } from "@/common/domain/entity-id";
+import { TenantAwareEntity } from "@/common/domain/tenant-aware-entity";
 
 export class DocumentEntity extends TenantAwareEntity<DocumentEntityProps> {
   static makeNew(tenantId: string, props: DocumentEntityProps) {
@@ -77,7 +81,9 @@ export class DocumentEntity extends TenantAwareEntity<DocumentEntityProps> {
   }
 
   static makeExisting(id, createdAt, updatedAt, tenantId, props) {
-    return ok(new DocumentEntity(id, tenantId, props, { createdAt, updatedAt }));
+    return ok(
+      new DocumentEntity(id, tenantId, props, { createdAt, updatedAt }),
+    );
   }
 }
 ```
@@ -91,10 +97,14 @@ import z from "zod";
 import { makeResultSchema } from "@/common/schema/result-schema";
 
 export const insertDocumentRepositorySchema = z.function({
-  input: [z.object({ ctx: repositoryCtxSchema, data: z.instanceof(DocumentEntity) })],
+  input: [
+    z.object({ ctx: repositoryCtxSchema, data: z.instanceof(DocumentEntity) }),
+  ],
   output: z.promise(makeResultSchema(z.void(), z.instanceof(Err))),
 });
-export type InsertDocumentRepository = z.output<typeof insertDocumentRepositorySchema>;
+export type InsertDocumentRepository = z.output<
+  typeof insertDocumentRepositorySchema
+>;
 ```
 
 ### Context Pattern
@@ -138,14 +148,17 @@ return errEnvelope(Err.code("notFound"));
 Uses **Better Auth** with email OTP and organization plugins. Configuration at `adapter/auth/better-auth.ts`.
 
 **Auth Guard Plugin** (`makeHttpAuthGuardPlugin()`) provides:
+
 - `organizationId`: Tenant identifier from session (used as `tenantId`)
 - `user`: Current user object with `id`, `email`, `firstName`, `lastName`, `organizationRole`
 
 **Organization Roles:**
+
 - `org:admin` - Maps from Better Auth `owner` or `admin` roles
 - `org:member` - Maps from Better Auth `member` role
 
 **Session Flow:**
+
 1. User signs in via email OTP
 2. Better Auth creates session, sets HttpOnly cookie
 3. Auth guard extracts session from request headers
@@ -154,6 +167,7 @@ Uses **Better Auth** with email OTP and organization plugins. Configuration at `
 6. User and organizationId injected into route context
 
 **Key Files:**
+
 - `adapter/auth/better-auth.ts` - Better Auth configuration
 - `adapter/auth/better-auth-adapter.ts` - Session/member adapters
 - `common/http/http-auth-guard-plugin.ts` - Auth middleware
@@ -164,13 +178,16 @@ Uses **Better Auth** with email OTP and organization plugins. Configuration at `
 Uses MongoDB 8 with native driver. Collections:
 
 **Application Collections:**
+
 - `document` - User documents
 
 **Better Auth Collections (auto-managed):**
+
 - `user`, `session`, `account`, `verification`
 - `organization`, `member`, `invitation`
 
 **Patterns:**
+
 - Collections accessed via factory functions in `adapter/repository/*/`
 - Models convert between entities and MongoDB documents using `tenantAwareEntityToMongoModel()`
 - IDs are UUIDv7 generated via `newEntityId()` (uses `randomUUIDv7()` from Bun) from `@/common/domain/entity-id`
@@ -180,10 +197,12 @@ Uses MongoDB 8 with native driver. Collections:
 ### External Services
 
 **Email (Resend):**
+
 - `makeSendOTPEmail()` - Send OTP codes for sign-in, verification
 - `makeSendInvitationEmail()` - Send organization invitations
 
 **Billing (Polar):**
+
 - `makeCreateCheckoutSession()` - Create payment checkout
 - `makeGetUserSubscription()` - Get active subscription
 - `makeCancelSubscription()` - Cancel subscription

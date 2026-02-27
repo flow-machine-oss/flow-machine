@@ -29,7 +29,10 @@ export type GetCredentialUseCase = z.output<typeof getCredentialUseCaseSchema>;
 export const listCredentialsUseCaseSchema = z.function({
   input: [listCredentialsUseCaseInputSchema],
   output: z.promise(
-    makeResultSchema(z.array(z.instanceof(CredentialEntity)), z.instanceof(Err)),
+    makeResultSchema(
+      z.array(z.instanceof(CredentialEntity)),
+      z.instanceof(Err),
+    ),
   ),
 });
 export type ListCredentialsUseCase = z.output<

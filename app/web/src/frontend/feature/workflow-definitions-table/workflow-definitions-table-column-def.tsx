@@ -84,9 +84,7 @@ export const makeWorkflowDefinitionsTableColumnDef = ({
             workflowDefinition: row.original,
           });
         return (
-          <Badge
-            variant={row.getValue("isActive") ? "default" : "secondary"}
-          >
+          <Badge variant={row.getValue("isActive") ? "default" : "secondary"}>
             {workflowDefinitionDomainService.getStatusLabel()}
           </Badge>
         );
@@ -135,9 +133,7 @@ export const makeWorkflowDefinitionsTableColumnDef = ({
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
                   nativeButton={false}
-                  render={
-                    <Link href={`/platform/workflow/${workflow.id}`} />
-                  }
+                  render={<Link href={`/platform/workflow/${workflow.id}`} />}
                 >
                   <PencilIcon />
                   Edit

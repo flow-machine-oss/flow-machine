@@ -28,9 +28,8 @@ export type GetGitRepositoryMongoCollection = z.infer<
 
 export const getGitRepositoryMongoCollection =
   getGitRepositoryMongoCollectionSchema.implementAsync(async ({ ctx }) => {
-    const collection = ctx.mongoDb.collection<GitRepositoryMongoModel>(
-      "git-repository",
-    );
+    const collection =
+      ctx.mongoDb.collection<GitRepositoryMongoModel>("git-repository");
     await collection.createIndexes(tenantAwareCollectionIndexes);
     return ok(collection);
   });

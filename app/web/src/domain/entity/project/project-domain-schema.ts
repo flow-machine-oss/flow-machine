@@ -1,5 +1,8 @@
 import { z } from "zod/v4";
-import { domainIdSchema, tenantAwareBaseDomainSchema } from "@/domain/entity/shared-schema";
+import {
+  domainIdSchema,
+  tenantAwareBaseDomainSchema,
+} from "@/domain/entity/shared-schema";
 
 const projectProviders = ["jira", "linear"] as const;
 

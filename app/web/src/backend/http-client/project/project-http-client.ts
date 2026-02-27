@@ -38,9 +38,7 @@ export const makeProjectHttpClient = ({
 
   list: async () => {
     const response = await httpClient.get(BASE_PATH);
-    const schema = withHttpEnvelopeSchema(
-      projectHttpResponseDtoSchema.array(),
-    );
+    const schema = withHttpEnvelopeSchema(projectHttpResponseDtoSchema.array());
     return schema.parse(response.data);
   },
 

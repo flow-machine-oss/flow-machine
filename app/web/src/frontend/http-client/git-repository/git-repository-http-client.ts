@@ -42,10 +42,7 @@ export const makeGitRepositoryHttpClient = ({
     return schema.parse(response.data);
   },
 
-  updateById: async ({
-    body,
-    params,
-  }: UpdateGitRepositoryServicePortIn) => {
+  updateById: async ({ body, params }: UpdateGitRepositoryServicePortIn) => {
     await httpClient.patch(`${BASE_PATH}/${params.id}`, body);
   },
 });

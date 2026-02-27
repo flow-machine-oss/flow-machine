@@ -17,28 +17,26 @@ export const makeFindGitRepositoryByIdMongoRepository = ({
   getGitRepositoryMongoCollection,
   gitRepositoryMongoModelToEntity,
 }: Input): FindGitRepositoryByIdRepository =>
-  findGitRepositoryByIdRepositorySchema.implementAsync(
-    async ({ ctx, id }) => {
-      const collectionResult = await getGitRepositoryMongoCollection({
-        ctx,
-      });
+  findGitRepositoryByIdRepositorySchema.implementAsync(async ({ ctx, id }) => {
+    const collectionResult = await getGitRepositoryMongoCollection({
+      ctx,
+    });
 
-      if (collectionResult.isErr()) {
-        return err(collectionResult.error);
-      }
-      const [error, doc] = await attemptAsync(() =>
-        collectionResult.value.findOne({
-          _id: id,
-          tenant: ctx.tenant,
-        }),
-      );
+    if (collectionResult.isErr()) {
+      return err(collectionResult.error);
+    }
+    const [error, doc] = await attemptAsync(() =>
+      collectionResult.value.findOne({
+        _id: id,
+        tenant: ctx.tenant,
+      }),
+    );
 
-      if (isNotNil(error)) {
-        return err(Err.from(error));
-      }
-      if (doc === null) {
-        return ok(null);
-      }
-      return ok(gitRepositoryMongoModelToEntity(doc));
-    },
-  );
+    if (isNotNil(error)) {
+      return err(Err.from(error));
+    }
+    if (doc === null) {
+      return ok(null);
+    }
+    return ok(gitRepositoryMongoModelToEntity(doc));
+  });

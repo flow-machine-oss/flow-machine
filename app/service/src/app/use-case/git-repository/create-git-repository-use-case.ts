@@ -13,22 +13,20 @@ type Input = {
 export const makeCreateGitRepositoryUseCase = ({
   insertGitRepositoryRepository,
 }: Input): CreateGitRepositoryUseCase =>
-  createGitRepositoryUseCaseSchema.implementAsync(
-    async ({ ctx, payload }) => {
-      const newEntity = GitRepositoryEntity.makeNew(ctx.tenant, {
-        name: payload.name,
-        url: payload.url,
-        config: payload.config,
-        integration: payload.integration,
-      });
-      const insertResult = await insertGitRepositoryRepository({
-        ctx,
-        data: newEntity,
-      });
+  createGitRepositoryUseCaseSchema.implementAsync(async ({ ctx, payload }) => {
+    const newEntity = GitRepositoryEntity.makeNew(ctx.tenant, {
+      name: payload.name,
+      url: payload.url,
+      config: payload.config,
+      integration: payload.integration,
+    });
+    const insertResult = await insertGitRepositoryRepository({
+      ctx,
+      data: newEntity,
+    });
 
-      if (insertResult.isErr()) {
-        return err(insertResult.error);
-      }
-      return ok();
-    },
-  );
+    if (insertResult.isErr()) {
+      return err(insertResult.error);
+    }
+    return ok();
+  });

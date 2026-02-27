@@ -76,7 +76,13 @@ const mapBalance = (
 
 export const makeCheckFeatureAccess = (): CheckFeatureAccess =>
   checkFeatureAccessSchema.implementAsync(
-    async ({ customerId, featureId, requiredBalance, withPreview, sendEvent }) => {
+    async ({
+      customerId,
+      featureId,
+      requiredBalance,
+      withPreview,
+      sendEvent,
+    }) => {
       const { data, error } = await autumn.check({
         customer_id: customerId,
         feature_id: featureId,

@@ -12,16 +12,14 @@ type Input = {
 export const makeDeleteGitRepositoryUseCase = ({
   deleteGitRepositoryRepository,
 }: Input): DeleteGitRepositoryUseCase =>
-  deleteGitRepositoryUseCaseSchema.implementAsync(
-    async ({ ctx, payload }) => {
-      const deleteResult = await deleteGitRepositoryRepository({
-        ctx,
-        id: payload.id,
-      });
+  deleteGitRepositoryUseCaseSchema.implementAsync(async ({ ctx, payload }) => {
+    const deleteResult = await deleteGitRepositoryRepository({
+      ctx,
+      id: payload.id,
+    });
 
-      if (deleteResult.isErr()) {
-        return err(deleteResult.error);
-      }
-      return ok();
-    },
-  );
+    if (deleteResult.isErr()) {
+      return err(deleteResult.error);
+    }
+    return ok();
+  });

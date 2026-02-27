@@ -26,9 +26,7 @@ type EditCredentialFormProps = {
   form: UseFormReturn<EditCredentialFormValues>;
   onCancel: () => void;
   onValidFormSubmit: (values: EditCredentialFormValues) => Promise<void>;
-  onInvalidFormSubmit: (
-    values: FieldErrors<EditCredentialFormValues>,
-  ) => void;
+  onInvalidFormSubmit: (values: FieldErrors<EditCredentialFormValues>) => void;
 };
 
 export function EditCredentialForm({
@@ -62,9 +60,7 @@ export function EditCredentialForm({
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="name">Name</FieldLabel>
-                <FieldDescription>
-                  Update the credential name
-                </FieldDescription>
+                <FieldDescription>Update the credential name</FieldDescription>
                 <Input
                   {...field}
                   value={field.value ?? ""}
@@ -114,9 +110,7 @@ export function EditCredentialForm({
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="username">Username</FieldLabel>
-                    <FieldDescription>
-                      Update the username
-                    </FieldDescription>
+                    <FieldDescription>Update the username</FieldDescription>
                     <Input
                       {...field}
                       value={field.value ?? ""}
@@ -165,9 +159,7 @@ export function EditCredentialForm({
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="expiredAt">Expired At</FieldLabel>
-                <FieldDescription>
-                  Update the expiration date
-                </FieldDescription>
+                <FieldDescription>Update the expiration date</FieldDescription>
                 <Input
                   {...field}
                   value={field.value ?? ""}

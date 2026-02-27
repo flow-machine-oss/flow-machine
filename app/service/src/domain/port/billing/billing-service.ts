@@ -72,7 +72,9 @@ export const trackUsageSchema = z.function({
       overageBehavior: z.enum(["cap", "allow"]).optional(),
     }),
   ],
-  output: z.promise(makeResultSchema(trackUsageResultSchema, z.instanceof(Err))),
+  output: z.promise(
+    makeResultSchema(trackUsageResultSchema, z.instanceof(Err)),
+  ),
 });
 export type TrackUsage = z.output<typeof trackUsageSchema>;
 
@@ -169,7 +171,9 @@ export const getEntitlementsResultSchema = z.object({
   entitlements: z.array(entitlementSchema),
   productIds: z.array(z.string()),
 });
-export type GetEntitlementsResult = z.output<typeof getEntitlementsResultSchema>;
+export type GetEntitlementsResult = z.output<
+  typeof getEntitlementsResultSchema
+>;
 
 export const getEntitlementsSchema = z.function({
   input: [

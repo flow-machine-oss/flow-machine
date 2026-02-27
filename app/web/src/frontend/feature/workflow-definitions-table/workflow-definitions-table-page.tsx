@@ -7,9 +7,9 @@ import { DataTable } from "@/frontend/component/extended-ui/data-table";
 import { PlatformPageTemplate } from "@/frontend/component/platform/platform-page-template";
 import { Button } from "@/frontend/component/ui/button";
 import { makeWorkflowDefinitionsTableColumnDef } from "@/frontend/feature/workflow-definitions-table/workflow-definitions-table-column-def";
+import { useConfirmableAction } from "@/frontend/hook/use-confirmable-action";
 import { useDeleteWorkflowDefinition } from "@/frontend/hook/workflow-definition/use-delete-workflow-definition";
 import { useListWorkflowDefinitions } from "@/frontend/hook/workflow-definition/use-list-workflow-definitions";
-import { useConfirmableAction } from "@/frontend/hook/use-confirmable-action";
 
 export default function WorkflowDefinitionsTablePage() {
   const deleteAction = useConfirmableAction();
