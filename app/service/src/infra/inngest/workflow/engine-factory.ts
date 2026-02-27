@@ -1,11 +1,8 @@
 import { Engine, type EngineAction } from "@inngest/workflow-kit";
-import type { MongoClient } from "mongodb";
 import type z from "zod";
-import { makeMongoCtx } from "@/common/ctx/mongo-ctx";
 import type { Tenant } from "@/core/domain/tenant-aware-entity";
 import type { WorkflowActionDefinitionEntity } from "@/core/domain/workflow/definition/action/entity";
 import type { WorkflowDefinitionCrudService } from "@/core/domain/workflow/definition/crud-service";
-import type { ConfigService } from "@/core/infra/config/service";
 import type {
   WorkflowEngineFactory,
   workflowEngineFactoryInputSchema,
@@ -14,17 +11,11 @@ import type { WorkflowEngine } from "@/core/infra/workflow/engine/type";
 
 class InngestWorkflowEngineFactory implements WorkflowEngineFactory {
   #workflowDefinitionCrudService: WorkflowDefinitionCrudService;
-  #mongoClient: MongoClient;
-  #configService: ConfigService;
 
   constructor(
     workflowDefinitionCrudService: WorkflowDefinitionCrudService,
-    mongoClient: MongoClient,
-    configService: ConfigService,
   ) {
     this.#workflowDefinitionCrudService = workflowDefinitionCrudService;
-    this.#mongoClient = mongoClient;
-    this.#configService = configService;
   }
 
   async make(
@@ -44,10 +35,6 @@ class InngestWorkflowEngineFactory implements WorkflowEngineFactory {
 
         const result = await this.#workflowDefinitionCrudService.get({
           ctx: {
-            mongoDb: makeMongoCtx(
-              this.#mongoClient,
-              this.#configService.get("database.name"),
-            ).mongoDb,
             tenant,
           },
           payload: { id: workflowDefinitionId },

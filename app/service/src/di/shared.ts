@@ -26,10 +26,7 @@ const betterAuthClientFactory = new BetterAuthClientFactory(
 const betterAuthClient = betterAuthClientFactory.make();
 const betterAuthService = new BetterAuthService(betterAuthClient);
 
-const httpRequestCtxFactory = new HttpRequestCtxFactory(
-  mongoClient,
-  envConfigService,
-);
+const httpRequestCtxFactory = new HttpRequestCtxFactory(mongoClient);
 const httpAuthGuardFactory = new HttpAuthGuardFactory(betterAuthService);
 const httpErrorHandlerFactory = new HttpErrorHandlerFactory(logger);
 

@@ -1,24 +1,33 @@
+import type { MongoClient } from "mongodb";
 import { err, ok } from "neverthrow";
 import type z from "zod";
-import type { MongoCtx } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
 import type {
   ProjectCrudRepository,
   projectCrudRepositoryInputSchema,
 } from "@/core/domain/project/crud-repository";
 import { ProjectEntity } from "@/core/domain/project/entity";
+import type { ConfigService } from "@/core/infra/config/service";
 import { tenantAwareCollectionIndexes } from "@/infra/mongo/constant";
 import { tenantAwareEntityToMongoModel } from "@/infra/mongo/model";
 import type { ProjectMongoModel } from "@/infra/mongo/project/model";
 
 class ProjectMongoCrudRepository implements ProjectCrudRepository {
+  #configService: ConfigService;
+  #mongoClient: MongoClient;
+
+  constructor(configService: ConfigService, mongoClient: MongoClient) {
+    this.#configService = configService;
+    this.#mongoClient = mongoClient;
+  }
+
   async findMany(
     input: z.infer<typeof projectCrudRepositoryInputSchema.findMany>,
   ) {
     const { ctx } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const result = await collection
         .find({ tenant: ctx.tenant }, { session: ctx.mongoClientSession })
         .toArray();
@@ -35,7 +44,7 @@ class ProjectMongoCrudRepository implements ProjectCrudRepository {
     const { ctx, id } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const result = await collection.findOne(
         { _id: id, tenant: ctx.tenant },
         { session: ctx.mongoClientSession },
@@ -50,7 +59,7 @@ class ProjectMongoCrudRepository implements ProjectCrudRepository {
     const { ctx, data } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const model = tenantAwareEntityToMongoModel(data);
       await collection.insertOne(model, { session: ctx.mongoClientSession });
       return ok();
@@ -63,7 +72,7 @@ class ProjectMongoCrudRepository implements ProjectCrudRepository {
     const { ctx, id, data } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const model = tenantAwareEntityToMongoModel(data);
       await collection.replaceOne({ _id: id, tenant: ctx.tenant }, model, {
         session: ctx.mongoClientSession,
@@ -78,7 +87,7 @@ class ProjectMongoCrudRepository implements ProjectCrudRepository {
     const { ctx, id } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       await collection.deleteOne(
         { _id: id, tenant: ctx.tenant },
         { session: ctx.mongoClientSession },
@@ -89,8 +98,10 @@ class ProjectMongoCrudRepository implements ProjectCrudRepository {
     }
   }
 
-  async #getCollection({ mongoDb }: MongoCtx) {
-    const collection = mongoDb.collection<ProjectMongoModel>("project");
+  async #getCollection() {
+    const collection = this.#mongoClient
+      .db(this.#configService.get("database.name"))
+      .collection<ProjectMongoModel>("project");
     await collection.createIndexes(tenantAwareCollectionIndexes);
     return collection;
   }

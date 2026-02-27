@@ -1,6 +1,6 @@
+import type { MongoClient } from "mongodb";
 import { err, ok } from "neverthrow";
 import type z from "zod";
-import type { MongoCtx } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
 import type {
   CredentialCrudRepository,
@@ -8,18 +8,27 @@ import type {
 } from "@/core/domain/credential/crud-repository";
 import type { CredentialEntityProps } from "@/core/domain/credential/entity";
 import { CredentialEntity } from "@/core/domain/credential/entity";
+import type { ConfigService } from "@/core/infra/config/service";
 import { tenantAwareCollectionIndexes } from "@/infra/mongo/constant";
 import type { CredentialMongoModel } from "@/infra/mongo/credential/model";
 import { tenantAwareEntityToMongoModel } from "@/infra/mongo/model";
 
 class CredentialMongoCrudRepository implements CredentialCrudRepository {
+  #configService: ConfigService;
+  #mongoClient: MongoClient;
+
+  constructor(configService: ConfigService, mongoClient: MongoClient) {
+    this.#configService = configService;
+    this.#mongoClient = mongoClient;
+  }
+
   async findMany(
     input: z.infer<typeof credentialCrudRepositoryInputSchema.findMany>,
   ) {
     const { ctx } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const result = await collection
         .find({ tenant: ctx.tenant }, { session: ctx.mongoClientSession })
         .toArray();
@@ -36,7 +45,7 @@ class CredentialMongoCrudRepository implements CredentialCrudRepository {
     const { ctx, id } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const result = await collection.findOne(
         { _id: id, tenant: ctx.tenant },
         { session: ctx.mongoClientSession },
@@ -53,7 +62,7 @@ class CredentialMongoCrudRepository implements CredentialCrudRepository {
     const { ctx, data } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const model = tenantAwareEntityToMongoModel(data);
       await collection.insertOne(model, { session: ctx.mongoClientSession });
       return ok();
@@ -68,7 +77,7 @@ class CredentialMongoCrudRepository implements CredentialCrudRepository {
     const { ctx, id, data } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const model = tenantAwareEntityToMongoModel(data);
       await collection.replaceOne({ _id: id, tenant: ctx.tenant }, model, {
         session: ctx.mongoClientSession,
@@ -85,7 +94,7 @@ class CredentialMongoCrudRepository implements CredentialCrudRepository {
     const { ctx, id } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       await collection.deleteOne(
         { _id: id, tenant: ctx.tenant },
         { session: ctx.mongoClientSession },
@@ -96,8 +105,10 @@ class CredentialMongoCrudRepository implements CredentialCrudRepository {
     }
   }
 
-  async #getCollection({ mongoDb }: MongoCtx) {
-    const collection = mongoDb.collection<CredentialMongoModel>("credential");
+  async #getCollection() {
+    const collection = this.#mongoClient
+      .db(this.#configService.get("database.name"))
+      .collection<CredentialMongoModel>("credential");
     await collection.createIndexes(tenantAwareCollectionIndexes);
     return collection;
   }

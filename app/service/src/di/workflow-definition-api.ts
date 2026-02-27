@@ -1,10 +1,15 @@
 import { WorkflowDefinitionV1HttpRouterFactory } from "@/api/module/workflow/definition/v1/http-router-factory";
 import { WorkflowDefinitionBasicCrudService } from "@/app/domain/workflow/definition/basic-crud-service";
-import { httpAuthGuardFactory, httpRequestCtxFactory } from "@/di/shared";
+import {
+  envConfigService,
+  httpAuthGuardFactory,
+  httpRequestCtxFactory,
+  mongoClient,
+} from "@/di/shared";
 import { WorkflowDefinitionMongoCrudRepository } from "@/infra/mongo/workflow/definition/crud-repository";
 
 const workflowDefinitionMongoCrudRepository =
-  new WorkflowDefinitionMongoCrudRepository();
+  new WorkflowDefinitionMongoCrudRepository(envConfigService, mongoClient);
 const workflowDefinitionBasicCrudService =
   new WorkflowDefinitionBasicCrudService(workflowDefinitionMongoCrudRepository);
 

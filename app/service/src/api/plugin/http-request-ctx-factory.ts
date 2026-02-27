@@ -1,15 +1,12 @@
 import Elysia from "elysia";
 import type { MongoClient } from "mongodb";
 import { makeMongoCtx } from "@/common/ctx/mongo-ctx";
-import type { ConfigService } from "@/core/infra/config/service";
 
 class HttpRequestCtxFactory {
   #mongoClient: MongoClient;
-  #configService: ConfigService;
 
-  constructor(mongoClient: MongoClient, configService: ConfigService) {
+  constructor(mongoClient: MongoClient) {
     this.#mongoClient = mongoClient;
-    this.#configService = configService;
   }
 
   make() {
@@ -18,10 +15,7 @@ class HttpRequestCtxFactory {
         { as: "scoped" },
         () =>
           ({
-            ctx: makeMongoCtx(
-              this.#mongoClient,
-              this.#configService.get("database.name"),
-            ),
+            ctx: makeMongoCtx(this.#mongoClient),
           }) as const,
       )
       .onBeforeHandle({ as: "scoped" }, async ({ ctx }) => {

@@ -1,24 +1,33 @@
+import type { MongoClient } from "mongodb";
 import { err, ok } from "neverthrow";
 import type z from "zod";
-import type { MongoCtx } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
 import type {
   GitRepositoryCrudRepository,
   gitRepositoryCrudRepositoryInputSchema,
 } from "@/core/domain/git-repository/crud-repository";
 import { GitRepositoryEntity } from "@/core/domain/git-repository/entity";
+import type { ConfigService } from "@/core/infra/config/service";
 import { tenantAwareCollectionIndexes } from "@/infra/mongo/constant";
 import type { GitRepositoryMongoModel } from "@/infra/mongo/git-repository/model";
 import { tenantAwareEntityToMongoModel } from "@/infra/mongo/model";
 
 class GitRepositoryMongoCrudRepository implements GitRepositoryCrudRepository {
+  #configService: ConfigService;
+  #mongoClient: MongoClient;
+
+  constructor(configService: ConfigService, mongoClient: MongoClient) {
+    this.#configService = configService;
+    this.#mongoClient = mongoClient;
+  }
+
   async findMany(
     input: z.infer<typeof gitRepositoryCrudRepositoryInputSchema.findMany>,
   ) {
     const { ctx } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const result = await collection
         .find({ tenant: ctx.tenant }, { session: ctx.mongoClientSession })
         .toArray();
@@ -35,7 +44,7 @@ class GitRepositoryMongoCrudRepository implements GitRepositoryCrudRepository {
     const { ctx, id } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const result = await collection.findOne(
         { _id: id, tenant: ctx.tenant },
         { session: ctx.mongoClientSession },
@@ -52,7 +61,7 @@ class GitRepositoryMongoCrudRepository implements GitRepositoryCrudRepository {
     const { ctx, data } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const model = tenantAwareEntityToMongoModel(data);
       await collection.insertOne(model, { session: ctx.mongoClientSession });
       return ok();
@@ -67,7 +76,7 @@ class GitRepositoryMongoCrudRepository implements GitRepositoryCrudRepository {
     const { ctx, id, data } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       const model = tenantAwareEntityToMongoModel(data);
       await collection.replaceOne({ _id: id, tenant: ctx.tenant }, model, {
         session: ctx.mongoClientSession,
@@ -84,7 +93,7 @@ class GitRepositoryMongoCrudRepository implements GitRepositoryCrudRepository {
     const { ctx, id } = input;
 
     try {
-      const collection = await this.#getCollection(ctx);
+      const collection = await this.#getCollection();
       await collection.deleteOne(
         { _id: id, tenant: ctx.tenant },
         { session: ctx.mongoClientSession },
@@ -95,9 +104,10 @@ class GitRepositoryMongoCrudRepository implements GitRepositoryCrudRepository {
     }
   }
 
-  async #getCollection({ mongoDb }: MongoCtx) {
-    const collection =
-      mongoDb.collection<GitRepositoryMongoModel>("git-repository");
+  async #getCollection() {
+    const collection = this.#mongoClient
+      .db(this.#configService.get("database.name"))
+      .collection<GitRepositoryMongoModel>("git-repository");
     await collection.createIndexes(tenantAwareCollectionIndexes);
     return collection;
   }
