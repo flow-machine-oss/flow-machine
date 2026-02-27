@@ -1,7 +1,6 @@
-import { ok } from "neverthrow";
 import z from "zod";
 import {
-  type EntityIdInput,
+  type EntityId,
   entityIdSchema,
   newEntityId,
 } from "@/common/domain/entity-id";
@@ -9,9 +8,10 @@ import {
   type Tenant,
   TenantAwareEntity,
 } from "@/common/domain/tenant-aware-entity";
-import { projectProviders } from "@/domain/entity/provider/project-provider";
 
-export const projectEntityProps = z.object({
+const projectProviders = ["jira", "linear"] as const;
+
+const projectEntityProps = z.object({
   name: z.string().min(1).max(256),
   integration: z
     .object({
@@ -23,20 +23,30 @@ export const projectEntityProps = z.object({
     })
     .optional(),
 });
-export type ProjectEntityProps = z.output<typeof projectEntityProps>;
+type ProjectEntityProps = z.output<typeof projectEntityProps>;
 
-export class ProjectEntity extends TenantAwareEntity<ProjectEntityProps> {
+class ProjectEntity extends TenantAwareEntity<ProjectEntityProps> {
   static makeNew(tenant: Tenant, props: ProjectEntityProps) {
-    return ok(new ProjectEntity(newEntityId(), tenant, props));
+    return new ProjectEntity(newEntityId(), tenant, props);
   }
 
   static makeExisting(
-    id: EntityIdInput,
+    id: EntityId,
     createdAt: Date,
     updatedAt: Date,
     tenant: Tenant,
     props: ProjectEntityProps,
   ) {
-    return ok(new ProjectEntity(id, tenant, props, { createdAt, updatedAt }));
+    return new ProjectEntity(id, tenant, props, {
+      createdAt,
+      updatedAt,
+    });
   }
 }
+
+export {
+  ProjectEntity,
+  projectEntityProps,
+  type ProjectEntityProps,
+  projectProviders,
+};

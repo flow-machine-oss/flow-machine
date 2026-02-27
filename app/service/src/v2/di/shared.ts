@@ -12,4 +12,4 @@ const betterAuthService = new BetterAuthService(betterAuthClientFactory);
 const httpRequestCtxFactory = new HttpRequestCtxFactory();
 const httpAuthGuardFactory = new HttpAuthGuardFactory(betterAuthService);
 
-export { httpRequestCtxFactory, httpAuthGuardFactory };
+export { betterAuthClientFactory, httpRequestCtxFactory, httpAuthGuardFactory };
