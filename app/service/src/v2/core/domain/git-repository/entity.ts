@@ -1,6 +1,6 @@
 import z from "zod";
 import {
-  type EntityIdInput,
+  type EntityId,
   entityIdSchema,
   newEntityId,
 } from "@/common/domain/entity-id";
@@ -8,9 +8,10 @@ import {
   type Tenant,
   TenantAwareEntity,
 } from "@/common/domain/tenant-aware-entity";
-import { gitProviders } from "@/domain/entity/provider/git-provider";
 
-export const gitRepositoryEntityProps = z.object({
+const gitProviders = ["github", "gitlab"] as const;
+
+const gitRepositoryEntityProps = z.object({
   name: z.string().min(1).max(256),
   url: z.url().max(2048),
   config: z.object({
@@ -23,17 +24,15 @@ export const gitRepositoryEntityProps = z.object({
     credentialId: entityIdSchema,
   }),
 });
-export type GitRepositoryEntityProps = z.output<
-  typeof gitRepositoryEntityProps
->;
+type GitRepositoryEntityProps = z.output<typeof gitRepositoryEntityProps>;
 
-export class GitRepositoryEntity extends TenantAwareEntity<GitRepositoryEntityProps> {
+class GitRepositoryEntity extends TenantAwareEntity<GitRepositoryEntityProps> {
   static makeNew(tenant: Tenant, props: GitRepositoryEntityProps) {
     return new GitRepositoryEntity(newEntityId(), tenant, props);
   }
 
   static makeExisting(
-    id: EntityIdInput,
+    id: EntityId,
     createdAt: Date,
     updatedAt: Date,
     tenant: Tenant,
@@ -45,3 +44,9 @@ export class GitRepositoryEntity extends TenantAwareEntity<GitRepositoryEntityPr
     });
   }
 }
+
+export {
+  GitRepositoryEntity,
+  gitRepositoryEntityProps,
+  type GitRepositoryEntityProps,
+};

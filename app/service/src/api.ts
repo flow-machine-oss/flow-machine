@@ -7,7 +7,7 @@ import { makeHttpErrorHandlerPlugin } from "@/common/http/http-error-handler.plu
 import { authHttpRouter } from "@/di/auth-di";
 import { billingHttpV1Router } from "@/di/billing-di";
 import { documentHttpV1Router } from "@/di/document-di";
-import { gitRepositoryHttpV1Router } from "@/di/git-repository-di";
+import { gitRepositoryV1HttpRouterFactory } from "@/v2/di/git-repository-api";
 import { healthHttpV1Router } from "@/di/health-di";
 import { inngestHttpRouter } from "@/di/inngest-di";
 import { projectHttpV1Router } from "@/di/project-di";
@@ -34,7 +34,7 @@ app
   .use(billingHttpV1Router)
   .use(credentialV1HttpRouterFactory.make())
   .use(documentHttpV1Router)
-  .use(gitRepositoryHttpV1Router)
+  .use(gitRepositoryV1HttpRouterFactory.make())
   .use(healthHttpV1Router)
   .use(inngestHttpRouter)
   .use(projectHttpV1Router)
