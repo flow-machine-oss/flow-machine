@@ -1,4 +1,5 @@
 import { z } from "zod/v4";
+import { datetimeSchema } from "@/domain/entity/shared-schema";
 
 export const editCredentialFormValuesSchema = z.discriminatedUnion("type", [
   z.object({
@@ -9,7 +10,7 @@ export const editCredentialFormValuesSchema = z.discriminatedUnion("type", [
       .max(256, "Name must be 256 characters or less")
       .optional(),
     apiKey: z.string().optional(),
-    expiredAt: z.string().optional(),
+    expiredAt: datetimeSchema.optional(),
   }),
   z.object({
     type: z.literal("basic"),
@@ -20,7 +21,7 @@ export const editCredentialFormValuesSchema = z.discriminatedUnion("type", [
       .optional(),
     username: z.string().optional(),
     password: z.string().optional(),
-    expiredAt: z.string().optional(),
+    expiredAt: datetimeSchema.optional(),
   }),
 ]);
 

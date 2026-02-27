@@ -6,7 +6,6 @@ import { config } from "@/common/config/config";
 import { makeHttpErrorHandlerPlugin } from "@/common/http/http-error-handler.plugin";
 import { authHttpRouter } from "@/di/auth-di";
 import { billingHttpV1Router } from "@/di/billing-di";
-import { credentialHttpV1Router } from "@/di/credential-di";
 import { documentHttpV1Router } from "@/di/document-di";
 import { gitRepositoryHttpV1Router } from "@/di/git-repository-di";
 import { healthHttpV1Router } from "@/di/health-di";
@@ -15,6 +14,7 @@ import { projectHttpV1Router } from "@/di/project-di";
 import { workflowActionDefinitionHttpV1Router } from "@/di/workflow-action-definition-di";
 import { workflowDefinitionHttpV1Router } from "@/di/workflow-definition-di";
 import { aiAgentV1HttpRouterFactory } from "@/v2/di/ai-agent-api";
+import { credentialV1HttpRouterFactory } from "@/v2/di/credential-api";
 
 const app = new Elysia();
 
@@ -32,7 +32,7 @@ app
   .use(aiAgentV1HttpRouterFactory.make())
   .use(authHttpRouter)
   .use(billingHttpV1Router)
-  .use(credentialHttpV1Router)
+  .use(credentialV1HttpRouterFactory.make())
   .use(documentHttpV1Router)
   .use(gitRepositoryHttpV1Router)
   .use(healthHttpV1Router)

@@ -3,7 +3,7 @@ import { entityIdSchema } from "@/common/domain/entity-id";
 import { tenantSchema } from "@/common/domain/tenant-aware-entity";
 import { stringToDateCodec } from "@/common/schema/codec";
 
-export const postCredentialRequestBodyDtoSchema = z.discriminatedUnion("type", [
+const postCredentialRequestBodyDtoSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("apiKey"),
     name: z.string().min(1).max(256),
@@ -19,26 +19,23 @@ export const postCredentialRequestBodyDtoSchema = z.discriminatedUnion("type", [
   }),
 ]);
 
-export const patchCredentialRequestBodyDtoSchema = z.discriminatedUnion(
-  "type",
-  [
-    z.object({
-      type: z.literal("apiKey"),
-      name: z.string().min(1).max(256).optional(),
-      apiKey: z.string().min(1).max(256).optional(),
-      expiredAt: stringToDateCodec.optional(),
-    }),
-    z.object({
-      type: z.literal("basic"),
-      name: z.string().min(1).max(256).optional(),
-      username: z.string().min(1).max(256).optional(),
-      password: z.string().min(1).max(256).optional(),
-      expiredAt: stringToDateCodec.optional(),
-    }),
-  ],
-);
+const patchCredentialRequestBodyDtoSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("apiKey"),
+    name: z.string().min(1).max(256).optional(),
+    apiKey: z.string().min(1).max(256).optional(),
+    expiredAt: stringToDateCodec.optional(),
+  }),
+  z.object({
+    type: z.literal("basic"),
+    name: z.string().min(1).max(256).optional(),
+    username: z.string().min(1).max(256).optional(),
+    password: z.string().min(1).max(256).optional(),
+    expiredAt: stringToDateCodec.optional(),
+  }),
+]);
 
-export const idParamsDtoSchema = z.object({
+const credentialRequestParamsDtoSchema = z.object({
   id: entityIdSchema,
 });
 
@@ -51,24 +48,23 @@ const credentialResponseDtoBaseSchema = z.object({
   expiredAt: z.date(),
 });
 
-export const apiKeyCredentialResponseDtoSchema =
+const credentialResponseDtoSchema = z.discriminatedUnion("type", [
   credentialResponseDtoBaseSchema.extend({
     type: z.literal("apiKey"),
     apiKey: z.string(),
-  });
-
-export const basicCredentialResponseDtoSchema =
+  }),
   credentialResponseDtoBaseSchema.extend({
     type: z.literal("basic"),
     username: z.string(),
     password: z.string(),
-  });
-
-export const credentialResponseDtoSchema = z.discriminatedUnion("type", [
-  apiKeyCredentialResponseDtoSchema,
-  basicCredentialResponseDtoSchema,
+  }),
 ]);
+type CredentialResponseDto = z.output<typeof credentialResponseDtoSchema>;
 
-export type CredentialResponseDto = z.output<
-  typeof credentialResponseDtoSchema
->;
+export {
+  postCredentialRequestBodyDtoSchema,
+  patchCredentialRequestBodyDtoSchema,
+  credentialRequestParamsDtoSchema,
+  credentialResponseDtoSchema,
+  type CredentialResponseDto,
+};
