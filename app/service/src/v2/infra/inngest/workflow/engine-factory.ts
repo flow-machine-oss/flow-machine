@@ -1,0 +1,65 @@
+import { Engine, type EngineAction } from "@inngest/workflow-kit";
+import type z from "zod";
+import type { Tenant } from "@/common/domain/tenant-aware-entity";
+import type { WorkflowActionDefinitionEntity } from "@/v2/core/domain/workflow/action/definition/entity";
+import type { WorkflowDefinitionCrudService } from "@/v2/core/domain/workflow/definition/crud-service";
+import type {
+  WorkflowEngineFactory,
+  workflowEngineFactoryInputSchema,
+} from "@/v2/core/domain/workflow/engine/factory";
+import type { WorkflowEngine } from "@/v2/core/domain/workflow/engine/type";
+
+class InngestWorkflowEngineFactory implements WorkflowEngineFactory {
+  #workflowDefinitionCrudService: WorkflowDefinitionCrudService;
+
+  constructor(workflowDefinitionCrudService: WorkflowDefinitionCrudService) {
+    this.#workflowDefinitionCrudService = workflowDefinitionCrudService;
+  }
+
+  async make(
+    input: z.infer<typeof workflowEngineFactoryInputSchema.make>,
+  ): Promise<WorkflowEngine> {
+    const { ctx, workflowActionDefinitions } = input;
+
+    return new Engine({
+      actions: workflowActionDefinitions.map(
+        this.#toInngestWorkflowActionDefinition,
+      ),
+      loader: async (event) => {
+        const { workflowDefinitionId, tenant } = event.data as {
+          workflowDefinitionId: string;
+          tenant: Tenant;
+        };
+
+        const result = await this.#workflowDefinitionCrudService.get({
+          ctx: { ...ctx, tenant },
+          payload: { id: workflowDefinitionId },
+        });
+
+        if (result.isErr()) {
+          return null;
+        }
+        const workflow = result.value;
+
+        return {
+          name: workflow.props.name,
+          description: workflow.props.description,
+          actions: workflow.props.actions,
+          edges: workflow.props.edges,
+        };
+      },
+    });
+  }
+
+  #toInngestWorkflowActionDefinition(
+    workflowActionDefinition: WorkflowActionDefinitionEntity,
+  ) {
+    return {
+      kind: workflowActionDefinition.props.kind,
+      name: workflowActionDefinition.props.name,
+      handler: workflowActionDefinition.props.handler,
+    } satisfies EngineAction;
+  }
+}
+
+export { InngestWorkflowEngineFactory };

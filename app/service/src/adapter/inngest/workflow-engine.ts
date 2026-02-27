@@ -3,14 +3,14 @@ import { workflowActions } from "@/adapter/inngest/workflow-actions";
 import { config } from "@/common/config/config";
 import type { Tenant } from "@/common/domain/tenant-aware-entity";
 import { mongoClient } from "@/common/mongo/mongo-client";
-import type { FindWorkflowDefinitionByIdRepository } from "@/domain/port/workflow-definition/workflow-definition-repository";
+import type { WorkflowDefinitionCrudRepository } from "@/v2/core/domain/workflow/definition/crud-repository";
 
 type Input = {
-  findWorkflowDefinitionByIdRepository: FindWorkflowDefinitionByIdRepository;
+  workflowDefinitionCrudRepository: WorkflowDefinitionCrudRepository;
 };
 
 export const makeWorkflowEngine = ({
-  findWorkflowDefinitionByIdRepository,
+  workflowDefinitionCrudRepository,
 }: Input) =>
   new Engine({
     actions: workflowActions,
@@ -20,7 +20,7 @@ export const makeWorkflowEngine = ({
         tenant: Tenant;
       };
 
-      const result = await findWorkflowDefinitionByIdRepository({
+      const result = await workflowDefinitionCrudRepository.findOne({
         ctx: {
           mongoDb: mongoClient.db(config.database.name),
           mongoClientSession: mongoClient.startSession(),

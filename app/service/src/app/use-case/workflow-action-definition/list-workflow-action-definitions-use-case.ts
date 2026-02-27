@@ -1,22 +1,25 @@
-import { err, ok } from "neverthrow";
-import type { FindWorkflowActionDefinitionsRepository } from "@/domain/port/workflow-action-definition/workflow-action-definition-repository";
+import { ok } from "neverthrow";
+import { WorkflowActionDefinitionEntity } from "@/domain/entity/workflow-action-definition/workflow-action-definition-entity";
 import {
   type ListWorkflowActionDefinitionsUseCase,
   listWorkflowActionDefinitionsUseCaseSchema,
 } from "@/domain/port/workflow-action-definition/workflow-action-definition-use-case";
 
-type Input = {
-  findWorkflowActionDefinitionsRepository: FindWorkflowActionDefinitionsRepository;
-};
-
-export const makeListWorkflowActionDefinitionsUseCase = ({
-  findWorkflowActionDefinitionsRepository,
-}: Input): ListWorkflowActionDefinitionsUseCase =>
-  listWorkflowActionDefinitionsUseCaseSchema.implementAsync(async ({ ctx }) => {
-    const findResult = await findWorkflowActionDefinitionsRepository({ ctx });
-
-    if (findResult.isErr()) {
-      return err(findResult.error);
-    }
-    return ok(findResult.value);
-  });
+export const makeListWorkflowActionDefinitionsUseCase =
+  (): ListWorkflowActionDefinitionsUseCase =>
+    listWorkflowActionDefinitionsUseCaseSchema.implementAsync(async () => {
+      return ok([
+        WorkflowActionDefinitionEntity.makeNew({
+          name: "Research",
+          kind: "research",
+        }),
+        WorkflowActionDefinitionEntity.makeNew({
+          name: "Plan",
+          kind: "plan",
+        }),
+        WorkflowActionDefinitionEntity.makeNew({
+          name: "Code",
+          kind: "code",
+        }),
+      ]);
+    });

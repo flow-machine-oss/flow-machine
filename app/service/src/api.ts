@@ -4,18 +4,17 @@ import Elysia from "elysia";
 import z from "zod";
 import { config } from "@/common/config/config";
 import { makeHttpErrorHandlerPlugin } from "@/common/http/http-error-handler.plugin";
-import { authHttpRouter } from "@/di/auth-di";
 import { billingHttpV1Router } from "@/di/billing-di";
-import { healthHttpV1Router } from "@/di/health-di";
-import { inngestHttpRouter } from "@/di/inngest-di";
 import { workflowActionDefinitionHttpV1Router } from "@/di/workflow-action-definition-di";
-import { workflowDefinitionHttpV1Router } from "@/di/workflow-definition-di";
 import { aiAgentV1HttpRouterFactory } from "@/v2/di/ai-agent-api";
 import { betterAuthHttpRouterFactory } from "@/v2/di/auth-api";
 import { credentialV1HttpRouterFactory } from "@/v2/di/credential-api";
 import { documentV1HttpRouterFactory } from "@/v2/di/document-api";
 import { gitRepositoryV1HttpRouterFactory } from "@/v2/di/git-repository-api";
+import { healthHttpRouterFactory } from "@/v2/di/health-api";
+import { inngestHttpRouterFactory } from "@/v2/di/inngest-api";
 import { projectV1HttpRouterFactory } from "@/v2/di/project-api";
+import { workflowDefinitionV1HttpRouterFactory } from "@/v2/di/workflow-definition-api";
 
 const app = new Elysia();
 
@@ -36,9 +35,9 @@ app
   .use(credentialV1HttpRouterFactory.make())
   .use(documentV1HttpRouterFactory.make())
   .use(gitRepositoryV1HttpRouterFactory.make())
-  .use(healthHttpV1Router)
-  .use(inngestHttpRouter)
+  .use(healthHttpRouterFactory.make())
+  .use(inngestHttpRouterFactory.make())
   .use(projectV1HttpRouterFactory.make())
   .use(workflowActionDefinitionHttpV1Router)
-  .use(workflowDefinitionHttpV1Router)
+  .use(workflowDefinitionV1HttpRouterFactory.make())
   .listen(8000);
