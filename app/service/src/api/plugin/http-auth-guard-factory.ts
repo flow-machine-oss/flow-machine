@@ -1,6 +1,6 @@
 import Elysia from "elysia";
 import { isNil } from "es-toolkit";
-import type { Tenant } from "@/common/domain/tenant-aware-entity";
+import type { Tenant } from "@/core/domain/tenant-aware-entity";
 import type { AuthService } from "@/core/feature/auth/service";
 
 class HttpAuthGuardFactory {

@@ -6,7 +6,7 @@ import {
   organization,
 } from "better-auth/plugins";
 import { config } from "@/common/config/config";
-import { newEntityId } from "@/common/domain/entity-id";
+import { newEntityId } from "@/core/domain/entity";
 import type { EmailService } from "@/core/feature/email/service";
 import { mongoClient } from "@/infra/mongo/client";
 

@@ -1,5 +1,5 @@
 import z from "zod";
-import { entityIdSchema } from "@/common/domain/entity-id";
+import { entityIdSchema } from "@/core/domain/entity";
 
 const workflowActionDefinitionResponseDtoSchema = z.object({
   id: entityIdSchema,

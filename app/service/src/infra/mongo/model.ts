@@ -1,12 +1,12 @@
 import type { UnknownRecord } from "type-fest";
 import z from "zod";
-import type { Entity } from "@/common/domain/entity";
-import { type EntityId, entityIdSchema } from "@/common/domain/entity-id";
+import type { Entity } from "@/core/domain/entity";
+import { type EntityId, entityIdSchema } from "@/core/domain/entity";
 import {
   type Tenant,
   type TenantAwareEntity,
   tenantSchema,
-} from "@/common/domain/tenant-aware-entity";
+} from "@/core/domain/tenant-aware-entity";
 
 export const baseMongoModelSchema = z.object({
   _id: entityIdSchema,

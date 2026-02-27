@@ -1,6 +1,6 @@
 import z from "zod";
-import { Entity } from "@/common/domain/entity";
-import type { EntityId } from "@/common/domain/entity-id";
+import { Entity } from "@/core/domain/entity";
+import type { EntityId } from "@/core/domain/entity";
 
 const userPropsSchema = z.object({
   email: z.email(),

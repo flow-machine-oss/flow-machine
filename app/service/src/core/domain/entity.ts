@@ -1,7 +1,13 @@
 import { UTCDate } from "@date-fns/utc";
+import { randomUUIDv7 } from "bun";
 import { merge } from "es-toolkit";
 import type { EmptyObject, PartialDeep, UnknownRecord } from "type-fest";
-import type { EntityId } from "@/common/domain/entity-id";
+import z from "zod";
+
+const entityIdSchema = z.uuidv7();
+type EntityId = z.output<typeof entityIdSchema>;
+
+const newEntityId = () => randomUUIDv7() as EntityId;
 
 class Entity<T extends UnknownRecord = EmptyObject> {
   id: EntityId;
@@ -30,4 +36,4 @@ class Entity<T extends UnknownRecord = EmptyObject> {
   }
 }
 
-export { Entity };
+export { Entity, entityIdSchema, type EntityId, newEntityId };

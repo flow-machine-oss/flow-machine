@@ -1,7 +1,6 @@
 import type { EmptyObject, UnknownRecord } from "type-fest";
 import z from "zod";
-import { Entity } from "@/common/domain/entity";
-import { type EntityId, entityIdSchema } from "@/common/domain/entity-id";
+import { Entity, type EntityId, entityIdSchema } from "@/core/domain/entity";
 
 export const tenantTypes = ["organization", "user"] as const;
 

@@ -3,11 +3,11 @@ import {
   type EntityId,
   entityIdSchema,
   newEntityId,
-} from "@/common/domain/entity-id";
+} from "@/core/domain/entity";
 import {
   type Tenant,
   TenantAwareEntity,
-} from "@/common/domain/tenant-aware-entity";
+} from "@/core/domain/tenant-aware-entity";
 
 const gitProviders = ["github", "gitlab"] as const;
 

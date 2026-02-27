@@ -1,8 +1,8 @@
 import z from "zod";
-import { entityIdSchema } from "@/common/domain/entity-id";
-import { tenantSchema } from "@/common/domain/tenant-aware-entity";
 import { documentCrudServiceInputSchema } from "@/core/domain/document/crud-service";
 import { documentEntityProps } from "@/core/domain/document/entity";
+import { entityIdSchema } from "@/core/domain/entity";
+import { tenantSchema } from "@/core/domain/tenant-aware-entity";
 
 const documentResponseDtoSchema = z.object({
   id: entityIdSchema,

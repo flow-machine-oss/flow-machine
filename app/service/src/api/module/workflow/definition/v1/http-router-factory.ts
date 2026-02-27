@@ -1,4 +1,5 @@
 import Elysia from "elysia";
+import { errEnvelope, okEnvelope } from "@/api/http-envelope";
 import {
   type WorkflowDefinitionResponseDto,
   patchWorkflowDefinitionRequestBodyDtoSchema,
@@ -7,7 +8,6 @@ import {
 } from "@/api/module/workflow/definition/v1/http-dto";
 import type { HttpAuthGuardFactory } from "@/api/plugin/http-auth-guard-factory";
 import type { HttpRequestCtxFactory } from "@/api/plugin/http-request-ctx-factory";
-import { errEnvelope, okEnvelope } from "@/common/http/http-envelope";
 import type { WorkflowDefinitionCrudService } from "@/core/domain/workflow/definition/crud-service";
 import type { WorkflowDefinitionEntity } from "@/core/domain/workflow/definition/entity";
 

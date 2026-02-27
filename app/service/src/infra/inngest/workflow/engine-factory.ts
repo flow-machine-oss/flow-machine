@@ -1,7 +1,7 @@
 import { Engine, type EngineAction } from "@inngest/workflow-kit";
 import type z from "zod";
 import { makeMongoCtx } from "@/common/ctx/mongo-ctx";
-import type { Tenant } from "@/common/domain/tenant-aware-entity";
+import type { Tenant } from "@/core/domain/tenant-aware-entity";
 import type { WorkflowActionDefinitionEntity } from "@/core/domain/workflow/definition/action/entity";
 import type { WorkflowDefinitionCrudService } from "@/core/domain/workflow/definition/crud-service";
 import type {

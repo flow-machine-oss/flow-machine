@@ -1,4 +1,5 @@
 import Elysia from "elysia";
+import { errEnvelope, okEnvelope } from "@/api/http-envelope";
 import {
   type ProjectResponseDto,
   patchProjectRequestBodyDtoSchema,
@@ -7,7 +8,6 @@ import {
 } from "@/api/module/project/v1/http-dto";
 import type { HttpAuthGuardFactory } from "@/api/plugin/http-auth-guard-factory";
 import type { HttpRequestCtxFactory } from "@/api/plugin/http-request-ctx-factory";
-import { errEnvelope, okEnvelope } from "@/common/http/http-envelope";
 import type { ProjectCrudService } from "@/core/domain/project/crud-service";
 import type { ProjectEntity } from "@/core/domain/project/entity";
 

@@ -2,12 +2,12 @@ import type { Result } from "neverthrow";
 import z from "zod";
 import { mongoCtxSchema } from "@/common/ctx/mongo-ctx";
 import { tenantCtxSchema } from "@/common/ctx/tenant-ctx";
-import { entityIdSchema } from "@/common/domain/entity-id";
 import type { Err } from "@/common/err/err";
 import {
   type DocumentEntity,
   documentEntityProps,
 } from "@/core/domain/document/entity";
+import { entityIdSchema } from "@/core/domain/entity";
 
 const ctxSchema = z.object({
   ...mongoCtxSchema.shape,

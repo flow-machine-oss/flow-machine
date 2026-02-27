@@ -1,6 +1,6 @@
 import z from "zod";
-import { entityIdSchema } from "@/common/domain/entity-id";
-import { tenantSchema } from "@/common/domain/tenant-aware-entity";
+import { entityIdSchema } from "@/core/domain/entity";
+import { tenantSchema } from "@/core/domain/tenant-aware-entity";
 import { workflowDefinitionCrudServiceInputSchema } from "@/core/domain/workflow/definition/crud-service";
 import {
   workflowActionSchema,

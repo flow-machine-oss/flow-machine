@@ -1,7 +1,7 @@
 import z from "zod";
-import { entityIdSchema } from "@/common/domain/entity-id";
-import { tenantSchema } from "@/common/domain/tenant-aware-entity";
 import { stringToDateCodec } from "@/common/schema/codec";
+import { entityIdSchema } from "@/core/domain/entity";
+import { tenantSchema } from "@/core/domain/tenant-aware-entity";
 
 const postCredentialRequestBodyDtoSchema = z.discriminatedUnion("type", [
   z.object({

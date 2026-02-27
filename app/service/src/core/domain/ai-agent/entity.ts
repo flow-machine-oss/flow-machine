@@ -3,12 +3,11 @@ import {
   type EntityId,
   entityIdSchema,
   newEntityId,
-} from "@/common/domain/entity-id";
-import { syncSchema } from "@/common/domain/sync";
+} from "@/core/domain/entity";
 import {
   type Tenant,
   TenantAwareEntity,
-} from "@/common/domain/tenant-aware-entity";
+} from "@/core/domain/tenant-aware-entity";
 
 const aiModels = [
   "anthropic/claude-haiku-4.5",
@@ -22,7 +21,13 @@ const aiModels = [
 const aiAgentEntityProps = z.object({
   name: z.string().min(1).max(256),
   model: z.enum(aiModels),
-  projects: z.object({ id: entityIdSchema, ...syncSchema.shape }).array(),
+  projects: z
+    .object({
+      id: entityIdSchema,
+      syncStatus: z.enum(["idle", "pending", "success", "error"]),
+      syncedAt: z.date().nullable(),
+    })
+    .array(),
 });
 type AiAgentEntityProps = z.output<typeof aiAgentEntityProps>;
 

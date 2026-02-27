@@ -1,10 +1,10 @@
 import type { WorkflowSdlcActionDefinitionCrudService } from "@/app/feature/workflow/sdlc/action-definition-service";
-import type { WorkflowEngineFactory } from "@/core/domain/workflow/engine/factory";
-import type { WorkflowFunctionFactory } from "@/core/domain/workflow/function/factory";
 import {
   SDLC_WORKFLOW_FUNCTION_ID,
   SDLC_WORKFLOW_INIT_EVENT,
-} from "@/core/feature/workflow/constant";
+} from "@/app/feature/workflow/sdlc/constant";
+import type { WorkflowEngineFactory } from "@/core/domain/workflow/engine/factory";
+import type { WorkflowFunctionFactory } from "@/core/domain/workflow/function/factory";
 
 class WorkflowSdlcFunctionFactory {
   #workflowFunctionFactory: WorkflowFunctionFactory;

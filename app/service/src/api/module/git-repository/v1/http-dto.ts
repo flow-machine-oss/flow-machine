@@ -1,8 +1,8 @@
 import z from "zod";
-import { entityIdSchema } from "@/common/domain/entity-id";
-import { tenantSchema } from "@/common/domain/tenant-aware-entity";
+import { entityIdSchema } from "@/core/domain/entity";
 import { gitRepositoryCrudServiceInputSchema } from "@/core/domain/git-repository/crud-service";
 import { gitRepositoryEntityProps } from "@/core/domain/git-repository/entity";
+import { tenantSchema } from "@/core/domain/tenant-aware-entity";
 
 const gitRepositoryResponseDtoSchema = z.object({
   id: entityIdSchema,

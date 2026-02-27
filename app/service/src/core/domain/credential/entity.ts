@@ -1,9 +1,9 @@
 import z from "zod";
-import { type EntityId, newEntityId } from "@/common/domain/entity-id";
+import { type EntityId, newEntityId } from "@/core/domain/entity";
 import {
   type Tenant,
   TenantAwareEntity,
-} from "@/common/domain/tenant-aware-entity";
+} from "@/core/domain/tenant-aware-entity";
 
 const credentialEntityProps = z.discriminatedUnion("type", [
   z.object({
