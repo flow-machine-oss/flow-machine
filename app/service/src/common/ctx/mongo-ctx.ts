@@ -4,7 +4,7 @@ import { config } from "@/common/config/config";
 import { mongoClient } from "@/common/mongo/mongo-client";
 
 export const mongoCtxSchema = z.object({
-  mongoClientSession: z.instanceof(ClientSession),
+  mongoClientSession: z.instanceof(ClientSession).optional(),
   mongoDb: z.instanceof(Db),
 });
 

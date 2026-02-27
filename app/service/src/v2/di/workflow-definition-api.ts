@@ -16,6 +16,6 @@ const workflowDefinitionV1HttpRouterFactory =
   );
 
 export {
+  workflowDefinitionBasicCrudService,
   workflowDefinitionV1HttpRouterFactory,
-  workflowDefinitionMongoCrudRepository,
 };

@@ -1,7 +1,8 @@
 import { Engine, type EngineAction } from "@inngest/workflow-kit";
 import type z from "zod";
+import { makeMongoCtx } from "@/common/ctx/mongo-ctx";
 import type { Tenant } from "@/common/domain/tenant-aware-entity";
-import type { WorkflowActionDefinitionEntity } from "@/v2/core/domain/workflow/action/definition/entity";
+import type { WorkflowActionDefinitionEntity } from "@/v2/core/domain/workflow/definition/action/entity";
 import type { WorkflowDefinitionCrudService } from "@/v2/core/domain/workflow/definition/crud-service";
 import type {
   WorkflowEngineFactory,
@@ -19,7 +20,7 @@ class InngestWorkflowEngineFactory implements WorkflowEngineFactory {
   async make(
     input: z.infer<typeof workflowEngineFactoryInputSchema.make>,
   ): Promise<WorkflowEngine> {
-    const { ctx, workflowActionDefinitions } = input;
+    const { workflowActionDefinitions } = input;
 
     return new Engine({
       actions: workflowActionDefinitions.map(
@@ -32,7 +33,7 @@ class InngestWorkflowEngineFactory implements WorkflowEngineFactory {
         };
 
         const result = await this.#workflowDefinitionCrudService.get({
-          ctx: { ...ctx, tenant },
+          ctx: { mongoDb: makeMongoCtx().mongoDb, tenant },
           payload: { id: workflowDefinitionId },
         });
 
