@@ -7,8 +7,8 @@ import type { WorkflowDefinitionCrudService } from "@/core/domain/workflow/defin
 import type {
   WorkflowEngineFactory,
   workflowEngineFactoryInputSchema,
-} from "@/core/domain/workflow/engine/factory";
-import type { WorkflowEngine } from "@/core/domain/workflow/engine/type";
+} from "@/core/infra/workflow/engine/factory";
+import type { WorkflowEngine } from "@/core/infra/workflow/engine/type";
 
 class InngestWorkflowEngineFactory implements WorkflowEngineFactory {
   #workflowDefinitionCrudService: WorkflowDefinitionCrudService;

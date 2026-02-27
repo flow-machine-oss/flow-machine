@@ -5,10 +5,10 @@ import {
   emailOTP,
   organization,
 } from "better-auth/plugins";
-import { config } from "@/common/config/config";
+import type { MongoClient } from "mongodb";
 import { newEntityId } from "@/core/domain/entity";
 import type { EmailService } from "@/core/feature/email/service";
-import { mongoClient } from "@/infra/mongo/client";
+import type { ConfigService } from "@/core/infra/config/service";
 
 const otpTypeToEmailSubject = {
   "sign-in": "Your sign-in code",
@@ -17,21 +17,32 @@ const otpTypeToEmailSubject = {
 } as const;
 
 class BetterAuthClientFactory {
+  #configService: ConfigService;
   #emailService: EmailService;
+  #mongoClient: MongoClient;
 
-  constructor(emailService: EmailService) {
+  constructor(
+    configService: ConfigService,
+    emailService: EmailService,
+    mongoClient: MongoClient,
+  ) {
+    this.#configService = configService;
     this.#emailService = emailService;
+    this.#mongoClient = mongoClient;
   }
 
   make() {
     return betterAuth({
-      secret: config.betterAuth.secret,
-      baseURL: config.betterAuth.url,
-      trustedOrigins: config.betterAuth.trustedOrigins,
+      secret: this.#configService.get("betterAuth.secret"),
+      baseURL: this.#configService.get("betterAuth.url"),
+      trustedOrigins: this.#configService
+        .get("betterAuth.trustedOrigins")
+        .split(","),
 
-      database: mongodbAdapter(mongoClient.db(config.database.name), {
-        client: mongoClient,
-      }),
+      database: mongodbAdapter(
+        this.#mongoClient.db(this.#configService.get("database.name")),
+        { client: this.#mongoClient },
+      ),
 
       emailAndPassword: { enabled: false },
 
@@ -75,7 +86,7 @@ class BetterAuthClientFactory {
   ) {
     return await this.#emailService.send({
       payload: {
-        from: config.email.fromAddress,
+        from: this.#configService.get("email.fromAddress"),
         to: body.email,
         subject: otpTypeToEmailSubject[body.type],
         bodyHtml: `
@@ -98,14 +109,14 @@ class BetterAuthClientFactory {
   }) {
     return this.#emailService.send({
       payload: {
-        from: config.email.fromAddress,
+        from: this.#configService.get("email.fromAddress"),
         to: data.email,
         subject: `You've been invited to ${data.organizationName}`,
         bodyHtml: `
           <div>
             <h1>You've been invited!</h1>
             <p>${data.inviterName} invited you to join <strong>${data.organizationName}</strong>.</p>
-            <a href="${config.betterAuth.url}/accept-invitation/${data.id}"
+            <a href="${this.#configService.get("betterAuth.url")}/accept-invitation/${data.id}"
                style="display: inline-block; padding: 12px 24px;
                       background: #000; color: #fff; text-decoration: none;
                       border-radius: 6px; margin-top: 16px;">

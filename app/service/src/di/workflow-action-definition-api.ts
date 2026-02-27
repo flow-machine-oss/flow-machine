@@ -2,17 +2,17 @@ import { WorkflowActionDefinitionV1HttpRouterFactory } from "@/api/module/workfl
 import { WorkflowSdlcActionDefinitionCrudService } from "@/app/feature/workflow/sdlc/action-definition-service";
 import { httpAuthGuardFactory, httpRequestCtxFactory } from "@/di/shared";
 
-const workflowDefinitionActionBasicCrudService =
+const workflowActionDefinitionBasicCrudService =
   new WorkflowSdlcActionDefinitionCrudService();
 
-const workflowDefinitionActionV1HttpRouterFactory =
+const workflowActionDefinitionV1HttpRouterFactory =
   new WorkflowActionDefinitionV1HttpRouterFactory(
     httpAuthGuardFactory,
     httpRequestCtxFactory,
-    workflowDefinitionActionBasicCrudService,
+    workflowActionDefinitionBasicCrudService,
   );
 
 export {
-  workflowDefinitionActionBasicCrudService,
-  workflowDefinitionActionV1HttpRouterFactory,
+  workflowActionDefinitionBasicCrudService,
+  workflowActionDefinitionV1HttpRouterFactory,
 };

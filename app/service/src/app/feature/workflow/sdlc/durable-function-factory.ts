@@ -3,27 +3,27 @@ import {
   SDLC_WORKFLOW_FUNCTION_ID,
   SDLC_WORKFLOW_INIT_EVENT,
 } from "@/app/feature/workflow/sdlc/constant";
-import type { WorkflowEngineFactory } from "@/core/domain/workflow/engine/factory";
-import type { WorkflowFunctionFactory } from "@/core/domain/workflow/function/factory";
+import type { DurableFunctionFactory } from "@/core/infra/durable-function/factory";
+import type { WorkflowEngineFactory } from "@/core/infra/workflow/engine/factory";
 
-class WorkflowSdlcFunctionFactory {
-  #workflowFunctionFactory: WorkflowFunctionFactory;
+class WorkflowSdlcDurableFunctionFactory {
+  #durableFunctionFactory: DurableFunctionFactory;
   #workflowEngineFactory: WorkflowEngineFactory;
   #workflowSdlcActionDefinitionCrudService: WorkflowSdlcActionDefinitionCrudService;
 
   constructor(
-    workflowFunctionFactory: WorkflowFunctionFactory,
+    durableFunctionFactory: DurableFunctionFactory,
     workflowEngineFactory: WorkflowEngineFactory,
     workflowSdlcActionDefinitionCrudService: WorkflowSdlcActionDefinitionCrudService,
   ) {
-    this.#workflowFunctionFactory = workflowFunctionFactory;
+    this.#durableFunctionFactory = durableFunctionFactory;
     this.#workflowEngineFactory = workflowEngineFactory;
     this.#workflowSdlcActionDefinitionCrudService =
       workflowSdlcActionDefinitionCrudService;
   }
 
   make() {
-    return this.#workflowFunctionFactory.make({
+    return this.#durableFunctionFactory.make({
       config: { id: SDLC_WORKFLOW_FUNCTION_ID },
       trigger: { event: SDLC_WORKFLOW_INIT_EVENT },
       handler: async (payload) => {
@@ -43,4 +43,4 @@ class WorkflowSdlcFunctionFactory {
   }
 }
 
-export { WorkflowSdlcFunctionFactory };
+export { WorkflowSdlcDurableFunctionFactory as WorkflowSdlcFunctionFactory };

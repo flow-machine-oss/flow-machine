@@ -1,6 +1,6 @@
 import { InngestHttpRouterFactory } from "@/api/module/inngest/http-router-factory";
-import { WorkflowSdlcFunctionFactory } from "@/app/feature/workflow/sdlc/function-factory";
-import { workflowDefinitionActionBasicCrudService } from "@/di/workflow-definition-action-api";
+import { WorkflowSdlcFunctionFactory } from "@/app/feature/workflow/sdlc/durable-function-factory";
+import { workflowActionDefinitionBasicCrudService } from "@/di/workflow-action-definition-api";
 import { workflowDefinitionBasicCrudService } from "@/di/workflow-definition-api";
 import { InngestClientFactory } from "@/infra/inngest/client-factory";
 import { InngestFunctionFactory } from "@/infra/inngest/function-factory";
@@ -17,7 +17,7 @@ const inngestWorkflowEngineFactory = new InngestWorkflowEngineFactory(
 const inngestWorkflowSdlcFunctionFactory = new WorkflowSdlcFunctionFactory(
   inngestFunctionFactory,
   inngestWorkflowEngineFactory,
-  workflowDefinitionActionBasicCrudService,
+  workflowActionDefinitionBasicCrudService,
 );
 
 const inngestHttpRouterFactory = new InngestHttpRouterFactory(inngestClient, [

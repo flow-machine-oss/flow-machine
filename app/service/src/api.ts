@@ -12,7 +12,7 @@ import { healthHttpRouterFactory } from "@/di/health-api";
 import { inngestHttpRouterFactory } from "@/di/inngest-api";
 import { projectV1HttpRouterFactory } from "@/di/project-api";
 import { httpErrorHandlerFactory } from "@/di/shared";
-import { workflowDefinitionActionV1HttpRouterFactory } from "@/di/workflow-definition-action-api";
+import { workflowActionDefinitionV1HttpRouterFactory } from "@/di/workflow-action-definition-api";
 import { workflowDefinitionV1HttpRouterFactory } from "@/di/workflow-definition-api";
 
 const app = new Elysia();
@@ -36,6 +36,6 @@ app
   .use(healthHttpRouterFactory.make())
   .use(inngestHttpRouterFactory.make())
   .use(projectV1HttpRouterFactory.make())
-  .use(workflowDefinitionActionV1HttpRouterFactory.make())
+  .use(workflowActionDefinitionV1HttpRouterFactory.make())
   .use(workflowDefinitionV1HttpRouterFactory.make())
   .listen(8000);

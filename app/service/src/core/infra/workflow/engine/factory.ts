@@ -1,6 +1,6 @@
 import z from "zod";
 import { WorkflowActionDefinitionEntity } from "@/core/domain/workflow/definition/action/entity";
-import type { WorkflowEngine } from "@/core/domain/workflow/engine/type";
+import type { WorkflowEngine } from "@/core/infra/workflow/engine/type";
 
 const workflowEngineFactoryInputSchema = {
   make: z.object({
