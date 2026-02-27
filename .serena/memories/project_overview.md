@@ -37,7 +37,7 @@ All environment variables must be defined in `turbo.json` globalEnv:
 
 - `DAYTONA_API_KEY` - Daytona SDK key
 - `INNGEST_DEV`, `INNGEST_BASE_URL` - Inngest configuration
-- `POLAR_ACCESS_TOKEN`, `POLAR_ENVIRONMENT` - Polar billing
+- `AUTUMN_SECRET_KEY` - Autumn billing
 - `RESEND_API_KEY`, `EMAIL_FROM_ADDRESS` - Email service
 
 ## Authentication

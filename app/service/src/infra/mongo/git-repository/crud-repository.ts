@@ -2,14 +2,14 @@ import { err, ok } from "neverthrow";
 import type z from "zod";
 import type { MongoCtx } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
-import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";
-import { tenantAwareEntityToMongoModel } from "@/common/mongo/mongo-model";
 import type {
   GitRepositoryCrudRepository,
   gitRepositoryCrudRepositoryInputSchema,
 } from "@/core/domain/git-repository/crud-repository";
 import { GitRepositoryEntity } from "@/core/domain/git-repository/entity";
+import { tenantAwareCollectionIndexes } from "@/infra/mongo/constant";
 import type { GitRepositoryMongoModel } from "@/infra/mongo/git-repository/model";
+import { tenantAwareEntityToMongoModel } from "@/infra/mongo/model";
 
 class GitRepositoryMongoCrudRepository implements GitRepositoryCrudRepository {
   async findMany(

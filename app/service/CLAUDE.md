@@ -19,6 +19,9 @@ The service follows Clean Architecture / Hexagonal Architecture principles.
 
 ### Directory Structure
 
+- src/v2/api/module #
+- src/v2/app/ # Business logic including domain-level service & feature-level service
+
 ```
 src/
 ├── adapter/              # Infrastructure adapters (outside-in)

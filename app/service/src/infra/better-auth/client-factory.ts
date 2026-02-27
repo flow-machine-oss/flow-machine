@@ -7,8 +7,8 @@ import {
 } from "better-auth/plugins";
 import { config } from "@/common/config/config";
 import { newEntityId } from "@/common/domain/entity-id";
-import { mongoClient } from "@/common/mongo/mongo-client";
 import type { EmailService } from "@/core/feature/email/service";
+import { mongoClient } from "@/infra/mongo/client";
 
 const otpTypeToEmailSubject = {
   "sign-in": "Your sign-in code",

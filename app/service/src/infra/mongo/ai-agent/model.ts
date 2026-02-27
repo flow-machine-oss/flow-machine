@@ -1,5 +1,5 @@
-import type { TenantAwareMongoModel } from "@/common/mongo/mongo-model";
 import type { AiAgentEntityProps } from "@/core/domain/ai-agent/entity";
+import type { TenantAwareMongoModel } from "@/infra/mongo/model";
 
 type AiAgentMongoModel = TenantAwareMongoModel<AiAgentEntityProps>;
 

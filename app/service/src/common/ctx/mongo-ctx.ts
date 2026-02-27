@@ -1,7 +1,7 @@
 import { ClientSession, Db } from "mongodb";
 import z from "zod";
 import { config } from "@/common/config/config";
-import { mongoClient } from "@/common/mongo/mongo-client";
+import { mongoClient } from "@/infra/mongo/client";
 
 export const mongoCtxSchema = z.object({
   mongoClientSession: z.instanceof(ClientSession).optional(),

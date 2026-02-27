@@ -2,14 +2,14 @@ import { err, ok } from "neverthrow";
 import type z from "zod";
 import type { MongoCtx } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
-import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";
-import { tenantAwareEntityToMongoModel } from "@/common/mongo/mongo-model";
 import type {
   AiAgentCrudRepository,
   aiAgentCrudRepositoryInputSchema,
 } from "@/core/domain/ai-agent/crud-repository";
 import { AiAgentEntity } from "@/core/domain/ai-agent/entity";
 import type { AiAgentMongoModel } from "@/infra/mongo/ai-agent/model";
+import { tenantAwareCollectionIndexes } from "@/infra/mongo/constant";
+import { tenantAwareEntityToMongoModel } from "@/infra/mongo/model";
 
 class AiAgentMongoCrudRepository implements AiAgentCrudRepository {
   async findMany(

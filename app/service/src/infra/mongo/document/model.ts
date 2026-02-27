@@ -1,5 +1,5 @@
-import type { TenantAwareMongoModel } from "@/common/mongo/mongo-model";
 import type { DocumentEntityProps } from "@/core/domain/document/entity";
+import type { TenantAwareMongoModel } from "@/infra/mongo/model";
 
 type DocumentMongoModel = TenantAwareMongoModel<DocumentEntityProps>;
 

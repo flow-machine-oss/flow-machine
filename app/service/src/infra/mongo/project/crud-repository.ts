@@ -2,13 +2,13 @@ import { err, ok } from "neverthrow";
 import type z from "zod";
 import type { MongoCtx } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
-import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";
-import { tenantAwareEntityToMongoModel } from "@/common/mongo/mongo-model";
 import type {
   ProjectCrudRepository,
   projectCrudRepositoryInputSchema,
 } from "@/core/domain/project/crud-repository";
 import { ProjectEntity } from "@/core/domain/project/entity";
+import { tenantAwareCollectionIndexes } from "@/infra/mongo/constant";
+import { tenantAwareEntityToMongoModel } from "@/infra/mongo/model";
 import type { ProjectMongoModel } from "@/infra/mongo/project/model";
 
 class ProjectMongoCrudRepository implements ProjectCrudRepository {

@@ -2,15 +2,15 @@ import { err, ok } from "neverthrow";
 import type z from "zod";
 import type { MongoCtx } from "@/common/ctx/mongo-ctx";
 import { Err } from "@/common/err/err";
-import { tenantAwareCollectionIndexes } from "@/common/mongo/mongo-index";
-import { tenantAwareEntityToMongoModel } from "@/common/mongo/mongo-model";
 import type {
   CredentialCrudRepository,
   credentialCrudRepositoryInputSchema,
 } from "@/core/domain/credential/crud-repository";
 import type { CredentialEntityProps } from "@/core/domain/credential/entity";
 import { CredentialEntity } from "@/core/domain/credential/entity";
+import { tenantAwareCollectionIndexes } from "@/infra/mongo/constant";
 import type { CredentialMongoModel } from "@/infra/mongo/credential/model";
+import { tenantAwareEntityToMongoModel } from "@/infra/mongo/model";
 
 class CredentialMongoCrudRepository implements CredentialCrudRepository {
   async findMany(
