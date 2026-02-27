@@ -3,8 +3,7 @@ import { GitRepositoryBasicCrudService } from "@/v2/app/domain/git-repository/ba
 import { httpAuthGuardFactory, httpRequestCtxFactory } from "@/v2/di/shared";
 import { GitRepositoryMongoCrudRepository } from "@/v2/infra/mongo/git-repository/crud-repository";
 
-const gitRepositoryMongoCrudRepository =
-  new GitRepositoryMongoCrudRepository();
+const gitRepositoryMongoCrudRepository = new GitRepositoryMongoCrudRepository();
 const gitRepositoryBasicCrudService = new GitRepositoryBasicCrudService(
   gitRepositoryMongoCrudRepository,
 );

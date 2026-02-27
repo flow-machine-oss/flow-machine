@@ -19,8 +19,7 @@ type GitRepositoryResponseDto = z.output<typeof gitRepositoryResponseDtoSchema>;
 const postGitRepositoryRequestBodyDtoSchema = z.object({
   name: gitRepositoryCrudServiceInputSchema.create.shape.payload.shape.name,
   url: gitRepositoryCrudServiceInputSchema.create.shape.payload.shape.url,
-  config:
-    gitRepositoryCrudServiceInputSchema.create.shape.payload.shape.config,
+  config: gitRepositoryCrudServiceInputSchema.create.shape.payload.shape.config,
   integration:
     gitRepositoryCrudServiceInputSchema.create.shape.payload.shape.integration,
 });
