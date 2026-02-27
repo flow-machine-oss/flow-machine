@@ -1,6 +1,5 @@
 import Elysia from "elysia";
 import type { MongoClient } from "mongodb";
-import { makeMongoCtx } from "@/common/ctx/mongo-ctx";
 
 class HttpRequestCtxFactory {
   #mongoClient: MongoClient;
@@ -15,7 +14,7 @@ class HttpRequestCtxFactory {
         { as: "scoped" },
         () =>
           ({
-            ctx: makeMongoCtx(this.#mongoClient),
+            ctx: { mongoClientSession: this.#mongoClient.startSession() },
           }) as const,
       )
       .onBeforeHandle({ as: "scoped" }, async ({ ctx }) => {
