@@ -48,6 +48,31 @@ class AiAgentEntity extends TenantAwareEntity<AiAgentEntityProps> {
       updatedAt,
     });
   }
+
+  markProjectForSync({ projectId }: { projectId: EntityId }) {
+    const project = this.props.projects.find((p) => p.id === projectId);
+    if (!project) {
+      return;
+    }
+    project.syncStatus = "pending";
+  }
+
+  markProjectAsSynced({ projectId }: { projectId: EntityId }) {
+    const project = this.props.projects.find((p) => p.id === projectId);
+    if (!project) {
+      return;
+    }
+    project.syncStatus = "success";
+    project.syncedAt = new Date();
+  }
+
+  markProjectSyncError({ projectId }: { projectId: EntityId }) {
+    const project = this.props.projects.find((p) => p.id === projectId);
+    if (!project) {
+      return;
+    }
+    project.syncStatus = "error";
+  }
 }
 
 export { AiAgentEntity, aiAgentEntityProps, type AiAgentEntityProps };
