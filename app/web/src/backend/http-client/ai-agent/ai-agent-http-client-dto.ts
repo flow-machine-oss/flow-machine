@@ -32,7 +32,7 @@ export type AiAgentHttpResponseDto = z.output<
 export const createAiAgentHttpRequestBodyDtoSchema = z.object({
   model: z.enum(aiModels),
   name: z.string().min(1).max(256),
-  projects: z.array(projectHttpResponseDtoSchema).default([]),
+  projects: z.array(projectHttpResponseDtoSchema),
 });
 export type CreateAiAgentHttpRequestBodyDto = z.output<
   typeof createAiAgentHttpRequestBodyDtoSchema

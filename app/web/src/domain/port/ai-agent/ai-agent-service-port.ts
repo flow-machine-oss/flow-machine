@@ -6,7 +6,7 @@ export const createAiAgentServicePortInSchema = z.object({
   body: z.object({
     model: aiAgentDomainSchema.shape.model,
     name: aiAgentDomainSchema.shape.name,
-    projects: aiAgentDomainSchema.shape.projects.default([]),
+    projects: aiAgentDomainSchema.shape.projects,
   }),
 });
 export type CreateAiAgentServicePortIn = z.input<
