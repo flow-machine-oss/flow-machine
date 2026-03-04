@@ -6,7 +6,7 @@ export const createWorkflowDefinitionServicePortInSchema = z.object({
   body: z.object({
     name: workflowDefinitionDomainSchema.shape.name,
     description: workflowDefinitionDomainSchema.shape.description,
-    projectId: workflowDefinitionDomainSchema.shape.projectId,
+    projects: workflowDefinitionDomainSchema.shape.projects,
     actions: workflowDefinitionDomainSchema.shape.actions,
     edges: workflowDefinitionDomainSchema.shape.edges,
     isActive: workflowDefinitionDomainSchema.shape.isActive,
@@ -41,7 +41,7 @@ export const updateWorkflowDefinitionServicePortInSchema = z.object({
   body: z.object({
     name: workflowDefinitionDomainSchema.shape.name.optional(),
     description: workflowDefinitionDomainSchema.shape.description,
-    projectId: workflowDefinitionDomainSchema.shape.projectId,
+    projects: workflowDefinitionDomainSchema.shape.projects,
     actions: workflowDefinitionDomainSchema.shape.actions.optional(),
     edges: workflowDefinitionDomainSchema.shape.edges.optional(),
     isActive: workflowDefinitionDomainSchema.shape.isActive.optional(),

@@ -92,6 +92,23 @@ export const makeWorkflowDefinitionsTableColumnDef = ({
       enableSorting: false,
     },
     {
+      accessorKey: "projects",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Projects" />
+      ),
+      cell: ({ row }) => {
+        const projects = row.original.projects;
+        if (projects.length === 0)
+          return <span className="text-muted-foreground">-</span>;
+        return (
+          <Badge variant="secondary">
+            {projects.length} {projects.length === 1 ? "project" : "projects"}
+          </Badge>
+        );
+      },
+      enableSorting: false,
+    },
+    {
       accessorKey: "actions",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Actions" />

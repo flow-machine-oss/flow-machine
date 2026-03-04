@@ -1,5 +1,9 @@
 import { z } from "zod/v4";
-import { tenantAwareBaseDomainSchema } from "@/domain/entity/shared-schema";
+import {
+  datetimeSchema,
+  domainIdSchema,
+  tenantAwareBaseDomainSchema,
+} from "@/domain/entity/shared-schema";
 
 const workflowActionSchema = z.object({
   id: z.uuidv7(),
@@ -17,7 +21,13 @@ export const workflowDefinitionDomainSchema = z.object({
   ...tenantAwareBaseDomainSchema.shape,
   name: z.string(),
   description: z.string().optional(),
-  projectId: z.string().nullable(),
+  projects: z.array(
+    z.object({
+      id: domainIdSchema,
+      syncStatus: z.enum(["idle", "pending", "success", "error"]),
+      syncedAt: datetimeSchema.nullable(),
+    }),
+  ),
   actions: workflowActionSchema.array(),
   edges: workflowEdgeSchema.array(),
   isActive: z.boolean(),

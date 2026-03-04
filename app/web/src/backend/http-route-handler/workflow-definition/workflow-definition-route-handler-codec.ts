@@ -14,7 +14,7 @@ export const workflowDefinitionDomainCodec = z.codec(
       updatedAt: dto.updatedAt,
       name: dto.name,
       description: dto.description,
-      projectId: dto.projectId,
+      projects: dto.projects,
       actions: dto.actions,
       edges: dto.edges,
       isActive: dto.isActive,

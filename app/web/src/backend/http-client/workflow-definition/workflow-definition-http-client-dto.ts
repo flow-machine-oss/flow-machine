@@ -16,11 +16,17 @@ export const workflowEdgeHttpDtoSchema = z.object({
   to: z.string(),
 });
 
+const projectHttpResponseDtoSchema = z.object({
+  id: z.string(),
+  syncStatus: z.enum(["idle", "pending", "success", "error"]),
+  syncedAt: z.iso.datetime().nullable(),
+});
+
 export const workflowDefinitionHttpResponseDtoSchema = z.object({
   ...tenantAwareBaseHttpClientResponseDtoSchema.shape,
   name: z.string(),
   description: z.string().optional(),
-  projectId: z.string().nullable(),
+  projects: z.array(projectHttpResponseDtoSchema),
   actions: workflowActionHttpDtoSchema.array(),
   edges: workflowEdgeHttpDtoSchema.array(),
   isActive: z.boolean(),
@@ -32,7 +38,7 @@ export type WorkflowDefinitionHttpResponseDto = z.output<
 export const createWorkflowDefinitionHttpRequestBodyDtoSchema = z.object({
   name: z.string().min(1).max(256),
   description: z.string().optional(),
-  projectId: z.string().nullable(),
+  projects: z.array(projectHttpResponseDtoSchema),
   actions: workflowActionHttpDtoSchema.array(),
   edges: workflowEdgeHttpDtoSchema.array(),
   isActive: z.boolean(),
