@@ -22,12 +22,12 @@ export class WorkflowDefinitionBasicCrudService implements WorkflowDefinitionCru
     input: z.infer<typeof workflowDefinitionCrudServiceInputSchema.create>,
   ) {
     const { ctx, payload } = input;
-    const { name, description, projectId, actions, edges, isActive } = payload;
+    const { name, description, projects, actions, edges, isActive } = payload;
 
     const newEntity = WorkflowDefinitionEntity.makeNew(ctx.tenant, {
       name,
       description,
-      projectId,
+      projects,
       actions,
       edges,
       isActive,
@@ -64,10 +64,11 @@ export class WorkflowDefinitionBasicCrudService implements WorkflowDefinitionCru
   async list(
     input: z.infer<typeof workflowDefinitionCrudServiceInputSchema.list>,
   ) {
-    const { ctx } = input;
+    const { ctx, filter } = input;
 
     return await this.#workflowDefinitionCrudRepository.findMany({
       ctx,
+      filter,
     });
   }
 

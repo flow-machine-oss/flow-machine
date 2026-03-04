@@ -1,3 +1,4 @@
+import { UTCDate } from "@date-fns/utc";
 import z from "zod";
 import {
   type EntityId,
@@ -23,6 +24,13 @@ const gitRepositoryEntityProps = z.object({
     provider: z.enum(gitProviders),
     credentialId: entityIdSchema,
   }),
+  projects: z
+    .object({
+      id: entityIdSchema,
+      syncStatus: z.enum(["idle", "pending", "success", "error"]),
+      syncedAt: z.date().nullable(),
+    })
+    .array(),
 });
 type GitRepositoryEntityProps = z.output<typeof gitRepositoryEntityProps>;
 
@@ -42,6 +50,34 @@ class GitRepositoryEntity extends TenantAwareEntity<GitRepositoryEntityProps> {
       createdAt,
       updatedAt,
     });
+  }
+
+  markProjectForSync({ projectId }: { projectId: EntityId }) {
+    const project = this.props.projects.find((p) => p.id === projectId);
+    if (!project) {
+      return;
+    }
+    project.syncStatus = "pending";
+    this.updatedAt = new UTCDate();
+  }
+
+  markProjectAsSynced({ projectId }: { projectId: EntityId }) {
+    const project = this.props.projects.find((p) => p.id === projectId);
+    if (!project) {
+      return;
+    }
+    project.syncStatus = "success";
+    project.syncedAt = new UTCDate();
+    this.updatedAt = new UTCDate();
+  }
+
+  markProjectSyncError({ projectId }: { projectId: EntityId }) {
+    const project = this.props.projects.find((p) => p.id === projectId);
+    if (!project) {
+      return;
+    }
+    project.syncStatus = "error";
+    this.updatedAt = new UTCDate();
   }
 }
 

@@ -20,7 +20,7 @@ const workflowDefinitionCrudServiceInputSchema = {
     payload: z.object({
       name: workflowDefinitionEntityProps.shape.name,
       description: workflowDefinitionEntityProps.shape.description,
-      projectId: workflowDefinitionEntityProps.shape.projectId,
+      projects: workflowDefinitionEntityProps.shape.projects,
       actions: workflowDefinitionEntityProps.shape.actions,
       edges: workflowDefinitionEntityProps.shape.edges,
       isActive: workflowDefinitionEntityProps.shape.isActive,
@@ -36,6 +36,11 @@ const workflowDefinitionCrudServiceInputSchema = {
 
   list: z.object({
     ctx: ctxSchema,
+    filter: z
+      .object({
+        projectId: entityIdSchema,
+      })
+      .optional(),
   }),
 
   update: z.object({
@@ -44,7 +49,7 @@ const workflowDefinitionCrudServiceInputSchema = {
       id: entityIdSchema,
       name: workflowDefinitionEntityProps.shape.name.optional(),
       description: workflowDefinitionEntityProps.shape.description,
-      projectId: workflowDefinitionEntityProps.shape.projectId.optional(),
+      projects: workflowDefinitionEntityProps.shape.projects.optional(),
       actions: workflowDefinitionEntityProps.shape.actions.optional(),
       edges: workflowDefinitionEntityProps.shape.edges.optional(),
       isActive: workflowDefinitionEntityProps.shape.isActive.optional(),

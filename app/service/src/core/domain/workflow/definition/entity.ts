@@ -1,3 +1,4 @@
+import { UTCDate } from "@date-fns/utc";
 import z from "zod";
 import {
   type EntityId,
@@ -26,7 +27,13 @@ type WorkflowEdge = z.output<typeof workflowEdgeSchema>;
 const workflowDefinitionEntityProps = z.object({
   name: z.string().min(1).max(255),
   description: z.string().max(2000).optional(),
-  projectId: entityIdSchema.nullable(),
+  projects: z
+    .object({
+      id: entityIdSchema,
+      syncStatus: z.enum(["idle", "pending", "success", "error"]),
+      syncedAt: z.date().nullable(),
+    })
+    .array(),
   actions: workflowActionSchema.array(),
   edges: workflowEdgeSchema.array(),
   isActive: z.boolean(),
@@ -51,6 +58,34 @@ class WorkflowDefinitionEntity extends TenantAwareEntity<WorkflowDefinitionEntit
       createdAt,
       updatedAt,
     });
+  }
+
+  markProjectForSync({ projectId }: { projectId: EntityId }) {
+    const project = this.props.projects.find((p) => p.id === projectId);
+    if (!project) {
+      return;
+    }
+    project.syncStatus = "pending";
+    this.updatedAt = new UTCDate();
+  }
+
+  markProjectAsSynced({ projectId }: { projectId: EntityId }) {
+    const project = this.props.projects.find((p) => p.id === projectId);
+    if (!project) {
+      return;
+    }
+    project.syncStatus = "success";
+    project.syncedAt = new UTCDate();
+    this.updatedAt = new UTCDate();
+  }
+
+  markProjectSyncError({ projectId }: { projectId: EntityId }) {
+    const project = this.props.projects.find((p) => p.id === projectId);
+    if (!project) {
+      return;
+    }
+    project.syncStatus = "error";
+    this.updatedAt = new UTCDate();
   }
 }
 

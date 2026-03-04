@@ -22,6 +22,7 @@ const gitRepositoryCrudServiceInputSchema = {
       url: gitRepositoryEntityProps.shape.url,
       config: gitRepositoryEntityProps.shape.config,
       integration: gitRepositoryEntityProps.shape.integration,
+      projects: gitRepositoryEntityProps.shape.projects,
     }),
   }),
 
@@ -34,6 +35,11 @@ const gitRepositoryCrudServiceInputSchema = {
 
   list: z.object({
     ctx: ctxSchema,
+    filter: z
+      .object({
+        projectId: entityIdSchema,
+      })
+      .optional(),
   }),
 
   update: z.object({
@@ -44,6 +50,7 @@ const gitRepositoryCrudServiceInputSchema = {
       url: gitRepositoryEntityProps.shape.url.optional(),
       config: gitRepositoryEntityProps.shape.config.optional(),
       integration: gitRepositoryEntityProps.shape.integration.optional(),
+      projects: gitRepositoryEntityProps.shape.projects.optional(),
     }),
   }),
 
