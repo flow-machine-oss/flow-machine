@@ -1,5 +1,10 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { CopyIcon, MoreHorizontalIcon, PencilIcon, TrashIcon } from "lucide-react";
+import {
+  CopyIcon,
+  MoreHorizontalIcon,
+  PencilIcon,
+  TrashIcon,
+} from "lucide-react";
 import Link from "next/link";
 import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
 import { makeAiAgentDomainService } from "@/domain/entity/ai-agent/ai-agent-domain-service";

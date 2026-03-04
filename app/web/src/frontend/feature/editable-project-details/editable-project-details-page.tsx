@@ -84,7 +84,11 @@ export function EditableProjectDetailsPage({
             onInvalidFormSubmit={() => {}}
           />
         ) : (
-          <EditableProjectDetails project={data} onCopy={handleCopy} onEdit={handleEdit} />
+          <EditableProjectDetails
+            project={data}
+            onCopy={handleCopy}
+            onEdit={handleEdit}
+          />
         )}
       </div>
     </PlatformPageTemplate>
