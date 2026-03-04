@@ -12,6 +12,7 @@ import { EditableAiAgentDetails } from "@/frontend/feature/editable-ai-agent-det
 import { useEditAiAgentForm } from "@/frontend/feature/editable-ai-agent-details/use-edit-ai-agent-form";
 import { useGetAiAgent } from "@/frontend/hook/ai-agent/use-get-ai-agent";
 import { useUpdateAiAgent } from "@/frontend/hook/ai-agent/use-update-ai-agent";
+import { useListProjects } from "@/frontend/hook/project/use-list-projects";
 import { useCopyToClipboard } from "@/frontend/hook/use-copy-to-clipboard";
 import { makeGetAiAgentQueryKey } from "@/frontend/lib/query/query-key";
 
@@ -27,6 +28,7 @@ export function EditableAiAgentDetailsPage({
 
   const queryClient = useQueryClient();
   const { data, isPending, isError } = useGetAiAgent(id);
+  const { data: projects = [] } = useListProjects();
   const { mutateAsync } = useUpdateAiAgent();
 
   const form = useEditAiAgentForm();
@@ -38,7 +40,11 @@ export function EditableAiAgentDetailsPage({
 
   const handleEdit = () => {
     if (data) {
-      form.reset({ name: data.name, model: data.model });
+      form.reset({
+        name: data.name,
+        model: data.model,
+        projects: data.projects.map((p) => p.id),
+      });
     }
     setIsEditing(true);
   };
@@ -49,7 +55,18 @@ export function EditableAiAgentDetailsPage({
 
   const handleValidFormSubmit = async (formData: EditAiAgentFormValues) => {
     try {
-      await mutateAsync({ params: { id }, body: formData });
+      await mutateAsync({
+        params: { id },
+        body: {
+          name: formData.name,
+          model: formData.model,
+          projects: formData.projects.map((projectId) => ({
+            id: projectId,
+            syncStatus: "idle" as const,
+            syncedAt: null,
+          })),
+        },
+      });
       await queryClient.invalidateQueries({
         queryKey: makeGetAiAgentQueryKey(id),
       });
@@ -79,12 +96,18 @@ export function EditableAiAgentDetailsPage({
           <EditAiAgentForm
             aiAgent={data}
             form={form}
+            projects={projects}
             onCancel={handleCancel}
             onValidFormSubmit={handleValidFormSubmit}
             onInvalidFormSubmit={() => {}}
           />
         ) : (
-          <EditableAiAgentDetails aiAgent={data} onCopy={handleCopy} onEdit={handleEdit} />
+          <EditableAiAgentDetails
+            aiAgent={data}
+            onCopy={handleCopy}
+            onEdit={handleEdit}
+            projects={projects}
+          />
         )}
       </div>
     </PlatformPageTemplate>

@@ -1,6 +1,8 @@
 import { CopyIcon } from "lucide-react";
+import Link from "next/link";
 import type { AiAgentDomain } from "@/domain/entity/ai-agent/ai-agent-domain-schema";
 import { makeAiAgentDomainService } from "@/domain/entity/ai-agent/ai-agent-domain-service";
+import type { ProjectDomain } from "@/domain/entity/project/project-domain-schema";
 import { Badge } from "@/frontend/component/ui/badge";
 import { Button } from "@/frontend/component/ui/button";
 import {
@@ -16,12 +18,14 @@ type EditableAiAgentDetailsProps = {
   aiAgent: AiAgentDomain;
   onCopy: (text: string) => void;
   onEdit: () => void;
+  projects: ProjectDomain[];
 };
 
 export function EditableAiAgentDetails({
   aiAgent,
   onCopy,
   onEdit,
+  projects,
 }: EditableAiAgentDetailsProps) {
   const aiAgentDomainService = makeAiAgentDomainService({ aiAgent });
 
@@ -55,6 +59,34 @@ export function EditableAiAgentDetails({
               <Badge variant="secondary" className="w-fit">
                 {aiAgentDomainService.getModelDisplayName()}
               </Badge>
+            </FieldContent>
+          </Field>
+          <Field>
+            <FieldLabel>Assigned projects</FieldLabel>
+            <FieldContent>
+              {aiAgent.projects.length === 0 ? (
+                <span className="text-muted-foreground text-sm">
+                  No projects assigned
+                </span>
+              ) : (
+                <ul className="space-y-1">
+                  {aiAgent.projects.map((agentProject) => {
+                    const project = projects.find(
+                      (p) => p.id === agentProject.id,
+                    );
+                    return (
+                      <Badge key={agentProject.id} variant="secondary">
+                        <Link
+                          href={`/platform/project/${agentProject.id}`}
+                          className="hover:underline"
+                        >
+                          {project?.name ?? agentProject.id}
+                        </Link>
+                      </Badge>
+                    );
+                  })}
+                </ul>
+              )}
             </FieldContent>
           </Field>
           <Field>

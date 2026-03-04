@@ -18,10 +18,7 @@ type AiAgentResponseDto = z.output<typeof aiAgentResponseDtoSchema>;
 const postAiAgentRequestBodyDtoSchema = z.object({
   name: aiAgentCrudServiceInputSchema.create.shape.payload.shape.name,
   model: aiAgentCrudServiceInputSchema.create.shape.payload.shape.model,
-  projects:
-    aiAgentCrudServiceInputSchema.create.shape.payload.shape.projects.default(
-      [],
-    ),
+  projects: aiAgentCrudServiceInputSchema.create.shape.payload.shape.projects,
 });
 
 const patchAiAgentRequestParamsDtoSchema = z.object({
