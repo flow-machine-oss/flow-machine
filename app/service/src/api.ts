@@ -11,6 +11,7 @@ import {
   healthHttpRouterFactory,
   httpErrorHandlerFactory,
   inngestHttpRouterFactory,
+  projectSyncV1HttpRouterFactory,
   projectV1HttpRouterFactory,
   workflowActionDefinitionV1HttpRouterFactory,
   workflowDefinitionV1HttpRouterFactory,
@@ -40,6 +41,7 @@ app
   .use(healthHttpRouterFactory.make())
   .use(inngestHttpRouterFactory.make())
   .use(projectV1HttpRouterFactory.make())
+  .use(projectSyncV1HttpRouterFactory.make())
   .use(workflowActionDefinitionV1HttpRouterFactory.make())
   .use(workflowDefinitionV1HttpRouterFactory.make())
   .listen(8000);

@@ -1,3 +1,4 @@
+import { isNil } from "es-toolkit";
 import { err, ok } from "neverthrow";
 import type { Result } from "neverthrow";
 import type z from "zod";
@@ -39,10 +40,11 @@ export class ProjectSyncBasicService implements ProjectSyncService {
     this.#externalProjectService = externalProjectService;
   }
 
-  async syncAiAgentsToExternal(
-    input: z.infer<typeof projectSyncServiceInputSchema.syncAiAgentsToExternal>,
+  async syncAiAgents(
+    input: z.infer<typeof projectSyncServiceInputSchema.syncAiAgents>,
   ): Promise<Result<void, Err>> {
-    const { ctx, projectId } = input;
+    const { ctx, payload } = input;
+    const { projectId } = payload;
 
     const resolveResult = await this.#resolveProjectAndCredential(
       ctx,
@@ -93,12 +95,11 @@ export class ProjectSyncBasicService implements ProjectSyncService {
     return ok();
   }
 
-  async syncGitRepositoriesToExternal(
-    input: z.infer<
-      typeof projectSyncServiceInputSchema.syncGitRepositoriesToExternal
-    >,
+  async syncGitRepositories(
+    input: z.infer<typeof projectSyncServiceInputSchema.syncGitRepositories>,
   ): Promise<Result<void, Err>> {
-    const { ctx, projectId } = input;
+    const { ctx, payload } = input;
+    const { projectId } = payload;
 
     const resolveResult = await this.#resolveProjectAndCredential(
       ctx,
@@ -155,12 +156,13 @@ export class ProjectSyncBasicService implements ProjectSyncService {
     return ok();
   }
 
-  async syncWorkflowDefinitionsToExternal(
+  async syncWorkflowDefinitions(
     input: z.infer<
-      typeof projectSyncServiceInputSchema.syncWorkflowDefinitionsToExternal
+      typeof projectSyncServiceInputSchema.syncWorkflowDefinitions
     >,
   ): Promise<Result<void, Err>> {
-    const { ctx, projectId } = input;
+    const { ctx, payload } = input;
+    const { projectId } = payload;
 
     const resolveResult = await this.#resolveProjectAndCredential(
       ctx,
@@ -218,9 +220,7 @@ export class ProjectSyncBasicService implements ProjectSyncService {
   }
 
   async #resolveProjectAndCredential(
-    ctx: z.infer<
-      typeof projectSyncServiceInputSchema.syncAiAgentsToExternal
-    >["ctx"],
+    ctx: z.infer<typeof projectSyncServiceInputSchema.syncAiAgents>["ctx"],
     projectId: string,
   ): Promise<
     Result<{ project: ProjectEntity; credential: CredentialEntity }, Err>
@@ -237,7 +237,7 @@ export class ProjectSyncBasicService implements ProjectSyncService {
 
     const integration = project.props.integration;
 
-    if (!integration) {
+    if (isNil(integration)) {
       return err(
         Err.code("badRequest", {
           message: "Project has no integration configured",

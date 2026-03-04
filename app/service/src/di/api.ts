@@ -6,6 +6,7 @@ import { GitRepositoryV1HttpRouterFactory } from "@/api/module/git-repository/v1
 import { HealthHttpRouterFactory } from "@/api/module/health/http-router-factory";
 import { InngestHttpRouterFactory } from "@/api/module/inngest/http-router-factory";
 import { ProjectV1HttpRouterFactory } from "@/api/module/project/v1/http-router-factory";
+import { ProjectSyncV1HttpRouterFactory } from "@/api/module/project/v1/sync/http-router-factory";
 import { WorkflowActionDefinitionV1HttpRouterFactory } from "@/api/module/workflow/action/v1/http-router-factory";
 import { WorkflowDefinitionV1HttpRouterFactory } from "@/api/module/workflow/definition/v1/http-router-factory";
 import { HttpAuthGuardFactory } from "@/api/plugin/http-auth-guard-factory";
@@ -18,6 +19,7 @@ import {
   gitRepositoryBasicCrudService,
   inngestWorkflowSdlcFunctionFactory,
   projectBasicCrudService,
+  projectSyncBasicService,
   workflowActionDefinitionBasicCrudService,
   workflowDefinitionBasicCrudService,
 } from "@/di/app";
@@ -69,6 +71,11 @@ const projectV1HttpRouterFactory = new ProjectV1HttpRouterFactory(
   httpRequestCtxFactory,
   projectBasicCrudService,
 );
+const projectSyncV1HttpRouterFactory = new ProjectSyncV1HttpRouterFactory(
+  httpAuthGuardFactory,
+  httpRequestCtxFactory,
+  projectSyncBasicService,
+);
 
 const workflowDefinitionV1HttpRouterFactory =
   new WorkflowDefinitionV1HttpRouterFactory(
@@ -100,6 +107,7 @@ export {
   healthHttpRouterFactory,
   inngestHttpRouterFactory,
   projectV1HttpRouterFactory,
+  projectSyncV1HttpRouterFactory,
   workflowActionDefinitionV1HttpRouterFactory,
   workflowDefinitionV1HttpRouterFactory,
 };

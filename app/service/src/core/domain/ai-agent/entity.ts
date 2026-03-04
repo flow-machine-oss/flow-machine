@@ -1,3 +1,4 @@
+import { UTCDate } from "@date-fns/utc";
 import z from "zod";
 import {
   type EntityId,
@@ -55,6 +56,7 @@ class AiAgentEntity extends TenantAwareEntity<AiAgentEntityProps> {
       return;
     }
     project.syncStatus = "pending";
+    this.updatedAt = new UTCDate();
   }
 
   markProjectAsSynced({ projectId }: { projectId: EntityId }) {
@@ -63,7 +65,8 @@ class AiAgentEntity extends TenantAwareEntity<AiAgentEntityProps> {
       return;
     }
     project.syncStatus = "success";
-    project.syncedAt = new Date();
+    project.syncedAt = new UTCDate();
+    this.updatedAt = new UTCDate();
   }
 
   markProjectSyncError({ projectId }: { projectId: EntityId }) {
@@ -72,6 +75,7 @@ class AiAgentEntity extends TenantAwareEntity<AiAgentEntityProps> {
       return;
     }
     project.syncStatus = "error";
+    this.updatedAt = new UTCDate();
   }
 }
 

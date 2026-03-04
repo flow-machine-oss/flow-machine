@@ -9,26 +9,16 @@ class HttpRequestCtxFactory {
   }
 
   make() {
-    return new Elysia({ name: HttpRequestCtxFactory.name })
-      .derive(
-        { as: "scoped" },
-        () =>
-          ({
-            ctx: { mongoClientSession: this.#mongoClient.startSession() },
-          }) as const,
-      )
-      .onBeforeHandle({ as: "scoped" }, async ({ ctx }) => {
-        ctx.mongoClientSession?.startTransaction();
-      })
-      .onAfterHandle({ as: "scoped" }, async ({ ctx }) => {
-        await ctx.mongoClientSession?.commitTransaction();
-      })
-      .onError({ as: "scoped" }, async ({ ctx }) => {
-        await ctx?.mongoClientSession?.abortTransaction();
-      })
-      .onAfterResponse({ as: "scoped" }, async ({ ctx }) => {
-        await ctx.mongoClientSession?.endSession();
-      });
+    return new Elysia({ name: HttpRequestCtxFactory.name }).derive(
+      { as: "scoped" },
+      () =>
+        ({
+          ctx: {
+            mongoClient: this.#mongoClient,
+            mongoClientSession: undefined,
+          },
+        }) as const,
+    );
   }
 }
 

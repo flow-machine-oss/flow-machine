@@ -1,6 +1,7 @@
 import type { Result } from "neverthrow";
 import z from "zod";
 import { tenantCtxSchema } from "@/common/ctx/tenant-ctx";
+import type { Err } from "@/common/err/err";
 import { AiAgentEntity } from "@/core/domain/ai-agent/entity";
 import { CredentialEntity } from "@/core/domain/credential/entity";
 import { GitRepositoryEntity } from "@/core/domain/git-repository/entity";
@@ -33,17 +34,17 @@ interface ExternalProjectService {
     input: z.infer<
       typeof externalProjectServiceInputSchema.syncAiAgentIssueField
     >,
-  ): Promise<Result<void, Error>>;
+  ): Promise<Result<void, Err>>;
   syncGitRepositoryIssueField(
     input: z.infer<
       typeof externalProjectServiceInputSchema.syncGitRepositoryIssueField
     >,
-  ): Promise<Result<void, Error>>;
+  ): Promise<Result<void, Err>>;
   syncWorkflowDefinitionIssueField(
     input: z.infer<
       typeof externalProjectServiceInputSchema.syncWorkflowDefinitionIssueField
     >,
-  ): Promise<Result<void, Error>>;
+  ): Promise<Result<void, Err>>;
 }
 
 export { type ExternalProjectService, externalProjectServiceInputSchema };

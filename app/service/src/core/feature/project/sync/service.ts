@@ -11,32 +11,36 @@ const ctxSchema = z.object({
 });
 
 const projectSyncServiceInputSchema = {
-  syncAiAgentsToExternal: z.object({
+  syncAiAgents: z.object({
     ctx: ctxSchema,
-    projectId: entityIdSchema,
+    payload: z.object({
+      projectId: entityIdSchema,
+    }),
   }),
-  syncGitRepositoriesToExternal: z.object({
+  syncGitRepositories: z.object({
     ctx: ctxSchema,
-    projectId: entityIdSchema,
+    payload: z.object({
+      projectId: entityIdSchema,
+    }),
   }),
-  syncWorkflowDefinitionsToExternal: z.object({
+  syncWorkflowDefinitions: z.object({
     ctx: ctxSchema,
-    projectId: entityIdSchema,
+    payload: z.object({
+      projectId: entityIdSchema,
+    }),
   }),
 };
 
 interface ProjectSyncService {
-  syncAiAgentsToExternal(
-    input: z.infer<typeof projectSyncServiceInputSchema.syncAiAgentsToExternal>,
+  syncAiAgents(
+    input: z.infer<typeof projectSyncServiceInputSchema.syncAiAgents>,
   ): Promise<Result<void, Err>>;
-  syncGitRepositoriesToExternal(
-    input: z.infer<
-      typeof projectSyncServiceInputSchema.syncGitRepositoriesToExternal
-    >,
+  syncGitRepositories(
+    input: z.infer<typeof projectSyncServiceInputSchema.syncGitRepositories>,
   ): Promise<Result<void, Err>>;
-  syncWorkflowDefinitionsToExternal(
+  syncWorkflowDefinitions(
     input: z.infer<
-      typeof projectSyncServiceInputSchema.syncWorkflowDefinitionsToExternal
+      typeof projectSyncServiceInputSchema.syncWorkflowDefinitions
     >,
   ): Promise<Result<void, Err>>;
 }
