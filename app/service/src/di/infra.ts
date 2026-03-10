@@ -1,5 +1,7 @@
 import { BetterAuthClientFactory } from "@/infra/better-auth/client-factory";
 import { BetterAuthService } from "@/infra/better-auth/service";
+import { DaytonaClientFactory } from "@/infra/daytona/client-factory";
+import { DaytonaSandboxService } from "@/infra/daytona/service";
 import { EnvConfigService } from "@/infra/env/env-config-service";
 import { InngestClientFactory } from "@/infra/inngest/client-factory";
 import { JiraExternalProjectService } from "@/infra/jira/service";
@@ -17,6 +19,10 @@ const envConfigService = new EnvConfigService();
 
 const mongoClientFactory = new MongoClientFactory(envConfigService);
 const mongoClient = mongoClientFactory.make();
+
+const daytonaClientFactory = new DaytonaClientFactory(envConfigService);
+const daytonaClient = daytonaClientFactory.make();
+const daytonaSandboxService = new DaytonaSandboxService(daytonaClient);
 
 const jiraExternalProjectService = new JiraExternalProjectService();
 
@@ -62,6 +68,7 @@ const workflowDefinitionMongoCrudRepository =
 export {
   betterAuthClient,
   betterAuthService,
+  daytonaSandboxService,
   envConfigService,
   inngestClient,
   jiraExternalProjectService,
