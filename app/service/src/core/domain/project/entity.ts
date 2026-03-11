@@ -4,12 +4,11 @@ import {
   entityIdSchema,
   newEntityId,
 } from "@/core/domain/entity";
+import { projectProviders } from "@/core/domain/project/provider";
 import {
   type Tenant,
   TenantAwareEntity,
 } from "@/core/domain/tenant-aware-entity";
-
-const projectProviders = ["jira", "linear"] as const;
 
 const projectEntityProps = z.object({
   name: z.string().min(1).max(256),
@@ -45,9 +44,4 @@ class ProjectEntity extends TenantAwareEntity<ProjectEntityProps> {
   }
 }
 
-export {
-  ProjectEntity,
-  projectEntityProps,
-  type ProjectEntityProps,
-  projectProviders,
-};
+export { ProjectEntity, projectEntityProps, type ProjectEntityProps };
