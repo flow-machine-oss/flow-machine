@@ -10,15 +10,11 @@ import {
   credentialMongoCrudRepository,
   documentMongoCrudRepository,
   gitRepositoryMongoCrudRepository,
-  inngestClient,
   jiraExternalProjectService,
   projectMongoCrudRepository,
   workflowDefinitionMongoCrudRepository,
 } from "@/di/infra";
-import { InngestFunctionFactory } from "@/orchestrator/inngest/function-factory";
-import { InngestWorkflowEngineFactory } from "@/orchestrator/inngest/workflow-engine-factory";
 import { WorkflowSdlcActionDefinitionCrudService } from "@/orchestrator/workflow/sdlc/action-definition-service";
-import { WorkflowSdlcFunctionFactory } from "@/orchestrator/workflow/sdlc/function-factory";
 
 // Domain services
 const projectBasicCrudService = new ProjectBasicCrudService(
@@ -51,17 +47,6 @@ const projectSyncBasicService = new ProjectSyncBasicService(
   jiraExternalProjectService,
 );
 
-// Inngest orchestration
-const inngestFunctionFactory = new InngestFunctionFactory(inngestClient);
-const inngestWorkflowEngineFactory = new InngestWorkflowEngineFactory(
-  workflowDefinitionBasicCrudService,
-);
-const inngestWorkflowSdlcFunctionFactory = new WorkflowSdlcFunctionFactory(
-  inngestFunctionFactory,
-  inngestWorkflowEngineFactory,
-  workflowActionDefinitionBasicCrudService,
-);
-
 export {
   aiAgentBasicCrudService,
   aiAgentMongoCrudRepository,
@@ -71,9 +56,6 @@ export {
   documentMongoCrudRepository,
   gitRepositoryBasicCrudService,
   gitRepositoryMongoCrudRepository,
-  inngestFunctionFactory,
-  inngestWorkflowEngineFactory,
-  inngestWorkflowSdlcFunctionFactory,
   projectBasicCrudService,
   projectMongoCrudRepository,
   projectSyncBasicService,
